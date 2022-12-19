@@ -401,6 +401,7 @@ class DataLayer
                     DataLayer.MoveToAnotherList(DataLayer.WaitingSent.tRN_StockTrans, DataLayer.Sent.tRN_StockTrans, t);
                     DataLayer.WaitingSent.SaveJSON();
                     DataLayer.Sent.SaveJSON();
+
                 }
                 else
                 {
