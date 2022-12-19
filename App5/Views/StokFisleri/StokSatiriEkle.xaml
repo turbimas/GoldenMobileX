@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                          xmlns:local="clr-namespace:GoldenMobileX.ViewModels"  
+             xmlns:model="clr-namespace:GoldenMobileX.Models" 
+             x:Class="GoldenMobileX.Views.StokSatiriEkle"
+              xmlns:dxe="clr-namespace:DevExpress.XamarinForms.Editors;assembly=DevExpress.XamarinForms.Editors"  
+            xmlns:controls="clr-namespace:GoldenMobileX.Views.Controls;assembly=GoldenMobileX"
+             Title="Satır Ekle">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Barkod Oku"  IconImageSource="barcode.png" x:Name="BtnBarkodOku" Clicked="BarkodOku_Clicked"  />
+     
+        <ToolbarItem Text="Stok Ekle"  x:Name="BtnStokEkle" Clicked="BtnStokEkle_Clicked"  Order="Secondary"  />
+        <ToolbarItem Text="Kaydet"  IconImageSource="Save.png" x:Name="BtnKaydet" Clicked="SatirKaydet_Clicked" Order="Secondary"  />
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <StackLayout>
+            <StackLayout x:Name="StackFisSatirlari"  x:DataType="local:StokFisleriViewModel"  BindableLayout.ItemsSource="{Binding Line, Mode=TwoWay}">
+
+                <StackLayout Orientation="Horizontal">
+                <Switch IsToggled="false" x:Name="HizliEkle" />
+                <Label Text="Hızlı Ekle"></Label>
+                <Switch IsToggled="false" x:Name="MiktariSabitleSw" Toggled="MiktariSabitle_Toggled" />
+                <Label Text="Miktarı Sabitle" ></Label>
+                <Switch IsToggled="false" x:Name="SayimModu"  />
+                <Label Text="Sayım Modu" ></Label>
+            </StackLayout>
+                <StackLayout Orientation="Horizontal">
+                    <dxe:TextEdit  Keyboard="Numeric"  HorizontalOptions="FillAndExpand" x:Name="SatirEntrySeriNo"   LabelText="Barkod" Completed="SatirEntrySeriNo_Completed"  Unfocused="SatirEntrySeriNo_Unfocused" Text="{Binding Line.SeriNo, Mode=TwoWay}"></dxe:TextEdit>
+
+                    <dxe:NumericEdit  ClearIcon="Delete.png" ClearIconVisibility="Auto"
+                        x:Name="SatirEntryAmount"  AllowNullValue="True"   HorizontalOptions="FillAndExpand"   LabelText="Miktar" MaxDecimalDigitCount="2" Completed="SatirEntryAmount_Completed"
+                        Value="{Binding Line.Amount, Mode=TwoWay }"   >
+                        
+                    </dxe:NumericEdit>
+                </StackLayout>
+              
+                <controls:GoldenEntryProductPicker x:Name="ProductEntry"  SelectedItem="{Binding Line.ProductID_, Mode=TwoWay}" ></controls:GoldenEntryProductPicker>
+                <StackLayout Orientation="Horizontal">
+                    <dxe:TextEdit   x:Name="SatirEntrySeriLot"   HorizontalOptions="FillAndExpand" PlaceholderText="Seri/Lot" LabelText="Seti / Lot" Keyboard="Numeric" Text="{Binding Line.SeriLot, Mode=TwoWay}"   />
+                    <Label x:Name="LabelStokAdeti" MinimumWidthRequest="150"   />
+                </StackLayout>
+                <StackLayout x:Name="Fiyatlar">
+                    <StackLayout Orientation="Horizontal">
+                        <dxe:NumericEdit  MaxDecimalDigitCount="2"  PlaceholderText="Birim Fiyat"  LabelText="Birim Fiyat"   HorizontalOptions="FillAndExpand"     x:Name="SatirEntryUnitPrice" ValueChanged="Entry_TextChanged" Value="{Binding Line.UnitPrice, Mode=TwoWay}" >
+                        </dxe:NumericEdit>
+                        <dxe:NumericEdit   MaxDecimalDigitCount="2" PlaceholderText="KDV %" LabelText="KDV %"  HorizontalOptions="FillAndExpand"    x:Name="SatirEntryTaxRate"  ValueChanged="Entry_TextChanged" Value="{Binding Line.TaxRate, Mode=TwoWay}"  />
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal">
+
+                        <dxe:NumericEdit  MaxDecimalDigitCount="2"  PlaceholderText="İskonto" HorizontalOptions="FillAndExpand" LabelText="İskonto"   ValueChanged="Entry_TextChanged"  x:Name="SatirEntryDiscount" Value="{Binding Line.Discount, Mode=TwoWay}" />
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal">
+
+                        <dxe:NumericEdit MaxDecimalDigitCount="2"  LabelText="Toplam"  HorizontalOptions="FillAndExpand" x:Name="SatirEntryTotal" Value="{Binding Line.Total, Mode=TwoWay}" />
+                    </StackLayout>
+                </StackLayout>
+            </StackLayout>
+
+
+            <ListView    x:Name="ListViewSatirlar" ItemsSource="{Binding Trans.Lines}" >
+                <ListView.ItemTemplate>
+                    
+                    <DataTemplate>
+                        <ViewCell x:DataType="model:TRN_StockTransLines">
+                        <StackLayout>
+                            <SwipeView>
+                                <SwipeView.RightItems>
+                                    <SwipeItems>
+                                        <SwipeItem  IconImageSource="edit.png" Text="Düzenle" BackgroundColor="LightBlue" CommandParameter="{Binding .}"  Invoked="Duzenle_Clicked"></SwipeItem>
+                                        <SwipeItem  IconImageSource="delete.png" Text="Sil" BackgroundColor="LightPink" CommandParameter="{Binding .}"  Invoked="Sil_Clicked"></SwipeItem>
+                                    </SwipeItems>
+                                </SwipeView.RightItems>
+
+                                    <StackLayout Margin="0,4,0,0"   Padding="6" BackgroundColor="{StaticResource Primary}" HeightRequest="80">
+                                    <StackLayout Orientation="Horizontal"  Padding="0">
+                                        <Label Text="{Binding ProductID_.Name}"  TextColor="{StaticResource TextColor2}"></Label>
+                                        <Label Text="{Binding SeriLot}"  TextColor="{StaticResource TextColor2}"></Label>
+                                        <Label Text="{Binding BalyaNo}"  TextColor="{StaticResource TextColor2}"></Label>
+                                        <Label Text="{Binding LotID}"  TextColor="{StaticResource TextColor2}"></Label>
+                                    </StackLayout>
+
+                                    <StackLayout Orientation="Horizontal"  Padding="0">
+                                        <Label Text="{Binding Amount}" TextColor="{StaticResource TextColor2}"></Label>
+                                        <Label Text="{Binding UnitID_.UnitCode}" TextColor="{StaticResource TextColor2}"></Label>
+                                    </StackLayout>
+
+                                </StackLayout>
+                                 
+                            </SwipeView>   
+                        </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

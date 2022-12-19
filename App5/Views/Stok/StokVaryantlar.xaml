@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="GoldenMobileX.Views.StokVaryantlar"
+               xmlns:local="clr-namespace:GoldenMobileX.ViewModels"  
+             xmlns:model="clr-namespace:GoldenMobileX.Models" 
+             Title="Varyantlar">
+
+    <ContentPage.ToolbarItems>
+
+        <ToolbarItem Text="Barkod Oku"  IconImageSource="barcode.png" x:Name="YeniFis" Clicked="BarkodOku_Clicked" />
+
+        <ToolbarItem Text="Kaydet"  IconImageSource="save.png" x:Name="BtnKaydet" Clicked="BtnKaydet_Clicked" />
+
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <StackLayout>
+
+            <StackLayout x:Name="StokVaryantStack"  BindableLayout.ItemsSource="{Binding varyant}"  x:DataType="local:StoklarViewModel">
+                <Label Text="" TextColor="{StaticResource TextColor2}" FontSize="Medium" x:Name="UrunAdiTxt"></Label>
+                <Entry FontSize="Medium" x:Name="EntryBarcode"  HorizontalOptions="FillAndExpand" Placeholder="Barkod" Text="{Binding varyant.Barkod, Mode=TwoWay}" />
+                <StackLayout Orientation="Horizontal">
+                    <Entry FontSize="Medium"  HorizontalOptions="FillAndExpand" Placeholder="Miktar" Text="{Binding varyant.Miktar, Mode=TwoWay}" />
+                    <Entry FontSize="Medium"  HorizontalOptions="FillAndExpand" Placeholder="Fiyat" Text="{Binding varyant.Fiyat, Mode=TwoWay}" />
+                  
+                </StackLayout>
+
+                <Entry FontSize="Medium" x:Name="EntryName" Placeholder="Açıklama" Text="{Binding varyant.Aciklama, Mode=TwoWay}" />
+
+            </StackLayout>
+
+            <ListView  x:Name="ListViewSatirlar" ItemsSource="{Binding varyantlar}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+
+                            <Frame BorderColor="#ccc" Padding="3" Margin="3" VerticalOptions="Fill" x:DataType="model:CRD_ItemBarcodes">
+                                <StackLayout Orientation="Vertical"  Padding="6" BackgroundColor="#336699">
+                                    <Label Text="{Binding Barkod}" TextColor="{StaticResource TextColor2}" FontSize="16"></Label>
+
+                                    <Label Text="{Binding Miktar, StringFormat='Miktar: {0}'}" TextColor="{StaticResource TextColor2}"></Label>
+                                    <Label Text="{Binding Fiyat,StringFormat='Fiyat: {0}'}" TextColor="{StaticResource TextColor2}"></Label>
+                                    <Label Text="{Binding Aciklama}" TextColor="{StaticResource TextColor2}" FontSize="16"></Label>
+                                    <StackLayout.GestureRecognizers>
+
+                                        <TapGestureRecognizer 
+                                NumberOfTapsRequired="1" 
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type local:StoklarViewModel}}}"		
+                                CommandParameter="{Binding .}" Tapped="Satir_Clicked">
+
+                                        </TapGestureRecognizer>
+                                    </StackLayout.GestureRecognizers>
+                                </StackLayout>
+                            </Frame>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

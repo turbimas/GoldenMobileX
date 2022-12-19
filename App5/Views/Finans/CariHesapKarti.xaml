@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                      xmlns:local="clr-namespace:GoldenMobileX.ViewModels"  
+             x:Class="GoldenMobileX.Views.CariHesapKarti"
+                   Shell.PresentationMode="ModalAnimated"
+                           xmlns:dxe="clr-namespace:DevExpress.XamarinForms.Editors;assembly=DevExpress.XamarinForms.Editors"  
+             Title="Cari Hesap">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Kaydet" x:Name="Kaydet" Clicked="BtnKaydet_Clicked" IconImageSource="Save.png"  />
+
+    </ContentPage.ToolbarItems>
+
+
+    <ContentPage.Content>
+
+        <StackLayout x:Name="StackCariEkleDuzenle" VerticalOptions="FillAndExpand" BindableLayout.ItemsSource="{Binding item}" x:DataType="local:FinansViewModel" >
+            <StackLayout Orientation="Horizontal">
+                <dxe:TextEdit x:Name="EntryCode"  PlaceholderText="Cari Kodu" LabelText="Cari Kodu" Text="{Binding item.Code, Mode=TwoWay}" WidthRequest="150" />
+                <dxe:ComboBoxEdit   PlaceholderText="Türü" LabelText="Türü"  x:Name="PickerCariType"   
+                          ValueMember="Code"      DisplayMember="Name"  ItemsSource="{Binding cariTypes}"  SelectedItem="{Binding item.CardType_, Mode=TwoWay}"  WidthRequest="200" />
+            </StackLayout>
+            <dxe:TextEdit x:Name="EntryUnvan"  PlaceholderText="Ünvan" LabelText="Ünvan" Text="{Binding item.Name, Mode=TwoWay}" />
+            <StackLayout Orientation="Horizontal">
+                <dxe:TextEdit  x:Name="EntryTCKNo"  LabelText="TC No" Text="{Binding item.TCKNo, Mode=TwoWay}" WidthRequest="80" />
+                <dxe:TextEdit  x:Name="EntryTaxNumber"  LabelText="Vergi No" Text="{Binding item.TaxNumber, Mode=TwoWay}" WidthRequest="80" />
+                <dxe:TextEdit  x:Name="EntryTaxOffice"  LabelText="Vergi Dairesi" Text="{Binding item.TaxOffice, Mode=TwoWay}"  HorizontalOptions="Fill" />
+            </StackLayout>
+            <dxe:TextEdit  x:Name="EntryAdress"  LabelText="Adres" Text="{Binding item.Adress, Mode=TwoWay}" />
+            <dxe:TextEdit LabelText="Telefon" Text="{Binding item.Phone, Mode=TwoWay}" />
+            <dxe:TextEdit LabelText="Email" Text="{Binding item.Email, Mode=TwoWay}" />
+
+        
+            
+        </StackLayout>
+
+
+    </ContentPage.Content>
+</ContentPage>

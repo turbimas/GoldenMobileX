@@ -1,0 +1,163 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Application xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                    xmlns:dxe="clr-namespace:DevExpress.XamarinForms.Editors;assembly=DevExpress.XamarinForms.Editors"  
+                       xmlns:controls="clr-namespace:GoldenMobileX.Views.Controls;assembly=GoldenMobileX"
+             x:Class="GoldenMobileX.App">
+    <!--
+        Define global resources and styles here, that apply to all pages in your app.
+    -->
+    
+    <Application.Resources>
+        
+        <ResourceDictionary>
+
+            <Color x:Key="Primary">#2196F3</Color>
+            <Color x:Key="TextColor">#ffffff</Color>
+            <Color x:Key="TextColor1">#fdd</Color>
+            <Color x:Key="Kirmizi">#900</Color>
+            <Color x:Key="TextColor2">#ddeeee</Color>
+            <Color x:Key="KoyuYazi">#333</Color>
+            <Color x:Key="AcikArkaPlan">#def</Color>
+            <Color x:Key="DisabledBackground">#abc</Color>
+            <Color x:Key="Placeholder">#999</Color>
+
+ 
+            <Style TargetType="Button">
+                <Setter Property="TextColor" Value="White"></Setter>
+                <Setter Property="VisualStateManager.VisualStateGroups">
+                    <VisualStateGroupList>
+                        <VisualStateGroup x:Name="CommonStates">
+                            <VisualState x:Name="Normal">
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
+                                </VisualState.Setters>
+                            </VisualState>
+                            <VisualState x:Name="Disabled">
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor" Value="{StaticResource Kirmizi}" />
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateGroupList>
+                </Setter>
+            </Style>
+            <Style TargetType="ListView">
+                <Setter Property="RowHeight" Value="100"></Setter>
+
+
+            </Style>
+
+            <Style TargetType="Entry">
+                <Setter Property="TextColor" Value="#333"></Setter>
+                <Setter Property="FontSize" Value="12"></Setter>
+                <Setter Property="VisualStateManager.VisualStateGroups">
+                    <VisualStateGroupList>
+                        <VisualStateGroup x:Name="CommonStates">
+                            <VisualState x:Name="Normal">
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor" Value="{StaticResource AcikArkaPlan}" />
+                                    <Setter Property="PlaceholderColor" Value="{StaticResource Placeholder}" ></Setter>
+                                    
+                                </VisualState.Setters>
+                            </VisualState>
+                            <VisualState x:Name="Disabled">
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor" Value="{StaticResource DisabledBackground}" />
+                                    <Setter Property="PlaceholderColor" Value="{StaticResource Placeholder}"></Setter>
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateGroupList>
+                </Setter>
+            </Style>
+
+            <Style TargetType="dxe:NumericEdit"  x:Key="InputsBaseStyle"  >
+                <Setter Property="TextColor" Value="#333"></Setter>
+                <Setter Property="TextFontSize" Value="12"></Setter>
+                <Setter Property="BoxPadding" Value="11"></Setter>
+                <Setter Property="HorizontalOptions" Value="FillAndExpand"></Setter>
+            </Style>
+
+            <Style TargetType="controls:GoldenEntryCariPicker">
+                <Setter Property="TextColor" Value="#333"></Setter>
+                <Setter Property="TextFontSize" Value="12"></Setter>
+                <Setter Property="BoxPadding" Value="11"></Setter>
+                <Setter Property="HorizontalOptions" Value="FillAndExpand"></Setter>
+            </Style>
+
+            <Style TargetType="controls:GoldenEntryProductPicker">
+                <Setter Property="TextColor" Value="#333"></Setter>
+                <Setter Property="TextFontSize" Value="12"></Setter>
+                <Setter Property="BoxPadding" Value="11"></Setter>
+                <Setter Property="HorizontalOptions" Value="FillAndExpand"></Setter>
+            </Style>
+
+
+
+            <Style TargetType="dxe:TextEdit"  >
+                <Setter Property="TextColor" Value="#333"></Setter>
+                <Setter Property="TextFontSize" Value="12"></Setter>
+                <Setter Property="BoxPadding" Value="11"></Setter>
+            </Style>
+
+            <Style TargetType="dxe:PasswordEdit">
+                <Setter Property="TextColor" Value="#333"></Setter>
+                <Setter Property="TextFontSize" Value="12"></Setter>
+                <Setter Property="BoxPadding" Value="11"></Setter>
+
+            </Style>
+            <Style TargetType="dxe:ComboBoxEdit">
+                <Setter Property="TextColor" Value="#333"></Setter>
+                <Setter Property="TextFontSize" Value="12"></Setter>
+                <Setter Property="BoxPadding" Value="11"></Setter>
+
+            </Style>
+
+            <Style TargetType="dxe:DateEdit">
+                <Setter Property="TextColor" Value="#333"></Setter>
+                <Setter Property="TextFontSize" Value="12"></Setter>
+                <Setter Property="BoxPadding" Value="11"></Setter>
+
+            </Style>
+
+            <Style TargetType="dxe:MultilineEdit">
+                <Setter Property="TextColor" Value="#333"></Setter>
+                <Setter Property="TextFontSize" Value="12"></Setter>
+                <Setter Property="BoxPadding" Value="11"></Setter>
+
+            </Style>
+            <Style TargetType="dxe:AutoCompleteEdit">
+                <Setter Property="TextColor" Value="#333"></Setter>
+                <Setter Property="TextFontSize" Value="12"></Setter>
+                <Setter Property="BoxPadding" Value="11"></Setter>
+
+            </Style>
+            <Style TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource KoyuYazi}"></Setter>
+                <Setter Property="FontSize" Value="13"></Setter>
+            </Style>
+            <Style TargetType="Picker">
+                <Setter Property="TextColor" Value="#333"></Setter>
+                <Setter Property="VisualStateManager.VisualStateGroups">
+                    <VisualStateGroupList>
+                        <VisualStateGroup x:Name="CommonStates">
+                            <VisualState x:Name="Normal">
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor" Value="{StaticResource AcikArkaPlan}" />
+                        
+                                </VisualState.Setters>
+                            </VisualState>
+                            <VisualState x:Name="Disabled">
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor" Value="{StaticResource DisabledBackground}" />
+                             
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateGroupList>
+                </Setter>
+            </Style>
+        </ResourceDictionary>        
+    </Application.Resources>
+</Application>

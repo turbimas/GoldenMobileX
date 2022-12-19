@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="GoldenMobileX.Views.StokFisi"
+                        xmlns:local="clr-namespace:GoldenMobileX.ViewModels"  
+                   xmlns:controls="clr-namespace:GoldenMobileX.Views.Controls;assembly=GoldenMobileX"
+                 xmlns:dxe="clr-namespace:DevExpress.XamarinForms.Editors;assembly=DevExpress.XamarinForms.Editors"  
+             xmlns:model="clr-namespace:GoldenMobileX.Models"
+             Title="Stok Fişi">
+
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Fişi Kaydet"  IconImageSource="Save.png" x:Name="BtnKaydet" Clicked="FisKaydet_Clicked"   />
+ 
+  
+
+    </ContentPage.ToolbarItems>
+
+    <ContentPage.Content>
+        <StackLayout  x:DataType="local:StokFisleriViewModel">
+        <StackLayout x:Name="StackStokFisi" BindableLayout.ItemsSource="{Binding Trans, Mode=TwoWay}">
+
+                <StackLayout Orientation="Horizontal">
+                    <dxe:ComboBoxEdit  LabelText="Fiş Türü" IsFilterEnabled="True" FilterMode="Contains" FilterComparisonType="CurrentCultureIgnoreCase"   HorizontalOptions="FillAndExpand"   ItemsSource="{Binding  types}"  DisplayMember="Name"  ValueMember="Code"  x:Name="FisPickerType" SelectionChanged="PickerType_SelectedIndexChanged"  SelectedItem="{Binding Trans.Type_, Mode=TwoWay}"></dxe:ComboBoxEdit>
+                    <dxe:ComboBoxEdit LabelText="Çıkış Depo"  HorizontalOptions="FillAndExpand"    ItemsSource="{Binding depolar}"  DisplayMember="Name"  ValueMember="ID"   x:Name="FisPickerCikis" SelectionChanged="PickerType_SelectedIndexChanged" SelectedItem="{Binding Trans.StockWareHouseID_, Mode=TwoWay}"></dxe:ComboBoxEdit>
+                    <Image Source="Next.png" />
+                    <dxe:ComboBoxEdit LabelText="Giriş Depo"  HorizontalOptions="FillAndExpand"    ItemsSource="{Binding  depolar}"  DisplayMember="Name" ValueMember="ID"  x:Name="FisPickerGiris"  SelectionChanged="PickerType_SelectedIndexChanged" SelectedItem="{Binding Trans.DestStockWareHouseID_, Mode=TwoWay}" />
+                </StackLayout>
+             
+
+                <controls:GoldenEntryCariPicker x:Name="CariList"   SelectedItem="{Binding Trans.CariID_, Mode=TwoWay}"></controls:GoldenEntryCariPicker>
+            
+
+                <StackLayout Orientation="Horizontal">
+                <dxe:TextEdit   HorizontalOptions="FillAndExpand"   LabelText="Fiş No" x:Name="FisEntryFisNo" Text="{Binding Trans.FicheNo, Mode=TwoWay}" />
+                <dxe:DateEdit LabelText="Fiş Tarihi" DisplayFormat="dd.MM.yyyy"     HorizontalOptions="FillAndExpand" x:Name="FisDatePickerTarih"  Date="{Binding Trans.TransDate, Mode=TwoWay}"   />
+            </StackLayout>
+                <dxe:TextEdit Text="{Binding Trans.Notes, Mode=TwoWay}" LabelText="Notlar" HorizontalOptions="FillAndExpand"></dxe:TextEdit>
+ 
+
+        </StackLayout>
+            <StackLayout>
+                <ListView   x:Name="ListViewSatirlar" ItemsSource="{Binding Trans.Lines}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell  x:DataType="model:TRN_StockTransLines">
+                                <StackLayout>
+                            <SwipeView>
+                                    <SwipeView.RightItems>
+                                        <SwipeItems>
+                                            <SwipeItem  IconImageSource="edit.png" Text="Düzenle" BackgroundColor="LightBlue" CommandParameter="{Binding .}"  Invoked="Duzenle_Clicked"></SwipeItem>
+                                            <SwipeItem  IconImageSource="delete.png" Text="Sil" BackgroundColor="LightPink" CommandParameter="{Binding .}"  Invoked="Sil_Clicked"></SwipeItem>
+
+                                        </SwipeItems>
+                                    </SwipeView.RightItems>
+                                    
+                                    <StackLayout Orientation="Vertical"  Padding="6" Margin="0,4,0,0"  BackgroundColor="{StaticResource Primary}" HeightRequest="80">
+                                        <StackLayout Orientation="Horizontal"  Padding="0">
+                                            <Label Text="{Binding ProductID_.Name}"  TextColor="{StaticResource TextColor2}"></Label>
+                                            <Label Text="{Binding SeriLot}"  TextColor="{StaticResource TextColor2}"></Label>
+                                            <Label Text="{Binding BalyaNo}"  TextColor="{StaticResource TextColor2}"></Label>
+                                            <Label Text="{Binding LotID}"  TextColor="{StaticResource TextColor2}"></Label>
+                                        </StackLayout>
+                                        <StackLayout Orientation="Horizontal"  Padding="0">   
+                                            <Label Text="{Binding Amount}" TextColor="{StaticResource TextColor2}"></Label>
+                                            <Label Text="{Binding UnitID_.UnitCode}" TextColor="{StaticResource TextColor2}"></Label>  
+                                        </StackLayout>
+                             
+                                    </StackLayout>
+                                   
+                                </SwipeView>
+                                </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+   
+                <Button Text="Satır Ekle" x:Name="BtnSatirEkle" 
+                        WidthRequest="140" Clicked="SatirEkle_Clicked" 
+                        Opacity="0.9" HeightRequest="40" 
+                        BorderRadius="20" HorizontalOptions="End"
+                        BackgroundColor="{StaticResource Kirmizi}"  
+                     AbsoluteLayout.LayoutFlags="PositionProportional"
+            AbsoluteLayout.LayoutBounds="1,0"
+                        >
+
+                </Button>
+ 
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="GoldenMobileX.Views.StokKarti"
+                      
+                          xmlns:local="clr-namespace:GoldenMobileX.ViewModels"  
+             xmlns:model="clr-namespace:GoldenMobileX.Models"  
+             Title="Stok Kartı"
+             >
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Varyantlar"  IconImageSource="icon_feed.png" x:Name="BtnVaryantlar" Clicked="BtnVaryantlar_Clicked"  Order="Secondary" />
+        <ToolbarItem Text="Resimler"  IconImageSource="Redpin.png"  x:Name="BtnResimler" Clicked="BtnResimler_Clicked" Order="Secondary" />
+        <ToolbarItem Text="Yeni Barkod Ver"  IconImageSource="Redpin.png"  x:Name="BtnYeniBarkod" Clicked="BtnYeniBarkod_Clicked"  Order="Secondary" />
+        <ToolbarItem Text="Barkod Oku"  IconImageSource="barcode.png" x:Name="YeniFis" Clicked="BarkodOku_Clicked" />
+        <ToolbarItem Text="Kaydet"  IconImageSource="save.png" x:Name="BtnKaydet" Clicked="BtnKaydet_Clicked" />
+        <ToolbarItem Text="Stoğu pasif yap"  IconImageSource="Redpin.png"  x:Name="PasifYap" Clicked="PasifYap_Clicked"  Order="Secondary" />
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <StackLayout x:Name="StokKartiStack"  BindableLayout.ItemsSource="{Binding item}"  x:DataType="local:StoklarViewModel">
+            <StackLayout Orientation="Horizontal">
+                <Entry FontSize="Medium" x:Name="EntryID" IsVisible="false" Placeholder="ID" Text="{Binding item.ID, Mode=TwoWay}" />
+                <Entry FontSize="Medium" x:Name="EntryCode"  Placeholder="Ürün Kodu" Text="{Binding item.Code, Mode=TwoWay}" HorizontalOptions="FillAndExpand" />
+                <Entry FontSize="Medium" x:Name="EntryBarcode"  HorizontalOptions="FillAndExpand" Placeholder="Barkod" Text="{Binding item.Barcode, Mode=TwoWay}"  ></Entry>
+                
+            </StackLayout>
+
+            <Entry FontSize="Medium" x:Name="EntryName" Placeholder="Ürün Adı" Text="{Binding item.Name, Mode=TwoWay}" />
+            <StackLayout Orientation="Horizontal" >
+                <Picker Title="Türü"  x:Name="PickerStockType" HorizontalOptions="FillAndExpand" 
+                                    ItemDisplayBinding="{Binding Name}" ItemsSource="{Binding stockTypes}" SelectedItem="{Binding item.Type_, Mode=TwoWay}" />
+
+
+
+                <Picker Title="Birimi"  x:Name="PickerUnitID"    HorizontalOptions="FillAndExpand" 
+                                    ItemDisplayBinding="{Binding  UnitCode}" ItemsSource="{Binding units}" SelectedItem="{Binding item.UnitID_, Mode=TwoWay}" />
+
+            </StackLayout>
+            <StackLayout Orientation="Horizontal">
+                <Entry FontSize="Medium" x:Name="EntryAlisFiyati" HorizontalOptions="FillAndExpand"  Placeholder="Alış Fiyatı" Text="{Binding item.AlisFiyati, Mode=TwoWay}" />
+                <Entry FontSize="Medium" x:Name="EntryUnitPrice" HorizontalOptions="FillAndExpand"  Placeholder="Satış Fiyatı" Text="{Binding item.UnitPrice, Mode=TwoWay}" />
+                <Picker Title="KDV"  x:Name="PickerTaxRate"   
+                                     ItemsSource="{Binding kdv}" HorizontalOptions="FillAndExpand"  SelectedItem="{Binding item.TaxRate, Mode=TwoWay}">
+
+                </Picker>
+            </StackLayout>
+ 
+
+
+        </StackLayout>
+  </ContentPage.Content>
+</ContentPage>

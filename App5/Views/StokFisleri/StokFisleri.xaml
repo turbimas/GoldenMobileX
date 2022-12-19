@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:GoldenMobileX.ViewModels"  
+             xmlns:model="clr-namespace:GoldenMobileX.Models" 
+             x:Class="GoldenMobileX.Views.StokFisleri"
+             Title="Stok Fişleri">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Filtrele" x:Name="Filtrele" Clicked="Refresh_Clicked" IconImageSource="Refresh.png"  />
+        <ToolbarItem Text="Yeni Ekle"  IconImageSource="Add.png" x:Name="YeniFis" Clicked="YeniFis_Clicked"  />
+        <ToolbarItem Text="Sunucudaki Fişleri Göster"    x:Name="SunucuFisleri" Clicked="SunucuFisleri_Clicked"  />
+    </ContentPage.ToolbarItems>
+
+    <ListView ItemsSource="{Binding TransList}"  x:DataType="local:StokFisleriViewModel"  x:Name="listview1" HasUnevenRows="True">
+        <ListView.ItemTemplate>
+            <DataTemplate>
+                <ViewCell>
+                    <StackLayout   x:DataType="model:TRN_StockTrans" >
+                    <SwipeView>
+                            <SwipeView.LeftItems>
+                                <SwipeItems>
+   
+                                    <SwipeItem  IconImageSource="delete.png" Text="Sil" BackgroundColor="LightPink" CommandParameter="{Binding .}"  Invoked="Sil_Clicked"></SwipeItem>
+                                    <SwipeItem  IconImageSource="incele.png" Text="Görüntüle" BackgroundColor="LightBlue" CommandParameter="{Binding .}"  Invoked="Goruntule_Clicked"></SwipeItem>
+                                </SwipeItems>
+                            </SwipeView.LeftItems>
+                            <SwipeView.RightItems>
+                            <SwipeItems>
+                                    <SwipeItem  IconImageSource="edit.png" Text="Düzenle" BackgroundColor="LightBlue" CommandParameter="{Binding .}"  Invoked="Duzenle_Clicked"></SwipeItem>
+                                    <SwipeItem  IconImageSource="server.png" Text="Sunucuya Gönder" BackgroundColor="LightYellow" CommandParameter="{Binding .}"  Invoked="SunucuyaGonder_Invoked"></SwipeItem>
+                                    <SwipeItem  IconImageSource="onay.png" Text="Onayla" BackgroundColor="LightGreen" CommandParameter="{Binding .}"  Invoked="Onayla_Clicked"></SwipeItem>
+                                </SwipeItems>
+                        </SwipeView.RightItems>
+                        <StackLayout BackgroundColor="{Binding Status_.rowColor}" Padding="3,0,0,0">
+
+
+
+                            <StackLayout Orientation="Horizontal"  Padding="3" Margin="3,0,0,0">
+
+                                <StackLayout Orientation="Vertical" HorizontalOptions="StartAndExpand">
+                                    <Label Text="{Binding TransDate, StringFormat='{0:dd.MM.yyyy}'}" ></Label>
+                                    <StackLayout Orientation="Horizontal">
+                                        <Label Text="{Binding StockWareHouseID_.Name}" ></Label>
+                                        <Label Text="=>" ></Label>
+                                        <Label Text="{Binding DestStockWareHouseID_.Name}" ></Label>
+
+                                    </StackLayout>
+                                </StackLayout>
+
+                                <StackLayout Orientation="Vertical"  Padding="0" HorizontalOptions="End" WidthRequest="150" FlowDirection="LeftToRight">
+
+                                    <Label Text="{Binding Type_.Name}" ></Label>
+                                    <Label Text="{Binding Status_.Name}" ></Label>
+
+
+                                    <Label Text="{Binding Notes}"></Label>
+                                </StackLayout>
+
+                            </StackLayout>
+                        </StackLayout>
+                    </SwipeView>
+                    <BoxView HeightRequest="1" VerticalOptions="EndAndExpand" BackgroundColor="Gray"></BoxView>
+                    </StackLayout>
+                </ViewCell>
+
+            </DataTemplate>
+        </ListView.ItemTemplate>
+    </ListView>
+
+
+</ContentPage>

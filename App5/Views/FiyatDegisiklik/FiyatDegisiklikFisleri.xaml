@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:GoldenMobileX.ViewModels"  
+             xmlns:model="clr-namespace:GoldenMobileX.Models" 
+             x:Class="GoldenMobileX.Views.FiyatDegisiklikFisleri"
+             Title="Fiyat Değişiklik Fişleri">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Filtrele"  Clicked="Filtrele_Clicked" IconImageSource="Refresh.png"  />
+        <ToolbarItem Text="Fiyat Değişiklik Fişi"  IconImageSource="Add.png"   Clicked="YeniFis_Clicked" Order="Secondary"  />
+        <ToolbarItem Text="Etiket Basım Emri"  IconImageSource="Add.png"   Clicked="EtiketBasimEmri_Clicked" Order="Secondary"  />
+    </ContentPage.ToolbarItems>
+
+    <ContentPage.Content>
+        <StackLayout x:DataType="local:StokFisleriViewModel">
+            <StackLayout x:Name="StackFisler" VerticalOptions="FillAndExpand">
+                <ListView ItemsSource="{Binding EtiketBasim_List}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate  x:DataType="model:TRN_EtiketBasim">
+                            <ViewCell>
+                                <StackLayout  Margin="0,2,0,0" >
+                                <SwipeView>
+                                    <SwipeView.LeftItems>
+                                        <SwipeItems>
+
+                                            <SwipeItem    IconImageSource="delete.png" Text="Sil" BackgroundColor="LightPink" CommandParameter="{Binding .}"  Invoked="Sil_Clicked"></SwipeItem>
+                                  
+                                        </SwipeItems>
+                                    </SwipeView.LeftItems>
+                                    <SwipeView.RightItems>
+                                        <SwipeItems>
+                                            <SwipeItem  IconImageSource="edit.png" Text="Düzenle" BackgroundColor="LightBlue" CommandParameter="{Binding .}"  Invoked="Duzenle_Clicked"></SwipeItem>
+                                            <SwipeItem  IconImageSource="server.png" Text="Sunucuya Gönder" BackgroundColor="LightYellow" CommandParameter="{Binding .}"  Invoked="SunucuyaGonder_Invoked"></SwipeItem>
+       
+                                        </SwipeItems>
+                                    </SwipeView.RightItems>
+                                        <StackLayout Orientation="Horizontal"   Padding="6" HeightRequest="80" BackgroundColor="{StaticResource Primary}">
+
+                                            <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand">
+                                                <Label Text="{Binding Tarih, StringFormat='{0:dd.MM.yyyy}'}"  FontSize="16" TextColor="{StaticResource TextColor}"></Label>
+                                                <Label Text="{Binding DegisiklikSebebi}" TextColor="{StaticResource TextColor2}"></Label>
+                                        </StackLayout>
+                                        <StackLayout Orientation="Vertical"  HorizontalOptions="End" WidthRequest="150">
+                                            <Switch IsToggled="{Binding Uygulandi}" IsEnabled="false" />
+
+                                            <Label Text="{Binding FisNo}" HorizontalOptions="End" ></Label>
+                                        </StackLayout>
+                                        </StackLayout>
+                                    </SwipeView>    
+                                </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackLayout>
+
+
+
+        </StackLayout> 
+   
+    </ContentPage.Content>
+  
+</ContentPage>

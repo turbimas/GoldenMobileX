@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="GoldenMobileX.Views.Firms"
+             x:Name="FirmsPage"
+             Title="Firmalar"
+             xmlns:local="clr-namespace:GoldenMobileX.ViewModels"  
+             xmlns:model="clr-namespace:GoldenMobileX.Models" >
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Firma Ekle"  IconImageSource="Add.png"  x:Name="AddFirm" Clicked="AddFirm_Clicked" Order="Secondary" />
+        <ToolbarItem Text="Programı Güncelle"  IconImageSource="No.png" Clicked="Guncelle_Clicked"  Order="Secondary" />
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <StackLayout  x:DataType="local:FirmsViewModel">
+
+            <ListView x:Name="ListViewFirms" ItemsSource="{Binding items}"   >
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="model:X_Firms">
+                        <ViewCell>
+                            <ViewCell.ContextActions>
+                                <MenuItem Text="Sil"  CommandParameter="{Binding .}" x:Name="Sil" Clicked="Sil_Clicked">
+                                </MenuItem>
+                 
+                            </ViewCell.ContextActions>
+                            <Frame   BorderColor="#ccc" Padding="4" Margin="3" >
+                            <StackLayout BackgroundColor="{StaticResource Primary}" Padding="8">
+                                <Label Text="{Binding Name,  Mode=TwoWay}" TextColor="{StaticResource TextColor}" FontSize="Title"></Label>
+                                    <Label Text="{Binding Server,  Mode=TwoWay}" TextColor="{StaticResource TextColor2}" FontSize="Body"></Label>
+                                    <StackLayout.GestureRecognizers>
+                                        <TapGestureRecognizer 
+                                NumberOfTapsRequired="1" 
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type local:FirmsViewModel}}}"		
+                                CommandParameter="{Binding .}" Tapped="Firms_Tapped">
+
+                                        </TapGestureRecognizer>
+                                    </StackLayout.GestureRecognizers>
+                                </StackLayout>
+                            </Frame>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <StackLayout>
+                <Label Text="V1.9"></Label></StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+
+</ContentPage>

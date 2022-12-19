@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "GoldenMobileX": {
+      "commandName": "Project",
+      "remoteDebugEnabled": false
+    }
+  }
+}

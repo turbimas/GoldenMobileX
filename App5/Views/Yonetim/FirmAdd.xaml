@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="GoldenMobileX.Views.FirmAdd"
+             Title="Firma Ekle"
+                                xmlns:local="clr-namespace:GoldenMobileX.ViewModels"  
+             xmlns:model="clr-namespace:GoldenMobileX.Models" >
+    <ContentPage.Content>
+        <StackLayout  x:Name="StackAddNew">
+            <StackLayout Orientation="Horizontal">
+                <Switch IsToggled="false" x:Name="IsApi" Toggled="IsApi_Toggled" />
+                <Label Text="Api Sunucusu" />
+            </StackLayout>
+            <StackLayout>
+               
+                <Entry   FontSize="Medium"   HorizontalOptions="FillAndExpand" x:Name="EntryName"   Placeholder="Firma Adı"  />
+            </StackLayout>
+            <StackLayout Orientation="Horizontal">
+                <Entry   FontSize="Medium"   HorizontalOptions="FillAndExpand" x:Name="EntrySunucu"  Placeholder="Sunucu" />
+                <Entry   FontSize="Medium"   HorizontalOptions="FillAndExpand" x:Name="EntryVeriTabani"  Placeholder="Veritabanı"  />
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal" x:Name="UserInfo">
+
+                <Entry   FontSize="Medium"   HorizontalOptions="FillAndExpand" x:Name="EntryKullanici"  Placeholder="Kullanıcı Adı"  />
+                <Entry   FontSize="Medium"   HorizontalOptions="FillAndExpand" x:Name="EntrySifre"  Placeholder="Şifre"   />
+            </StackLayout>
+            <StackLayout Orientation="Horizontal">
+                <Button Text="Bağlantıyı Kaydet" x:Name="ButtonKaydet" Clicked="ButtonKaydet_Clicked"  HorizontalOptions="FillAndExpand" />
+          
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

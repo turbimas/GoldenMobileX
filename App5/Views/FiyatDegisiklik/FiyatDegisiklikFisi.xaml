@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="GoldenMobileX.Views.FiyatDegisiklikFisi"
+                        xmlns:local="clr-namespace:GoldenMobileX.ViewModels"  
+             xmlns:model="clr-namespace:GoldenMobileX.Models"
+             Title="Fiyat Değişiklik Fişi">
+
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Fişi Kaydet"  IconImageSource="Save.png" x:Name="BtnKaydet" Clicked="FisKaydet_Clicked"  />
+        <ToolbarItem Text="Satır Ekle"  IconImageSource="Barcode.png" x:Name="BtnSatirEkle" Clicked="SatirEkle_Clicked"  />
+  
+
+    </ContentPage.ToolbarItems>
+
+    <ContentPage.Content>
+        <StackLayout  x:DataType="local:StokFisleriViewModel">
+        <StackLayout x:Name="StackStokFisi" BindableLayout.ItemsSource="{Binding EtiketBasim, Mode=TwoWay}">
+
+            <StackLayout Orientation="Horizontal">
+                <Entry  FontSize="Medium"   HorizontalOptions="FillAndExpand"   Placeholder="Fiş No" x:Name="FisEntryFisNo" Text="{Binding EtiketBasim.FisNo, Mode=TwoWay}" />
+                <DatePicker  Format="dd.MM.yyyy"  FontSize="Medium"   HorizontalOptions="FillAndExpand" x:Name="FisDatePickerTarih"  Date="{Binding EtiketBasim.Tarih, Mode=TwoWay}"   />
+            </StackLayout>
+
+            <Entry FontSize="Medium"   HorizontalOptions="FillAndExpand" Placeholder="Değişiklik Sebebi" x:Name="FisEntryNotlar" Text="{Binding EtiketBasim.DegisiklikSebebi, Mode=TwoWay}"   />
+
+   
+        </StackLayout>
+ 
+                <ListView   x:Name="ListViewSatirlar" ItemsSource="{Binding EtiketBasim.TRN_EtiketBasimEmirleri}">
+                    <ListView.ItemTemplate>
+                    <DataTemplate  x:DataType="model:TRN_EtiketBasimEmirleri">
+                            <ViewCell>
+
+                  
+                                    <StackLayout Orientation="Vertical"  Padding="3,0,0,0" BackgroundColor="#336699">
+                                        <Label Text="{Binding ProductID_.Name}" TextColor="{StaticResource TextColor2}" FontSize="16"></Label>
+                                        <StackLayout Orientation="Horizontal"  Padding="0">
+                                        <Label Text="{Binding EskiFiyat, StringFormat='Eski Fiyat: {0:n2}'}}" TextColor="{StaticResource TextColor2}"></Label>
+                                        <Label Text="{Binding EtiketSayisi, StringFormat='Etiket Sayısı: {0}'}" TextColor="{StaticResource TextColor2}"></Label>
+                                        <Label Text="{Binding Fiyat, StringFormat='Fiyat 1: {0:n2}'}}" TextColor="{StaticResource TextColor2}"></Label>
+                                        <Label Text="{Binding Fiyat2, StringFormat='Fiyat 2: {0:n2}'}}" TextColor="{StaticResource TextColor2}"></Label>
+
+                                        <Label Text="{Binding Fiyat3, StringFormat='Fiyat 3: {0:n2}'}}" TextColor="{StaticResource TextColor2}"></Label>
+                                    </StackLayout>
+                                        <StackLayout.GestureRecognizers>
+
+                                            <TapGestureRecognizer 
+                                NumberOfTapsRequired="1" 
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type local:StokFisleriViewModel}}}"		
+                                CommandParameter="{Binding .}" Tapped="Satir_Clicked">
+
+                                            </TapGestureRecognizer>
+                                        </StackLayout.GestureRecognizers>
+                                    </StackLayout>
+                                
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+ 
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

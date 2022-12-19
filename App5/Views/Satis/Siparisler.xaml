@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:GoldenMobileX.ViewModels"  
+             xmlns:model="clr-namespace:GoldenMobileX.Models" 
+             x:Class="GoldenMobileX.Views.Siparisler"
+             Title="Satış Siparişleri">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Filtrele" x:Name="Filtrele" Clicked="Filtrele_Clicked" IconImageSource="Refresh.png"  />
+        <ToolbarItem Text="Yeni Ekle"  IconImageSource="Add.png" x:Name="YeniFis" Clicked="YeniFis_Clicked"  />
+
+    </ContentPage.ToolbarItems>
+
+    <ContentPage.Content>
+        <StackLayout x:DataType="local:OrdersViewModel">
+            <StackLayout x:Name="StackFisler" VerticalOptions="FillAndExpand">
+                <ListView  ItemsSource="{Binding OrderList}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate  x:DataType="model:TRN_Orders">
+                            <ViewCell>
+                                <StackLayout Margin="0,2,0,0">
+                                    <SwipeView>
+                                    <SwipeView.LeftItems>
+                                        <SwipeItems>
+
+                                            <SwipeItem  IconImageSource="delete.png" Text="Sil" BackgroundColor="LightPink" CommandParameter="{Binding .}"  Invoked="Sil_Clicked"></SwipeItem>
+                                            <SwipeItem  IconImageSource="incele.png" Text="Görüntüle" BackgroundColor="LightBlue" CommandParameter="{Binding .}"  Invoked="Goruntule_Clicked"></SwipeItem>
+                                        </SwipeItems>
+                                    </SwipeView.LeftItems>
+                                    <SwipeView.RightItems>
+                                        <SwipeItems>
+                                            <SwipeItem  IconImageSource="edit.png" Text="Düzenle" BackgroundColor="LightBlue" CommandParameter="{Binding .}"  Invoked="Duzenle_Clicked"></SwipeItem>
+                                            <SwipeItem  IconImageSource="server.png" Text="Sunucuya Gönder" BackgroundColor="LightYellow" CommandParameter="{Binding .}"  Invoked="SunucuyaGonder_Invoked"></SwipeItem>
+                                            <SwipeItem  IconImageSource="onay.png" Text="Onayla" BackgroundColor="LightGreen" CommandParameter="{Binding .}"  Invoked="Onayla_Clicked"></SwipeItem>
+                                        </SwipeItems>
+                                    </SwipeView.RightItems>
+
+                              
+                                    <StackLayout Orientation="Horizontal" BackgroundColor="{Binding Status_.rowColor}" Padding="8">
+                                        <StackLayout Orientation="Vertical"  HorizontalOptions="StartAndExpand">
+                              
+                                        <Label Text="{Binding  CariID_.Name}" TextColor="{StaticResource Primary}" ></Label>
+                                     
+
+                                        <Label Text="{Binding  OrderNotes}" ></Label>
+                                    </StackLayout>
+                                        <StackLayout HorizontalOptions="End" Orientation="Vertical" WidthRequest="150">
+                                            <Label Text="{Binding OrderDate, StringFormat='{0:dd.MM.yyyy}'}"  FontSize="14" HorizontalOptions="End"></Label>
+                                            <Label Text="{Binding Status_.Name}"  HorizontalOptions="End"></Label>
+                                            <StackLayout Orientation="Horizontal"  HorizontalOptions="End">
+                                                <Label Text="{Binding  Total, StringFormat='{0:n2}'}"  TextColor="{StaticResource Primary}" ></Label>
+                                                <Label Text="{Binding  CurrencyID_.CurrencyCode}"  TextColor="{StaticResource Primary}"></Label>
+                                            </StackLayout>
+                                        </StackLayout>
+                                    </StackLayout>
+                                  
+                                </SwipeView>  
+                                </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackLayout>
+
+
+
+        </StackLayout> 
+   
+    </ContentPage.Content>
+  
+</ContentPage>

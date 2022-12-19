@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="GoldenMobileX.Views.LoginPage"
+             Shell.NavBarIsVisible="True"
+             Title="Giriş" Visual="Material"
+                          xmlns:dxe="clr-namespace:DevExpress.XamarinForms.Editors;assembly=DevExpress.XamarinForms.Editors"  
+             >
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Kullanıcı Ayarlarını Temizle"  IconImageSource="No.png" Clicked="ToolbarItem_Clicked" Order="Secondary" />
+        <ToolbarItem Text="Programı Güncelle"  IconImageSource="No.png" Clicked="Guncelle_Clicked"  Order="Secondary" />
+    </ContentPage.ToolbarItems>
+
+    <ContentPage.Content> 
+        <StackLayout Padding="6,0,10,0" VerticalOptions="Start">
+
+    
+            
+            <StackLayout Orientation="Horizontal">
+                <Switch IsToggled="false" x:Name="SwitchBeniHatirla" />
+                <Label Text="Beni Hatırla"></Label>
+            </StackLayout>
+            <dxe:TextEdit Text="{Binding  UserName, Mode=TwoWay}"   LabelText="Kullanıcı Adı" x:Name="EntryUserName"   />
+
+            <dxe:PasswordEdit Text="{Binding UserPassword, Mode=TwoWay}"   LabelText="Şifre"   x:Name="EntryPassword"  />
+            
+            <Button VerticalOptions="Center" Text="Giriş" Command="{Binding LoginCommand}" Clicked="Button_Clicked"/>
+
+                  <ActivityIndicator Color="Orange" x:Name="loginActivity"  IsRunning="False" />
+ 
+        </StackLayout>
+
+
+
+
+
+
+    </ContentPage.Content>
+    
+    
+    
+    
+    
+    
+</ContentPage>

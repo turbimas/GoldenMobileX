@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="GoldenMobileX.Views.Siparis"
+                        xmlns:local="clr-namespace:GoldenMobileX.ViewModels"  
+             xmlns:model="clr-namespace:GoldenMobileX.Models"
+                                xmlns:dxe="clr-namespace:DevExpress.XamarinForms.Editors;assembly=DevExpress.XamarinForms.Editors"  
+                       xmlns:controls="clr-namespace:GoldenMobileX.Views.Controls;assembly=GoldenMobileX"
+             Title="Sipariş">
+
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Fişi Kaydet"  IconImageSource="Save.png" x:Name="BtnKaydet" Clicked="FisKaydet_Clicked"  />
+        <ToolbarItem Text="Satır Ekle"  IconImageSource="Barcode.png" x:Name="BtnSatirEkle" Clicked="SatirEkle_Clicked"  />
+  
+
+    </ContentPage.ToolbarItems>
+
+    <ContentPage.Content>
+        <StackLayout  x:DataType="local:OrdersViewModel">
+        <StackLayout  BindableLayout.ItemsSource="{Binding Order, Mode=TwoWay}" x:Name="SiparisStack">
+                <controls:GoldenEntryCariPicker x:Name="CariList"   SelectedItem="{Binding Order.CariID_, Mode=TwoWay}"></controls:GoldenEntryCariPicker>
+ 
+                <StackLayout Orientation="Horizontal">
+                <dxe:TextEdit     HorizontalOptions="FillAndExpand"   LabelText="Fiş No" x:Name="FisEntryFisNo" Text="{Binding Order.FicheNo, Mode=TwoWay}" />
+                <dxe:DateEdit  DisplayFormat="dd.MM.yyyy"     HorizontalOptions="FillAndExpand"   Date="{Binding Order.OrderDate, Mode=TwoWay}"  />
+                    <dxe:ComboBoxEdit LabelText="Döviz" ItemsSource="{Binding x_Currencies}"  DisplayMember="CurrencyCode"  ValueMember="CurrencyNumber" SelectedItem="{Binding Order.CurrencyID_, Mode=TwoWay}" SelectionChanged="FisPicker_SelectedIndexChanged"></dxe:ComboBoxEdit>
+                </StackLayout>
+            <dxe:TextEdit   HorizontalOptions="FillAndExpand" LabelText="Notlar"  Text="{Binding Order.OrderNotes, Mode=TwoWay}"   />
+        </StackLayout>
+ 
+                <ListView   x:Name="ListViewSatirlar" ItemsSource="{Binding Order.Lines}">
+                    <ListView.ItemTemplate>
+                    <DataTemplate  x:DataType="model:TRN_OrderLines">
+                            <ViewCell>
+       
+                          
+                                    <StackLayout Orientation="Vertical"  Padding="3,0,0,0" BackgroundColor="#336699">
+                                        <Label Text="{Binding ProductID_.Name}" TextColor="{StaticResource TextColor2}" FontSize="16"></Label>
+                                        <StackLayout Orientation="Horizontal"  Padding="0">   
+                                            <Label Text="{Binding Amount}" TextColor="{StaticResource TextColor2}"></Label>
+                                            <Label Text="{Binding UnitID_.UnitCode}" TextColor="{StaticResource TextColor2}"></Label>  
+                                        </StackLayout>
+                                        <StackLayout.GestureRecognizers>
+
+                                            <TapGestureRecognizer 
+                                NumberOfTapsRequired="1" 
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type local:StokFisleriViewModel}}}"		
+                                CommandParameter="{Binding .}" Tapped="Satir_Clicked">
+
+                                            </TapGestureRecognizer>
+                                        </StackLayout.GestureRecognizers>
+                                    </StackLayout>
+                            
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+ 
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:model="clr-namespace:GoldenMobileX.Models" 
+             x:Class="GoldenMobileX.Views.CariHesapHareketleri"
+             xmlns:local="clr-namespace:GoldenMobileX.ViewModels"  
+              Title="Hesap Hareketleri">
+    <ContentPage.Content>
+        <StackLayout x:Name="StackHareketler" VerticalOptions="FillAndExpand" x:DataType="local:FinansViewModel" >
+
+            <ListView  ItemsSource="{Binding hareketler}"  x:Name="ListViewCariHareketler">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+  
+                            <Frame BorderColor="#ccc" BackgroundColor="{StaticResource Primary}" Padding="0" Margin="3" VerticalOptions="Fill">
+                                <StackLayout Orientation="Horizontal"  Padding="4"  x:DataType="model:V_CariHareketler">
+                                    <StackLayout Orientation="Vertical"  Padding="4" HorizontalOptions="Start"  BackgroundColor="{Binding ModulColor}" WidthRequest="10">
+                                        <Label Text="{Binding Modul}" LineBreakMode="NoWrap" TextColor="{StaticResource TextColor}" Rotation="90"   FontSize="10" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"></Label>
+
+                                    </StackLayout>
+                                    <StackLayout HorizontalOptions="FillAndExpand">
+                                       
+                                        <Label Text="{Binding Notes}" TextColor="{StaticResource TextColor2}"></Label>
+                                        <Label Text="{Binding Date, StringFormat='{0:dd.MM.yyyy}'}" TextColor="{StaticResource TextColor2}"></Label>
+                                    <StackLayout Orientation="Horizontal"  Padding="0" HorizontalOptions="EndAndExpand" MinimumWidthRequest="150">
+                                            <Label Text="{Binding DovizTutari}" TextColor="{StaticResource TextColor1}" HorizontalTextAlignment="End"></Label>
+                                            <Label Text="{Binding CurrencyID_.CurrencyCode}" TextColor="{StaticResource TextColor1}" HorizontalTextAlignment="End"></Label>
+                                    </StackLayout>
+                                    </StackLayout>
+                                </StackLayout>
+                            </Frame>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+        </StackLayout>
+
+    </ContentPage.Content>
+</ContentPage>

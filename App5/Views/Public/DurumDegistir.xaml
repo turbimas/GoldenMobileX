@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="GoldenMobileX.Views.DurumDegistir"
+                                       xmlns:local="clr-namespace:GoldenMobileX.ViewModels"  
+             xmlns:model="clr-namespace:GoldenMobileX.Models"  >
+    <ContentPage.Content>
+        <StackLayout x:Name="StackDurumlar">
+            <ListView x:Name="ListViewStatus">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="model:X_Types">
+                        <ViewCell>
+
+                            <Frame BorderColor="#ccc" Padding="3" Margin="3" VerticalOptions="Fill">
+                                <StackLayout Orientation="Vertical"  Padding="0" BackgroundColor="{Binding rowColor}">
+                                    <Label Text="{Binding Name}" TextColor="White" FontSize="16"></Label>
+
+
+                                    <StackLayout.GestureRecognizers>
+
+                                        <TapGestureRecognizer 
+                                NumberOfTapsRequired="1" 
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type local:StoklarViewModel}}}"		
+                                CommandParameter="{Binding .}" x:Name="DurumStack" Tapped="DurumStack_Tapped">
+
+                                        </TapGestureRecognizer>
+                                    </StackLayout.GestureRecognizers>
+                                </StackLayout>
+                            </Frame>
+                        </ViewCell>
+
+
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

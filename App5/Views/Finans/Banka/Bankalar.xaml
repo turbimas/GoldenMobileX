@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="GoldenMobileX.Views.Bankalar"
+                          xmlns:local="clr-namespace:GoldenMobileX.ViewModels"  
+             xmlns:model="clr-namespace:GoldenMobileX.Models" >
+    <ContentPage.Content  x:DataType="local:FinansViewModel">
+ 
+ 
+                <ListView  x:Name="ListViewHareketler"  >
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="model:CRD_Bankalar">
+                            <ViewCell>
+
+                                <StackLayout Padding="0,2,0,0">
+                                
+
+                                 
+                                    <StackLayout Orientation="Horizontal" VerticalOptions="FillAndExpand"  BackgroundColor="{StaticResource Primary}">
+                                        <StackLayout Orientation="Vertical" HorizontalOptions="StartAndExpand">
+                                            <Label Text="{Binding BankaKodu}" TextColor="{StaticResource TextColor}" ></Label>
+                                        <Label Text="{Binding BankaAdi}" TextColor="{StaticResource TextColor}"  ></Label>
+                                        </StackLayout>
+                                        <StackLayout Orientation="Vertical"  Padding="0" HorizontalOptions="End" WidthRequest="150" FlowDirection="LeftToRight">
+                                            <StackLayout Orientation="Horizontal">
+                                            <Label Text="{Binding  Bakiye.Value, StringFormat='{0:n2} TL'}"  TextColor="{StaticResource TextColor2}"  ></Label>
+                                            </StackLayout>
+                                        </StackLayout>
+                                        <StackLayout.GestureRecognizers>
+                                            <TapGestureRecognizer 
+                                NumberOfTapsRequired="1" 
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type local:FinansViewModel}}}"		
+                                CommandParameter="{Binding .}" Tapped="Bankalar_Tapped">
+                                            </TapGestureRecognizer>
+                                        </StackLayout.GestureRecognizers>
+                                   
+                                </StackLayout>
+                                       
+                             
+                           
+                        </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+ 
+    </ContentPage.Content>
+</ContentPage>

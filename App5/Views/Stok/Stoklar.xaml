@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="GoldenMobileX.Views.Stoklar"
+             Title="Stoklar"
+             xmlns:local="clr-namespace:GoldenMobileX.ViewModels"  
+             xmlns:model="clr-namespace:GoldenMobileX.Models"  
+             x:Name="BrowseItemsPage" 
+            >
+    <ContentPage.BindingContext>
+        <local:StoklarViewModel />
+    </ContentPage.BindingContext>
+ 
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Yenile" x:Name="Yenile" Clicked="Yenile_Clicked"    IconImageSource="Refresh.png" Order="Secondary" />
+        <ToolbarItem Text="Hareketler" x:Name="Hareketler" Clicked="Hareketler_Clicked"    Order="Secondary" />
+        <ToolbarItem Text="Ekle" x:Name="YeniEkle"   Clicked="YeniEkle_Clicked" IconImageSource="Add.png"   />
+    </ContentPage.ToolbarItems>
+    
+   
+        <StackLayout x:Name="StoklarList" Orientation="Vertical"  x:DataType="local:StoklarViewModel">
+        <SearchBar Placeholder="Ara..." TextChanged="ButtonAra_Clicked"  x:Name="EntryAra" />
+ 
+            <ListView  ItemsSource="{Binding items}" x:Name="ItemsListview"   Scrolled="ItemsListview_Scrolled">
+ 
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="model:V_AllItems">
+                        <ViewCell>
+                            <ViewCell.ContextActions>
+                                <MenuItem Text="Düzenle"  CommandParameter="{Binding .}" x:Name="Duzenle" Clicked="Duzenle_Clicked">
+                                </MenuItem>
+                       
+                            </ViewCell.ContextActions>
+                            <Frame BorderColor="#ccc" BackgroundColor="{StaticResource Primary}" Padding="3" Margin="3" VerticalOptions="Fill">
+                            <StackLayout Orientation="Horizontal">
+                                <StackLayout Orientation="Vertical"  Padding="10" HorizontalOptions="FillAndExpand">
+
+                                    <Label Text="{Binding Barcode, StringFormat='Barkod: {0}'}" TextColor="{StaticResource TextColor2}"></Label>
+                                    <Label Text="{Binding Name}"   TextColor="{StaticResource TextColor}"></Label>
+             
+                                </StackLayout>
+                                <StackLayout Orientation="Vertical" >
+
+                                    <StackLayout Orientation="Horizontal" WidthRequest="150" HorizontalOptions="End">
+                                        <Label Text="{Binding StokAdeti, StringFormat='Stokta: {0}'}" TextColor="{StaticResource TextColor2}"></Label>
+                                        <Label Text="{Binding UnitID_.UnitCode}"  TextColor="{StaticResource TextColor2}"></Label>
+                                    </StackLayout>
+                                    <StackLayout Orientation="Horizontal">
+                                        <Label Text="{Binding UnitPrice, StringFormat='Fiyat: {0} TL'}"  TextColor="{StaticResource TextColor1}"></Label>
+                                    </StackLayout>
+                                </StackLayout>
+                                <StackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer 
+                                NumberOfTapsRequired="1" 
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type local:StoklarViewModel}}}"		
+                                CommandParameter="{Binding .}" Tapped="StokListesi_Tapped">
+                                    </TapGestureRecognizer>
+                                </StackLayout.GestureRecognizers>
+                            </StackLayout>
+                            </Frame>
+                        </ViewCell>
+
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+                
+            </ListView>
+
+        </StackLayout>
+   
+
+</ContentPage>

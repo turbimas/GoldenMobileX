@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                          xmlns:local="clr-namespace:GoldenMobileX.ViewModels"  
+             xmlns:model="clr-namespace:GoldenMobileX.Models" 
+             x:Class="GoldenMobileX.Views.CariHesaplar"
+             Title="Cari Hesaplar">
+
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Yenile" x:Name="Yenile" Clicked="Yenile_Clicked" IconImageSource="Refresh.png"  />
+        <ToolbarItem Text="Yeni Ekle"  IconImageSource="Add.png" x:Name="YeniCari" Clicked="YeniCari_Clicked" Order="Secondary"  />
+     
+    </ContentPage.ToolbarItems>
+
+    <ContentPage.Content>
+        <StackLayout x:DataType="local:FinansViewModel">
+            <SearchBar Placeholder="Ara..." TextChanged="SearchBar_TextChanged" x:Name="EntryAra" />
+
+            <StackLayout x:Name="StackCariler" VerticalOptions="FillAndExpand">
+
+                <ListView  x:Name="ListViewCariHesaplar">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <ViewCell.ContextActions>
+                                    <MenuItem Text="Düzenle"  CommandParameter="{Binding .}" x:Name="Duzenle" Clicked="Duzenle_Clicked">
+                                    </MenuItem>
+                                    <MenuItem Text="Hareketler"  CommandParameter="{Binding .}" x:Name="Hareketler" Clicked="Hareketler_Clicked">
+                                    </MenuItem>
+            
+                                </ViewCell.ContextActions>
+                                <Frame BorderColor="#ccc" Padding="4" Margin="3" VerticalOptions="Fill" x:DataType="model:CRD_Cari">
+                                    <StackLayout Orientation="Horizontal"  Padding="8" BackgroundColor="{StaticResource Primary}">
+                                        <Label Text="{Binding Name}" TextColor="{StaticResource TextColor}" FontSize="16" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"></Label>
+                                        <StackLayout Orientation="Vertical"  Padding="0" HorizontalOptions="EndAndExpand" MinimumWidthRequest="150">
+                                            <Label Text="BAKİYELER" TextColor="{StaticResource TextColor1}" HorizontalTextAlignment="End"></Label>
+                                            <Label Text="{Binding Bakiye, StringFormat='{0:n2} TL'}" TextColor="{StaticResource TextColor2}" HorizontalTextAlignment="End"></Label>
+                                            <Label Text="{Binding USDBakiye, StringFormat='{0:n2} USD'}" TextColor="{StaticResource TextColor2}" HorizontalTextAlignment="End"></Label>
+                                            <Label Text="{Binding EUROBakiye, StringFormat='{0:n2} EURO'}" TextColor="{StaticResource TextColor2}" HorizontalTextAlignment="End"></Label>
+                                        </StackLayout>
+                                        <StackLayout.GestureRecognizers>
+                                            <TapGestureRecognizer 
+                                NumberOfTapsRequired="1" 
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type local:FinansViewModel}}}"		
+                                CommandParameter="{Binding .}" Tapped="CariListesi_Tapped">
+                                            </TapGestureRecognizer>
+                                        </StackLayout.GestureRecognizers>
+
+
+                                    </StackLayout>
+                                </Frame>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+
+            </StackLayout>
+
+
+
+            
+            
+            
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

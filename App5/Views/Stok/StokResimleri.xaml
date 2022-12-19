@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="GoldenMobileX.Views.StokResimleri"
+                          xmlns:local="clr-namespace:GoldenMobileX.ViewModels"  
+             xmlns:model="clr-namespace:GoldenMobileX.Models">
+
+    <ContentPage.ToolbarItems>
+
+        <ToolbarItem Text="Ekle" x:Name="BtnAdd" Clicked="BtnResimCek_Clicked" IconImageSource="Add.png"  />
+ 
+
+    </ContentPage.ToolbarItems>
+
+    <ContentPage.Content>
+        <StackLayout x:Name="StokResimleriStack"  x:DataType="local:StoklarViewModel">
+
+            <ListView  ItemsSource="{Binding files}" x:Name="filesListview"  RowHeight="300">
+
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="model:TRN_Files">
+                        <ViewCell>
+
+                            <ViewCell.ContextActions>
+                                <MenuItem Text="Sil"  CommandParameter="{Binding .}" x:Name="Sil" Clicked="ResimSil_Clicked">
+                                </MenuItem>
+                            </ViewCell.ContextActions>
+                            <Frame BorderColor="#ccc" Padding="3" Margin="3">
+                                <Image Source="{Binding img}" HeightRequest="300" WidthRequest="400" />
+                            </Frame>
+                        </ViewCell>
+
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+
+            </ListView>
+   
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

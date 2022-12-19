@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="GoldenMobileX.Views.FiyatDegisiklikSatiri"
+                            xmlns:local="clr-namespace:GoldenMobileX.ViewModels"  
+             xmlns:model="clr-namespace:GoldenMobileX.Models" 
+              xmlns:controls="clr-namespace:GoldenMobileX.Views.Controls;assembly=GoldenMobileX"
+          xmlns:dxe="clr-namespace:DevExpress.XamarinForms.Editors;assembly=DevExpress.XamarinForms.Editors"  
+             Title="Fiyat Değişiklik Fişi">
+
+    <ContentPage.ToolbarItems>
+
+        <ToolbarItem Text="Ara" x:Name="Ara" Clicked="Ara_Clicked" IconImageSource="ara.png" />
+        <ToolbarItem Text="Barkod Oku"  IconImageSource="barcode.png" x:Name="BtnBarkodOku" Clicked="BarkodOku_Clicked"  />
+        <ToolbarItem Text="Kaydet"  IconImageSource="Save.png" x:Name="BtnKaydet" Clicked="SatirKaydet_Clicked"  />
+
+
+    </ContentPage.ToolbarItems>
+
+    <ContentPage.Content>
+        <StackLayout   x:DataType="local:StokFisleriViewModel">
+            <StackLayout x:Name="StackFisSatirlari"  BindableLayout.ItemsSource="{Binding EtiketBasimEmirleri, Mode=TwoWay}">
+                <StackLayout Orientation="Horizontal">
+
+                    <dxe:TextEdit HorizontalOptions="FillAndExpand"  x:Name="SatirEntrySeriNo"  Keyboard="Numeric" LabelText="Barkod" Unfocused="SatirEntrySeriNo_Unfocused" Text="{Binding  EtiketBasimEmirleri.Barkod, Mode=TwoWay}" />
+
+                    <dxe:NumericEdit  HorizontalOptions="FillAndExpand" PlaceholderText="Etiket Sayısı" LabelText="Etiket Sayısı" x:Name="SatirEntryAmount"   Value="{Binding EtiketBasimEmirleri.EtiketSayisi, Mode=TwoWay}"   />
+                </StackLayout>
+                
+                <Picker Title="Ürün"  ItemsSource="{Binding Items}" ItemDisplayBinding="{Binding Name}"  SelectedItem="{Binding EtiketBasimEmirleri.ProductID_, Mode=TwoWay}"  HorizontalOptions="FillAndExpand" SelectedIndexChanged="PickerUrun_SelectedIndexChanged" x:Name="SatirPickerUrun" />
+                <StackLayout Orientation="Horizontal">
+                    <StackLayout Orientation="Vertical" HorizontalOptions="StartAndExpand">
+                <Label Text="{Binding EtiketBasimEmirleri.ProductID_.ColorName, StringFormat='Renk :{0}'}"   />
+                <Label Text="{Binding EtiketBasimEmirleri.ProductID_.Beden, StringFormat='Beden :{0}'}"   />
+                    </StackLayout>
+                    <StackLayout Orientation="Vertical" HorizontalOptions="EndAndExpand">
+                        <Label Text="{Binding EtiketBasimEmirleri.ProductID_.Miktar, StringFormat='Miktar :{0}'}"  />
+                        <Label Text="{Binding EtiketBasimEmirleri.ProductID_.Aciklama, StringFormat='{0}'}" />
+                    </StackLayout>
+                </StackLayout>
+                <StackLayout Orientation="Horizontal">
+
+                    <Label Text="{Binding  EtiketBasimEmirleri.EskiFiyat, StringFormat='Eski Fiyat : {0:n2}'}" x:Name="LabelEskiFiyat"  HorizontalOptions="FillAndExpand" />
+                </StackLayout>
+                <StackLayout x:Name="Fiyatlar">
+                    <StackLayout Orientation="Horizontal">
+                        <dxe:NumericEdit LabelText="Fiyat 1" PlaceholderText="Fiyat 1" MaxDecimalDigitCount="2" Value="{Binding  EtiketBasimEmirleri.Fiyat, Mode=TwoWay}"  x:Name="SatirEntryUnitPrice1" HorizontalOptions="FillAndExpand"   />
+                        <dxe:NumericEdit LabelText="Fiyat 2" PlaceholderText="Fiyat 2" MaxDecimalDigitCount="2" Value="{Binding  EtiketBasimEmirleri.Fiyat2, Mode=TwoWay}"  x:Name="SatirEntryUnitPrice2"  HorizontalOptions="FillAndExpand"     />
+                        <dxe:NumericEdit LabelText="Fiyat 3" PlaceholderText="Fiyat 3" MaxDecimalDigitCount="2" Value="{Binding  EtiketBasimEmirleri.Fiyat3, Mode=TwoWay}"  x:Name="SatirEntryUnitPrice3"  HorizontalOptions="FillAndExpand"     />
+                    </StackLayout>
+                </StackLayout>
+            </StackLayout>
+
+
+            <ListView   x:Name="ListViewSatirlar" ItemsSource="{Binding  EtiketBasimEmirleri}">
+                <ListView.ItemTemplate>
+                    <DataTemplate  x:DataType="model:TRN_EtiketBasimEmirleri">
+                        <ViewCell>
+                            <ViewCell.ContextActions>
+                                <MenuItem Text="Düzenle"  CommandParameter="{Binding .}" x:Name="Duzenle" Clicked="Satir_Clicked">
+                                </MenuItem>
+                                <MenuItem Text="Sil"  CommandParameter="{Binding .}" x:Name="Sil" Clicked="Sil_Clicked">
+                                </MenuItem>
+                            </ViewCell.ContextActions>
+                  
+                                <StackLayout Orientation="Vertical"  Padding="3,0,0,0" BackgroundColor="#336699">
+                                    <StackLayout Orientation="Horizontal"  Padding="0" HorizontalOptions="FillAndExpand">
+                                        <Label Text="{Binding ProductID_.Name}" TextColor="{StaticResource TextColor2}" FontSize="16"></Label>
+                                    </StackLayout>
+                                    <StackLayout Orientation="Horizontal"  Padding="0">
+                                        <Label Text="{Binding EtiketSayisi, StringFormat='Etiket : {0:n0} Adet'}}" TextColor="{StaticResource TextColor2}" HorizontalOptions="End"></Label>
+                                        <Label Text="{Binding Fiyat, StringFormat='{0:n2} TL'}" TextColor="{StaticResource TextColor2}" HorizontalOptions="End"></Label>
+                                    </StackLayout>
+                 
+                                </StackLayout>
+                    
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
