@@ -24,10 +24,10 @@
 
                     <dxe:TextEdit HorizontalOptions="FillAndExpand"  x:Name="SatirEntrySeriNo"  Keyboard="Numeric" LabelText="Barkod" Unfocused="SatirEntrySeriNo_Unfocused" Text="{Binding  EtiketBasimEmirleri.Barkod, Mode=TwoWay}" />
 
-                    <dxe:NumericEdit  HorizontalOptions="FillAndExpand" PlaceholderText="Etiket Sayısı" LabelText="Etiket Sayısı" x:Name="SatirEntryAmount"   Value="{Binding EtiketBasimEmirleri.EtiketSayisi, Mode=TwoWay}"   />
+                    <dxe:NumericEdit  HorizontalOptions="FillAndExpand" PlaceholderText="Etiket Sayısı" LabelText="Etiket Sayısı" x:Name="SatirEntryAmount" Completed="SatirEntryAmount_Completed"   Value="{Binding EtiketBasimEmirleri.EtiketSayisi, Mode=TwoWay}"   />
                 </StackLayout>
-                
-                <Picker Title="Ürün"  ItemsSource="{Binding Items}" ItemDisplayBinding="{Binding Name}"  SelectedItem="{Binding EtiketBasimEmirleri.ProductID_, Mode=TwoWay}"  HorizontalOptions="FillAndExpand" SelectedIndexChanged="PickerUrun_SelectedIndexChanged" x:Name="SatirPickerUrun" />
+                <controls:GoldenEntryProductPicker SelectedItem="{Binding EtiketBasimEmirleri.ProductID_, Mode=TwoWay}" TextChanged="GoldenEntryProductPicker_TextChanged" x:Name="SatirPickerUrun"></controls:GoldenEntryProductPicker>
+     
                 <StackLayout Orientation="Horizontal">
                     <StackLayout Orientation="Vertical" HorizontalOptions="StartAndExpand">
                 <Label Text="{Binding EtiketBasimEmirleri.ProductID_.ColorName, StringFormat='Renk :{0}'}"   />
@@ -44,9 +44,9 @@
                 </StackLayout>
                 <StackLayout x:Name="Fiyatlar">
                     <StackLayout Orientation="Horizontal">
-                        <dxe:NumericEdit LabelText="Fiyat 1" PlaceholderText="Fiyat 1" MaxDecimalDigitCount="2" Value="{Binding  EtiketBasimEmirleri.Fiyat, Mode=TwoWay}"  x:Name="SatirEntryUnitPrice1" HorizontalOptions="FillAndExpand"   />
-                        <dxe:NumericEdit LabelText="Fiyat 2" PlaceholderText="Fiyat 2" MaxDecimalDigitCount="2" Value="{Binding  EtiketBasimEmirleri.Fiyat2, Mode=TwoWay}"  x:Name="SatirEntryUnitPrice2"  HorizontalOptions="FillAndExpand"     />
-                        <dxe:NumericEdit LabelText="Fiyat 3" PlaceholderText="Fiyat 3" MaxDecimalDigitCount="2" Value="{Binding  EtiketBasimEmirleri.Fiyat3, Mode=TwoWay}"  x:Name="SatirEntryUnitPrice3"  HorizontalOptions="FillAndExpand"     />
+                        <dxe:NumericEdit LabelText="Fiyat 1" PlaceholderText="Fiyat 1" MaxDecimalDigitCount="2" Value="{Binding  EtiketBasimEmirleri.Fiyat, Mode=TwoWay}" Completed="SatirEntryUnitPrice1_Completed"  x:Name="SatirEntryUnitPrice1" HorizontalOptions="FillAndExpand"   />
+                        <dxe:NumericEdit LabelText="Fiyat 2" PlaceholderText="Fiyat 2" MaxDecimalDigitCount="2" Value="{Binding  EtiketBasimEmirleri.Fiyat2, Mode=TwoWay}" Completed="SatirEntryUnitPrice2_Completed"  x:Name="SatirEntryUnitPrice2"  HorizontalOptions="FillAndExpand"     />
+                        <dxe:NumericEdit LabelText="Fiyat 3" PlaceholderText="Fiyat 3" MaxDecimalDigitCount="2" Value="{Binding  EtiketBasimEmirleri.Fiyat3, Mode=TwoWay}" Completed="SatirEntryUnitPrice3_Completed"  x:Name="SatirEntryUnitPrice3"  HorizontalOptions="FillAndExpand"     />
                     </StackLayout>
                 </StackLayout>
             </StackLayout>

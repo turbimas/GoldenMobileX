@@ -11,8 +11,10 @@ using System.Threading.Tasks;
 
 namespace GoldenMobileX.ViewModels
 {
+ 
     public class OrdersViewModel : BaseViewModel
     {
+ 
         public OrdersViewModel()
         {
             Items = DataLayer.V_AllItems;
@@ -23,6 +25,7 @@ namespace GoldenMobileX.ViewModels
             x_Currencies = DataLayer.X_Currency;
             ListEditable = true;
         }
+ 
         public Nullable<bool> ListEditable
         {
             get; set;

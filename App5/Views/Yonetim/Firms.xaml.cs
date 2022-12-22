@@ -14,7 +14,6 @@ using System.ComponentModel;
 
 
 
-
 namespace GoldenMobileX.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
@@ -28,13 +27,18 @@ namespace GoldenMobileX.Views
         {
             InitializeComponent();
             BindingContext = new FirmsViewModel();
+            Appearing += Firms_Appearing;
             Rebind();
      
         }
 
+ 
         private void Firms_Appearing(object sender, EventArgs e)
         {
- 
+
+            //VersiyonLabel.Text = Application.Context.ApplicationContext.PackageManager.GetPackageInfo(Application.Context.ApplicationContext.PackageName, 0).VersionName;
+
+         
         }
 
         void Rebind()

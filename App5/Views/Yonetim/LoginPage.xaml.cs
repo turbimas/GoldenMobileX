@@ -16,7 +16,7 @@ using System.Globalization;
 
 namespace GoldenMobileX.Views
 {
- 
+
 
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class LoginPage : ContentPage
@@ -24,12 +24,12 @@ namespace GoldenMobileX.Views
         public LoginPage()
         {
             if (appSettings.User == null) appSettings.User = new X_Users() { ID = 0 };
-            if(appSettings.User.ID>0)
+            if (appSettings.User.ID > 0)
                 appSettings.GoPage(nameof(AboutPage));
             InitializeComponent();
             this.BindingContext = new LoginViewModel();
             SwitchBeniHatirla.IsToggled = appParams.UserSettings.BeniHatirla;
-            if(appParams.UserSettings.BeniHatirla)
+            if (appParams.UserSettings.BeniHatirla)
             {
                 EntryUserName.Text = appParams.UserSettings.UserName;
                 EntryPassword.Text = appParams.UserSettings.Password;
@@ -49,7 +49,7 @@ namespace GoldenMobileX.Views
         {
 
 
- 
+
             if (SwitchBeniHatirla.IsToggled)
             {
                 appParams.UserSettings.UserName = EntryUserName.Text;
@@ -66,16 +66,22 @@ namespace GoldenMobileX.Views
 
 
         }
- 
+
         void login()
         {
+
             if (DataLayer.IsOfflineAlert) return;
-            
-            Task.Run(() => loginActivity.IsRunning = true).Wait();
+            /*
+            Task.Run(() =>
+            {
+                loginActivity.IsVisible = true;
+                btnLogin.Text = "Lütfen bekleyiniz...";
+            }).Wait();
+            */
             using (GoldenContext c = new GoldenContext())
             {
                 var user = c.X_Users.Where(s => s.LogonName == EntryUserName.Text && s.Password == EntryPassword.Text).FirstOrDefault();
- 
+
                 string yetkiler = "";
                 if (user != null)
                 {
@@ -90,13 +96,13 @@ namespace GoldenMobileX.Views
                     appSettings.UyariGoster("Kullanıcı adı ya da şifreniz hatalı...");
                 }
             }
-            Task.Run(() => loginActivity.IsRunning = false).Wait();
+
         }
-        private  void  ToolbarItem_Clicked(object sender, EventArgs e)
+        private void ToolbarItem_Clicked(object sender, EventArgs e)
         {
             Device.BeginInvokeOnMainThread(async () =>
             {
-                if(await App.Current.MainPage.DisplayAlert("Kullanıcı ayarları silinecektir. Onaylıyor musunuz..", "Uyarı", "Evet", "Hayır"))
+                if (await App.Current.MainPage.DisplayAlert("Kullanıcı ayarları silinecektir. Onaylıyor musunuz..", "Uyarı", "Evet", "Hayır"))
                 {
                     appSettings.DeleteUserData();
                     appSettings.GoPage(nameof(Firms));
@@ -104,15 +110,51 @@ namespace GoldenMobileX.Views
 
 
             });
- 
+
         }
 
         private void Guncelle_Clicked(object sender, EventArgs e)
         {
-            UpdateAPK fm = new UpdateAPK();
-            Navigation.PushAsync(fm);
+          
+            Guncelle();
         }
+        void Guncelle()
+        {
+            p1.Run();
+   
+            string sql = @"SELECT 'IF EXISTS(SELECT * FROM sys.objects WHERE name='''+o.name+''')  ALTER TABLE ' + t.name +' DROP CONSTRAINT ' +  o.name + '' q FROM sys.objects o, sys.tables AS t WHERE o.parent_object_id = t.[object_id] 
+AND o.name LIKE 'DF_%' AND 
+o.type='D' ";
+            DataTable dt = db.SQLSelectToDataTable(sql);
+            int i = 0;
+            foreach (DataRow dr in dt.Rows)
+            {
+                db.SQLExecuteNonQuery(dr["q"] + "");
 
+                p1.PopupText = i + " / " + dt.Rows.Count;
+                i++;
+            }
+
+            sql = @"SELECT G.TABLE_NAME, G.COLUMN_NAME, G.DATA_TYPE, 
+
+'IF EXISTS(SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME='''+G.TABLE_NAME+''' 
+AND COLUMN_NAME='''+G.COLUMN_NAME+''' AND DATA_TYPE=''decimal'')
+ALTER TABLE '+ G.TABLE_NAME +' ALTER COLUMN ' + G.COLUMN_NAME +' FLOAT NULL;' q
+FROM  INFORMATION_SCHEMA.COLUMNS G  WHERE
+(G.DATA_TYPE='float' OR G.DATA_TYPE='decimal') AND G.TABLE_NAME NOT LIKE 'V_%'  AND G.TABLE_NAME NOT LIKE 'Z_%' 
+";
+
+            dt = db.SQLSelectToDataTable(sql);
+            i = 0;
+            foreach (DataRow dr in dt.Rows)
+            {
+                db.SQLExecuteNonQuery(dr["q"] + "");
+                p1.PopupText = i + " / " + dt.Rows.Count;
+                i++;
+            }
+
+            p1.Stop();
+        }
 
     }
 }

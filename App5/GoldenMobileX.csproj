@@ -17,6 +17,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Remove="Views\SatinAlma\SatinAlmaTalepleri.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="DevExpress.XamarinForms.Editors" Version="20.2.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.32" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="3.1.32" />
@@ -51,6 +55,21 @@
   <ItemGroup>
     <EmbeddedResource Update="Views\AboutPage.xaml">
       <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\BakimOnarim\BakimOnarimKarti.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\BakimOnarim\BakimOnarim.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\BakimOnarim\Cihazlar.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\BakimOnarim\CihazEkleDuzenle.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Controls\Popup.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\Finans\CariHesapHareketleri.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
@@ -106,16 +125,13 @@
     <Compile Update="Views\Finans\Banka\Bankalar.xaml.cs">
       <DependentUpon>Bankalar.xaml</DependentUpon>
     </Compile>
-    <Compile Update="Views\SatinAlma\SatinAlmaTalepleri.xaml.cs">
-      <DependentUpon>SatinAlmaTalepleri.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="Views\Satis\Siparisler.xaml.cs">
+    <Compile Update="Views\Orders\Siparisler.xaml.cs">
       <DependentUpon>Siparisler.xaml</DependentUpon>
     </Compile>
-    <Compile Update="Views\Satis\Siparis.xaml.cs">
+    <Compile Update="Views\Orders\Siparis.xaml.cs">
       <DependentUpon>Siparis.xaml</DependentUpon>
     </Compile>
-    <Compile Update="Views\Satis\SiparisSatiriEkle.xaml.cs">
+    <Compile Update="Views\Orders\SiparisSatiriEkle.xaml.cs">
       <DependentUpon>SiparisSatiriEkle.xaml</DependentUpon>
     </Compile>
     <Compile Update="Views\FiyatDegisiklik\FiyatDegisiklikSatiri.xaml.cs">

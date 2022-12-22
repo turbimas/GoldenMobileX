@@ -20,12 +20,13 @@ namespace GoldenMobileX.Models
             sqlConnection.Open();
             optionsBuilder.UseSqlServer(sqlConnection);
 
+
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<V_AllItems>().HasNoKey();
             modelBuilder.Entity<X_Currency>().HasNoKey();
-            // modelBuilder.Entity<TRN_StockTrans>().HasMany(s => s.Lines);
+ 
         }
         public virtual DbSet<X_Currency> X_Currency { get; set; }
         public virtual DbSet<X_Types> X_Types { get; set; }
@@ -50,6 +51,11 @@ namespace GoldenMobileX.Models
         public virtual DbSet<TRN_EtiketBasim> TRN_EtiketBasim { get; set; }
         public virtual DbSet<TRN_EtiketBasimEmirleri> TRN_EtiketBasimEmirleri { get; set; }
         public virtual DbSet<X_Users> X_Users { get; set; }
+
+        public virtual DbSet<Kalite_KalibrasyonCihazlar> Kalite_KalibrasyonCihazlar { get; set; }
+        public virtual DbSet<Kalite_KalibrasyonCihazSarfListesi> Kalite_KalibrasyonCihazSarfListesi { get; set; }
+        public virtual DbSet<Kalite_KalibrasyonGirisi> Kalite_KalibrasyonGirisi { get; set; }
+
     }
     public static class contextExtensions
     {
@@ -62,7 +68,7 @@ namespace GoldenMobileX.Models
             }
             catch (Exception ex)
             {
-                appSettings.UyariGoster(ex.InnerException.Message);
+                appSettings.UyariGoster(ex.Message + ex.InnerException?.Message);
 
                 return false;
             }

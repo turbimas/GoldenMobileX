@@ -8,11 +8,12 @@
              Shell.NavBarIsVisible="True"
              Title="Giriş" Visual="Material"
                           xmlns:dxe="clr-namespace:DevExpress.XamarinForms.Editors;assembly=DevExpress.XamarinForms.Editors"  
+                    xmlns:controls="clr-namespace:GoldenMobileX.Views.Controls;assembly=GoldenMobileX"
              >
 
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Kullanıcı Ayarlarını Temizle"  IconImageSource="No.png" Clicked="ToolbarItem_Clicked" Order="Secondary" />
-        <ToolbarItem Text="Programı Güncelle"  IconImageSource="No.png" Clicked="Guncelle_Clicked"  Order="Secondary" />
+        <ToolbarItem Text="Veritabanı Güncelle"  IconImageSource="No.png" Clicked="Guncelle_Clicked"  Order="Secondary" />
     </ContentPage.ToolbarItems>
 
     <ContentPage.Content> 
@@ -28,10 +29,11 @@
 
             <dxe:PasswordEdit Text="{Binding UserPassword, Mode=TwoWay}"   LabelText="Şifre"   x:Name="EntryPassword"  />
             
-            <Button VerticalOptions="Center" Text="Giriş" Command="{Binding LoginCommand}" Clicked="Button_Clicked"/>
+            <Button VerticalOptions="Center" Text="Giriş" Command="{Binding LoginCommand}" x:Name="btnLogin"
+                    Clicked="Button_Clicked"/>
 
-                  <ActivityIndicator Color="Orange" x:Name="loginActivity"  IsRunning="False" />
- 
+                  <ActivityIndicator Color="Orange" x:Name="loginActivity"  IsVisible="False" IsRunning="True" />
+            <controls:Popup x:Name="p1"></controls:Popup>
         </StackLayout>
 
 

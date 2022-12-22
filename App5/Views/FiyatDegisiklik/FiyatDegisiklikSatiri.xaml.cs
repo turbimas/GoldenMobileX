@@ -61,27 +61,27 @@ namespace GoldenMobileX.Views
                 barkodOkundu = true;
             }
         }
- 
 
-        private async void PickerUrun_SelectedIndexChanged(object sender, EventArgs e)
+        private void GoldenEntryProductPicker_TextChanged(object sender, EventArgs e)
         {
-            Picker p = sender as Picker;
-            if ((p.SelectedItem as V_AllItems).ID == 0) return;
-            viewModel.EtiketBasimEmirleri.EskiFiyat = (p.SelectedItem as V_AllItems).UnitPrice;
-            SatirEntrySeriNo.Text = (p.SelectedItem as V_AllItems).Barcode;
-            SatirEntryUnitPrice1.Value = (p.SelectedItem as V_AllItems).UnitPrice.convDecimal();
-            SatirEntryUnitPrice2.Value = (p.SelectedItem as V_AllItems).UnitPrice2.convDecimal();
-            SatirEntryUnitPrice3.Value = (p.SelectedItem as V_AllItems).UnitPrice3.convDecimal();
-            LabelEskiFiyat.Text= (p.SelectedItem as V_AllItems).UnitPrice + "";
+            Controls.GoldenEntryProductPicker p = sender as Controls.GoldenEntryProductPicker;
+            if (p.SelectedItem.ID == 0) return;
+            viewModel.EtiketBasimEmirleri.EskiFiyat = p.SelectedItem.UnitPrice;
+            SatirEntrySeriNo.Text = p.SelectedItem.Barcode;
+            SatirEntryUnitPrice1.Value = p.SelectedItem.UnitPrice.convDecimal();
+            SatirEntryUnitPrice2.Value = p.SelectedItem.UnitPrice2.convDecimal();
+            SatirEntryUnitPrice3.Value = p.SelectedItem.UnitPrice3.convDecimal();
+            LabelEskiFiyat.Text = p.SelectedItem.UnitPrice + "";
             BtnKaydet.IsEnabled = true;
             if (SatirEntryAmount.Value.convInt() == 0)
-                SatirEntryAmount.Value =  1;
+                SatirEntryAmount.Value = 1;
 
-
+            SatirEntryAmount.Focus();
 
             barkodOkundu = false;
         }
 
+ 
 
 
 
@@ -174,7 +174,27 @@ namespace GoldenMobileX.Views
                 entry.Text = e.OldTextValue;
             }
         }
- 
+
+        private void SatirEntryAmount_Completed(object sender, EventArgs e)
+        {
+            SatirEntryUnitPrice1.Focus();
+        }
+
+        private void SatirEntryUnitPrice1_Completed(object sender, EventArgs e)
+        {
+            SatirEntryUnitPrice2.Focus();
+        }
+
+        private void SatirEntryUnitPrice2_Completed(object sender, EventArgs e)
+        {
+            SatirEntryUnitPrice3.Focus();
+        }
+
+        private void SatirEntryUnitPrice3_Completed(object sender, EventArgs e)
+        {
+            SatirKaydet_Clicked(null, null);
+        }
+
         private async void Ara_Clicked(object sender, EventArgs e)
         {
             Stoklar fm = new Stoklar();

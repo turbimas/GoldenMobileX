@@ -11,12 +11,10 @@ namespace GoldenMobileX
 {
     public partial class AppShell : Xamarin.Forms.Shell
     {
-        public FlyoutItem flyoutItemFinans, flyoutItemSatinAlma, flyoutItemSatisPazarlama, flyoutItemStoklar;
+        public FlyoutItem flyoutItemFinans, flyoutItemStoklar, flyoutItemSatinAlma, flyoutItemSatisPazarlama;
+ 
 
-        private void Sevkiyat_Clicked(object sender, EventArgs e)
-        {
-            appSettings.GoPage($"{nameof(StokFisleri)}?Type=5");
-        }
+
 
         public AppShell()
         {
@@ -27,7 +25,7 @@ namespace GoldenMobileX
                 Routing.RegisterRoute(nameof(LoginPage), typeof(LoginPage));
                 Routing.RegisterRoute(nameof(AboutPage), typeof(AboutPage));
             }
-
+            Routing.RegisterRoute(nameof(Siparisler), typeof(Siparisler));
             appSettings.OfflineData = new Models.offlineData();
             appSettings.LocalSettings = new Models.localSettings();
 

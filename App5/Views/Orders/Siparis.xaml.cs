@@ -109,8 +109,11 @@ namespace GoldenMobileX.Views
         }
         void RebindSatir()
         {
-            viewModel.Order.Lines.RemoveAll(s => s.ProductID_ == null);
-            ListViewSatirlar.ItemsSource = new List<TRN_OrderLines>(viewModel.Order.Lines).OrderByDescending(s=>s.ID);
+            if (viewModel.Order?.Lines != null)
+            {
+                viewModel.Order.Lines.RemoveAll(s => s.ProductID_ == null);
+                ListViewSatirlar.ItemsSource = new List<TRN_OrderLines>(viewModel.Order.Lines).OrderByDescending(s => s.ID);
+            }
         }
 
         private void FisPicker_SelectedIndexChanged(object sender, EventArgs e)

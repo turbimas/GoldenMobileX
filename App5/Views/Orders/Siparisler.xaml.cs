@@ -21,7 +21,7 @@ namespace GoldenMobileX.Views
     {
         public X_Types OrderType
         {
-            get { return viewModel.types.Where(s => s.Code == 5).First(); }
+            get;set;
         }
         public OrdersViewModel viewModel
         {
@@ -31,18 +31,23 @@ namespace GoldenMobileX.Views
         {
             InitializeComponent();
             this.BindingContext = new OrdersViewModel();
-            Rebind();
+            OrderType = viewModel.types.Where(s => s.Code == 5).FirstOrDefault();
+            Appearing += Siparisler_Appearing;
 
         }
 
-
+        private void Siparisler_Appearing(object sender, EventArgs e)
+        {
+            this.Title = OrderType.Name + " Listesi";
+            Rebind();
+        }
 
         void Rebind()
         {
             try
             {
                 IsBusy = true;
-                viewModel.OrderList = DataLayer.TRN_Orders(OrderType.Code.convInt());
+                viewModel.OrderList = DataLayer.TRN_Orders(OrderType.Code.convInt()).OrderByDescending(s=>s.ID).ToList();
                 this.BindingContext = new OrdersViewModel() { OrderList = new List<TRN_Orders>(viewModel.OrderList) };
                 IsBusy = false;
             }
@@ -70,8 +75,10 @@ namespace GoldenMobileX.Views
                     OrderDate = DateTime.Now,
                     OrderType_ = OrderType,
                     CurrencyID_ = DataLayer.X_Currency.Where(s => s.CurrencyNumber == 0).First(),
-                    Branch = appSettings.UserDefaultBranch
+                    Branch = appSettings.UserDefaultBranch,
+                    Lines = new List<TRN_OrderLines>()
                 }
+             
             };
             fm.Disappearing += Fm_Disappearing;
 

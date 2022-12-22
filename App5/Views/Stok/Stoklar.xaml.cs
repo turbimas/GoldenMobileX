@@ -136,8 +136,8 @@ namespace GoldenMobileX.Views
 
         private void Hareketler_Clicked(object sender, EventArgs e)
         {
-            var mi = sender as StackLayout;
-            V_AllItems i = (V_AllItems)((TapGestureRecognizer)mi.GestureRecognizers.First()).CommandParameter;
+            var mi = sender as MenuItem;
+            V_AllItems i = (V_AllItems)mi.CommandParameter;
             StokHareketleri fm = new StokHareketleri();
             fm.ProductID = i.ID;
             Navigation.PushAsync(fm);

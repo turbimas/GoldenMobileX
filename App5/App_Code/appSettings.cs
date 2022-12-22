@@ -17,12 +17,18 @@ using Xamarin.Essentials;
 using System.Diagnostics;
 using System.Collections.Concurrent;
 
-public class appSettings
+public static class appSettings
 {
     static ActivityIndicator activityIndicator = new ActivityIndicator { IsRunning = false, Color = Color.Blue };
-    public static void UyariGoster(string txt, string baslik = "Uyarı", string cancel = "TAMAM")
+
+
+    public static async Task UyariGoster(string txt, string baslik = "Uyarı", string cancel = "TAMAM")
     {
-        App.Current.MainPage.DisplayAlert(baslik, txt, cancel);
+        await App.Current.MainPage.DisplayAlert(baslik, txt, cancel);
+    }
+    public static async Task UyariGoster(this Exception ex)
+    {
+        await App.Current.MainPage.DisplayAlert("UYARI", ex.Message + " " + ex.InnerException?.Message, "TAMAM");
     }
     static bool _isbusy;
    public static bool isBusy
@@ -207,8 +213,8 @@ WHERE  (ISNULL(M.UpperFormID,0)=0 AND M.VisibleName NOT LIKE '%*') AND
 M.ID IN (SELECT R.ControlID FROM V_UserRights R WHERE  R.UserID=@UserID AND R.Visible=1 AND R.IsMenuItem=1) AND M.FormName IS NOT NULL Order BY M.Sira, M.ID ".Replace("@UserID", appSettings.User.ID + "");
                 System.Data.DataTable dt = db.SQLSelectToDataTable(MenuSql);
                 if (dt.AsEnumerable().Where(s => s["FormName"] + "" == "Stoklar" || s["FormName"] + "" == "Malzemeler").Count() == 0) (Shell.Current as AppShell).flyoutItemStoklar.IsVisible = false;
-                if (dt.AsEnumerable().Where(s => s["FormName"] + "" == "SatisPazarlama").Count() == 0) (Shell.Current as AppShell).flyoutItemSatisPazarlama.IsVisible = false;
-                if (dt.AsEnumerable().Where(s => s["FormName"] + "" == "SatinAlma").Count() == 0) (Shell.Current as AppShell).flyoutItemSatinAlma.IsVisible = false;
+                if (dt.AsEnumerable().Where(s => s["FormName"] + "" == "SatisPazarlama").Count() == 0) (Shell.Current as AppShell).flyoutItemSatisPazarlama.IsEnabled = false;
+                if (dt.AsEnumerable().Where(s => s["FormName"] + "" == "SatinAlma").Count() == 0) (Shell.Current as AppShell).flyoutItemSatinAlma.IsEnabled = false;
                 if (dt.AsEnumerable().Where(s => s["FormName"] + "" == "Finans").Count() == 0) (Shell.Current as AppShell).flyoutItemFinans.IsVisible = false;
             }
         }

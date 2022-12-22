@@ -285,7 +285,7 @@ namespace GoldenMobileX.Views
                 var checkEdilecekUrun = viewModel.CheckListLines.Where(s => s.ProductID == viewModel.Line.ProductID && s.SeriNo + "" == viewModel.Line.SeriNo + "" && s.SeriLot == viewModel.Line.SeriLot && s.BalyaNo == viewModel.Line.BalyaNo);
                 if (checkEdilecekUrun.Count() > 0)
                 {
-                    if ((bulunanurun.FirstOrDefault()?.Amount) + viewModel.Line.Amount > (checkEdilecekUrun.FirstOrDefault()?.Amount))
+                    if ((bulunanurun.FirstOrDefault()?.Amount).convDouble() + viewModel.Line.Amount > (checkEdilecekUrun.FirstOrDefault()?.Amount))
                     {
                         Vibration.Vibrate(2000);
                         if (!await appSettings.Onay("Bu ürün fazla gelmiş. İşleme devam edecek misiniz?")) return false;

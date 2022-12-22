@@ -29,6 +29,9 @@ class DataLayer
         Sent = new offLine.Sent();
         Types = new offLine.Types();
         v_DepodakiLotlar = new List<V_DepodakiLotlar>();
+        WaitingSent.tRN_StockTrans = new List<TRN_StockTrans>();
+        WaitingSent.TRN_EtiketBasim = new List<TRN_EtiketBasim>();
+        WaitingSent.tRN_Orders = new List<TRN_Orders>();
         LoadDataFromJSON();
     }
     public static offLine.Types Types { get; set; }
@@ -236,61 +239,115 @@ class DataLayer
 
 
             GoldenContext c = new GoldenContext();
-
-            DataLayer.Depolar = c.CRD_StockWareHouse.Select(s => s).ToList().Where(r => r.AuthCode + "" == "" || appSettings.UserAuthCode.Split(',').Any(x => x == "*") || (r.AuthCode + "").Split(',').Any(x => (appSettings.UserAuthCode + "").Split(',').Contains(x))).Select(s => s).ToList();
-
-
-            if (DataLayer.Depolar.Count == 0 || FromServer)
+            try
+            {
                 DataLayer.Depolar = c.CRD_StockWareHouse.Select(s => s).ToList().Where(r => r.AuthCode + "" == "" || appSettings.UserAuthCode.Split(',').Any(x => x == "*") || (r.AuthCode + "").Split(',').Any(x => (appSettings.UserAuthCode + "").Split(',').Contains(x))).Select(s => s).ToList();
+            }
+            catch (Exception ex)
+            {
+                appSettings.UyariGoster("CRD_StockWareHouse : " + ex.Message + ex.InnerException?.Message);
+            }
 
 
-
-            if (X_Types.Count == 0 || FromServer)
-                DataLayer.X_Types = c.X_Types.Select(s => s).ToList(); ;
+            try
+            {
+                if (X_Types.Count == 0 || FromServer)
+                    DataLayer.X_Types = c.X_Types.Select(s => s).ToList();
+            }
+            catch (Exception ex)
+            {
+                appSettings.UyariGoster("X_Types : " + ex.Message + ex.InnerException?.Message);
+            }
             LoadTypes();
-            if (X_Settings.Count == 0 || FromServer)
-                DataLayer.X_Settings = c.x_Settings.Select(s => s).ToList();
-            if (L_Units.Count == 0 || FromServer)
-                DataLayer.L_Units = c.L_Units.Select(s => s).ToList();
-            if (X_Currency.Count == 0 || FromServer)
-                DataLayer.X_Currency = c.X_Currency.Select(s => s).ToList();
-
-            if (Cariler.Count == 0)
-                DataLayer.Cariler = c.CRD_Cari.Where(s => s.Active == true).ToList().Select(s => s).ToList();
-            else if (FromServer)
+            try
             {
-                var maxModifiedDate = (DataLayer.Cariler.Max(s => s.ModifiedDate)).convDateTime();
-                DataLayer.Cariler = c.CRD_Cari.Where(s => s.Active == true && s.ModifiedDate > maxModifiedDate).Select(s => s).ToList();
+                if (X_Settings.Count == 0 || FromServer)
+                    DataLayer.X_Settings = c.x_Settings.Select(s => s).ToList();
             }
-            if (V_AllItems.Count == 0)
+            catch (Exception ex)
             {
-                DataLayer.V_AllItems = c.V_AllItems.Where(s => s.Active == true).Select(s => s).ToList();
+                appSettings.UyariGoster("X_Settings : " + ex.Message + ex.InnerException?.Message);
             }
-            else if (FromServer)
+            try
             {
-                var maxModifiedDate = (DataLayer.V_AllItems.Max(s => s.ModifiedDate)).convDateTime();
-                List<V_AllItems> items = c.V_AllItems.Where(s => s.Active == true && s.ModifiedDate > maxModifiedDate).Select(s => s).ToList();
-                DataLayer.V_AllItems.AddRange(items.Where(s => DataLayer.V_AllItems.Where(t => t.ID == s.ID && t.Barcode == s.Barcode).Count() == 0));
+                if (L_Units.Count == 0 || FromServer)
+                    DataLayer.L_Units = c.L_Units.Select(s => s).ToList();
             }
-
-            if (DataLayer.v_DepodakiLotlar.Count == 0)
+            catch (Exception ex)
             {
-                LocalDataBase.ExecuteAsync("DELETE FROM V_DepodakiLotlar");
-                List<V_DepodakiLotlar> items = c.V_DepodakiLotlar.Select(s => s).ToList();
-                LocalDataBase.InsertAllAsync(DataLayer.v_DepodakiLotlar);
+                appSettings.UyariGoster("L_Units : " + ex.Message + ex.InnerException?.Message);
             }
-            else if (FromServer)
+            try
             {
-                var maxModifiedDate = (DataLayer.v_DepodakiLotlar.Max(s => s.ModifiedDate)).convDateTime();
-                List<V_DepodakiLotlar> items = c.V_DepodakiLotlar.Where(s => s.ModifiedDate > maxModifiedDate).Select(s => s).ToList();
-                LocalDataBase.InsertAllAsync(items.Where(s => DataLayer.v_DepodakiLotlar.Where(t => t.HareketID == s.HareketID).Count() == 0));
-                DataLayer.v_DepodakiLotlar.AddRange(items.Where(s => DataLayer.v_DepodakiLotlar.Where(t => t.HareketID == s.HareketID).Count() == 0));
+                if (X_Currency.Count == 0 || FromServer)
+                    DataLayer.X_Currency = c.X_Currency.Select(s => s).ToList();
             }
-            if (CRD_BankaHesaplari.Count == 0 || FromServer)
-                DataLayer.CRD_BankaHesaplari = c.CRD_BankaHesaplari.Select(s => s).ToList();
-            if (CRD_Bankalar.Count == 0 || FromServer)
-                DataLayer.CRD_Bankalar = c.CRD_Bankalar.Select(s => s).ToList();
-
+            catch (Exception ex)
+            {
+                appSettings.UyariGoster("X_Currency : " + ex.Message + ex.InnerException?.Message);
+            }
+            try
+            {
+                if (Cariler.Count == 0)
+                    DataLayer.Cariler = c.CRD_Cari.Where(s => s.Active == true).ToList().Select(s => s).ToList();
+                else if (FromServer)
+                {
+                    var maxModifiedDate = (DataLayer.Cariler.Max(s => s.ModifiedDate)).convDateTime();
+                    DataLayer.Cariler = c.CRD_Cari.Where(s => s.Active == true && s.ModifiedDate > maxModifiedDate).Select(s => s).ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                appSettings.UyariGoster("CRD_Cari : " + ex.Message + ex.InnerException?.Message);
+            }
+            try
+            {
+                if (V_AllItems.Count == 0)
+                {
+                    DataLayer.V_AllItems = c.V_AllItems.Where(s => s.Active == true).Select(s => s).ToList();
+                }
+                else if (FromServer)
+                {
+                    var maxModifiedDate = (DataLayer.V_AllItems.Max(s => s.ModifiedDate)).convDateTime();
+                    List<V_AllItems> items = c.V_AllItems.Where(s => s.Active == true && s.ModifiedDate > maxModifiedDate).Select(s => s).ToList();
+                    DataLayer.V_AllItems.AddRange(items.Where(s => DataLayer.V_AllItems.Where(t => t.ID == s.ID && t.Barcode == s.Barcode).Count() == 0));
+                }
+            }
+            catch (Exception ex)
+            {
+                appSettings.UyariGoster("V_AllItems : " + ex.Message +  ex.InnerException?.Message);
+            }
+            try
+            {
+                if (DataLayer.v_DepodakiLotlar.Count == 0)
+                {
+                    LocalDataBase.ExecuteAsync("DELETE FROM V_DepodakiLotlar");
+                    List<V_DepodakiLotlar> items = c.V_DepodakiLotlar.Select(s => s).ToList();
+                    LocalDataBase.InsertAllAsync(DataLayer.v_DepodakiLotlar);
+                }
+                else if (FromServer)
+                {
+                    var maxModifiedDate = (DataLayer.v_DepodakiLotlar.Max(s => s.ModifiedDate)).convDateTime();
+                    List<V_DepodakiLotlar> items = c.V_DepodakiLotlar.Where(s => s.ModifiedDate > maxModifiedDate).Select(s => s).ToList();
+                    LocalDataBase.InsertAllAsync(items.Where(s => DataLayer.v_DepodakiLotlar.Where(t => t.HareketID == s.HareketID).Count() == 0));
+                    DataLayer.v_DepodakiLotlar.AddRange(items.Where(s => DataLayer.v_DepodakiLotlar.Where(t => t.HareketID == s.HareketID).Count() == 0));
+                }
+            }
+            catch(Exception ex)
+            {
+                appSettings.UyariGoster("V_DepodakiLotlar : " + ex.Message + ex.InnerException?.Message);
+            }
+            try
+            {
+                if (CRD_BankaHesaplari.Count == 0 || FromServer)
+                    DataLayer.CRD_BankaHesaplari = c.CRD_BankaHesaplari.Select(s => s).ToList();
+                if (CRD_Bankalar.Count == 0 || FromServer)
+                    DataLayer.CRD_Bankalar = c.CRD_Bankalar.Select(s => s).ToList();
+            }
+            catch (Exception ex)
+            {
+                appSettings.UyariGoster("CRD_Bankalar_CRD_BankaHesaplari : " + ex.Message + ex.InnerException?.Message);
+            }
             DataLayer.CRD.SaveJSON();
             DataLayer.Products.SaveJSON();
             DataLayer.Cari.SaveJSON();
@@ -337,15 +394,23 @@ class DataLayer
             {
                 return new List<TRN_StockTrans>();
             }
-            List<TRN_StockTrans> trn_StockTrans = c.TRN_StockTrans.Where(s => s.Status == 4 && s.Type == 2 && s.DestStockWareHouseID == appSettings.User.WareHouseID).Select(s => s).OrderByDescending(s => s.ID).ToList();
-
-            foreach (var t in trn_StockTrans)
+            try
             {
-                if (DataLayer.WaitingSent.tRN_StockTrans.Where(s => s.ID == t.ID).Count() == 0)
+                int warehouse = (appSettings.User.WareHouseID + "").convInt();
+                List<TRN_StockTrans> trn_StockTrans = c.TRN_StockTrans.Where(s => s.Status == 4 && s.Type == 2 && s.DestStockWareHouseID == warehouse).Select(s => s).OrderByDescending(s => s.ID).ToList();
+
+                foreach (var t in trn_StockTrans)
                 {
-                    t.Lines = TRN_StockTransLines(t.ID);
-                    DataLayer.WaitingSent.tRN_StockTrans.Add(t);
+                    if (DataLayer.WaitingSent.tRN_StockTrans.Where(s => s.ID == t.ID).Count() == 0)
+                    {
+                        t.Lines = TRN_StockTransLines(t.ID);
+                        DataLayer.WaitingSent.tRN_StockTrans.Add(t);
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                appSettings.UyariGoster(ex.Message + " " + ex.InnerException?.Message);
             }
             return DataLayer.WaitingSent.tRN_StockTrans;
         }
@@ -366,7 +431,7 @@ class DataLayer
     }
     public static void TRN_StockTransInsert(TRN_StockTrans t)
     {
-        if (t.ID > 0)
+        if (t.ID > 0 && t.Status != 6 && t.Status != 1)
         {
             appSettings.UyariGoster("Bu işlem sunucuya gönderilmiş. Tekrar gönderemezsiniz.");
             return;
@@ -375,8 +440,10 @@ class DataLayer
         using (GoldenContext c = new GoldenContext())
         {
             c.Database.BeginTransaction();
-
-            c.TRN_StockTrans.Add(t);
+            if (t.ID > 0)
+                c.TRN_StockTrans.Update(t);
+            else
+                c.TRN_StockTrans.Add(t);
 
             if (!c.SaveContextWithException()) return;
 
@@ -393,7 +460,10 @@ class DataLayer
                     l.Status = t.Status_.Code;
                     if (DataLayer.DepolakiLotlar?.Count() > 0)
                         DataLayer.DepolakiLotlar.Add(new V_DepodakiLotlar() { ProductID = l.ProductID, SeriLot = l.SeriLot, SeriNo = l.SeriNo, LotID = l.LotID, BalyaNo = l.BalyaNo, Miktar = (l.Amount * l.Direction).convDouble(), Direction = l.Direction, Date = l.Date, Depo = (l.Direction == 1 ? l.DestStockWareHouseID : l.StockWareHouseID), PaketNo = l.PaketNo, WorkOrderID = l.WorkOrderID });
-                    c.TRN_StockTransLines.Add(l);
+                    if (l.ID > 0)
+                        c.TRN_StockTransLines.Update(l);
+                    else
+                        c.TRN_StockTransLines.Add(l);
                 }
                 if (c.SaveContextWithException())
                 {
@@ -432,6 +502,7 @@ class DataLayer
         {
             using (GoldenContext c = new GoldenContext())
             {
+                c.Database.BeginTransaction();
                 c.TRN_EtiketBasim.Add(t);
                 if (!c.SaveContextWithException()) return;
                 if (t.ID > 0)
@@ -484,6 +555,7 @@ class DataLayer
         if (IsOfflineAlert) return;
         using (GoldenContext c = new GoldenContext())
         {
+            c.Database.BeginTransaction();
             c.TRN_Orders.Add(t);
             if (!c.SaveContextWithException()) return;
             if (t.ID > 0)

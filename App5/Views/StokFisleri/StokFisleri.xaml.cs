@@ -100,7 +100,7 @@ namespace GoldenMobileX.Views
         private void Refresh_Clicked(object sender, EventArgs e)
         {
             DataLayer.TRN_StockTransGelenTransfer();
-            Rebind();
+            Rebind(); DataLayer.WaitingSent.SaveJSON();
         }
 
 
@@ -181,12 +181,19 @@ namespace GoldenMobileX.Views
             StokFisi fm = new StokFisi();
             viewModel.Trans = t;
             if (t.ID > 0)
-                if (t.Lines.Count == 0)
+                if (t.Lines==null || t.Lines?.Count() == 0)
                 {
                     if (DataLayer.IsOnline)
-                        using (GoldenContext c = new GoldenContext())
+                        try
                         {
-                            t.Lines = c.TRN_StockTransLines.Where(s => s.StockTransID == t.ID).Select(s => s).ToList();
+                            using (GoldenContext c = new GoldenContext())
+                            {
+                                t.Lines = c.TRN_StockTransLines.Where(s => s.StockTransID == t.ID).Select(s => s).ToList();
+                            }
+                        }
+                        catch(Exception ex)
+                        {
+                            ex.UyariGoster();
                         }
                 }
             fm.viewModel = viewModel;
@@ -199,8 +206,24 @@ namespace GoldenMobileX.Views
             if (DataLayer.IsOfflineAlert) return;
             using (GoldenContext c = new GoldenContext())
             {
-                listview1.ItemsSource = c.TRN_StockTrans.Where(s => s.CreatedBy == appSettings.User.ID).Select(s => s).ToList();
+                try
+                {
+                    int user = appSettings.User.ID;
+                    int warehouse = appSettings.User.WareHouseID.convInt();
+                    List<TRN_StockTrans> t = new List<TRN_StockTrans>(c.TRN_StockTrans.Where(s => s.CreatedBy == user || s.DestStockWareHouseID == warehouse || s.StockWareHouseID == warehouse).Select(s => s)).OrderByDescending(s => s.ID).ToList();
+                    if (t.Count() > 0)
+                        listview1.ItemsSource = t;
+                    else
+                        appSettings.UyariGoster("Sunucuda sizin eklediğiniz bir kayıt bulunmuyor.");
+                }
+                catch { }
             }
+        }
+
+        private void CihazFisleri_Clicked(object sender, EventArgs e)
+        {
+            listview1.ItemsSource = viewModel.TransList;
+            Rebind();
         }
     }
 }

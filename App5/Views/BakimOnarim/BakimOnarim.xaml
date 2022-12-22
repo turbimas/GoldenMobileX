@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="GoldenMobileX.Views.BakimOnarim"
+             xmlns:local="clr-namespace:GoldenMobileX.ViewModels"  
+             xmlns:model="clr-namespace:GoldenMobileX.Models" 
+ 
+             Title="Bakım Onarım">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Yeni Ekle"  IconImageSource="Add.png" x:Name="YeniFis" Clicked="YeniFis_Clicked"  />
+    </ContentPage.ToolbarItems>
+
+    <ListView ItemsSource="{Binding BakimOnarimListesi}"  x:DataType="local:BakimOnarimViewModel"  x:Name="listview1" HasUnevenRows="True">
+        <ListView.ItemTemplate>
+            <DataTemplate>
+                <ViewCell>
+                    <StackLayout   x:DataType="model:Kalite_KalibrasyonGirisi" >
+                        <SwipeView>
+ 
+                            <SwipeView.RightItems>
+                                <SwipeItems>
+                                    <SwipeItem  IconImageSource="edit.png" Text="Düzenle" BackgroundColor="LightBlue" CommandParameter="{Binding .}"  Invoked="Duzenle_Clicked"></SwipeItem>
+
+                                    <SwipeItem  IconImageSource="delete.png" Text="Sil" BackgroundColor="LightPink" CommandParameter="{Binding .}"  Invoked="Sil_Clicked"></SwipeItem>
+                                </SwipeItems>
+                            </SwipeView.RightItems>
+                            <StackLayout    Padding="3,0,0,0">
+
+                                <StackLayout Orientation="Horizontal"  Padding="3" Margin="3,0,0,0">
+                                    <StackLayout Orientation="Vertical" HorizontalOptions="StartAndExpand">
+                                        <Label Text="{Binding Tarih, StringFormat='{0:dd.MM.yyyy}'}" ></Label>
+                                        <Label Text="{Binding Notlar}"></Label>
+                                    </StackLayout>
+
+                                    <StackLayout Orientation="Vertical"  Padding="0" HorizontalOptions="End" WidthRequest="150" FlowDirection="LeftToRight">
+
+                                        <Label Text="Bir Sonraki Bakım" ></Label>
+                                        <Label Text="{Binding BirSonrakiKalibrasyonTarihi, StringFormat='{0:dd.MM.yyyy}'}"></Label>
+
+
+                                 
+                                    </StackLayout>
+
+                                </StackLayout>
+                            </StackLayout>
+                        </SwipeView>
+                        <BoxView HeightRequest="1" VerticalOptions="EndAndExpand" BackgroundColor="Gray"></BoxView>
+                    </StackLayout>
+                </ViewCell>
+
+            </DataTemplate>
+        </ListView.ItemTemplate>
+    </ListView>
+</ContentPage>

@@ -14,6 +14,7 @@ namespace GoldenMobileX.Models
         public Nullable<int> TalepID { get; set; }
         public Nullable<int> TeklifID { get; set; }
         public Nullable<int> Branch { get; set; }
+
         public Nullable<int> Status
         {
             get
@@ -38,6 +39,7 @@ namespace GoldenMobileX.Models
                 OrderType_ = DataLayer.x_types_siparisTuru.Where(x => x.Code == value).FirstOrDefault();
             }
         }
+        [NotMapped]
         public X_Types OrderType_ { get; set; }
         public string FicheNo { get; set; }
         public string OzelKod { get; set; }

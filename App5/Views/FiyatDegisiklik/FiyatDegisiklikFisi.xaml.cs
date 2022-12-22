@@ -90,11 +90,12 @@ namespace GoldenMobileX.Views
         }
         void RebindSatir()
         {
-
-            viewModel.EtiketBasim.TRN_EtiketBasimEmirleri.RemoveAll(s => s.ProductID_ == null);
-            ListViewSatirlar.ItemsSource = new List<TRN_EtiketBasimEmirleri>(viewModel.EtiketBasim.TRN_EtiketBasimEmirleri.OrderByDescending(s => s.Tarih).ThenByDescending(s => s.ID));
+            if (viewModel.EtiketBasim?.TRN_EtiketBasimEmirleri != null)
+            {
+                viewModel.EtiketBasim.TRN_EtiketBasimEmirleri.RemoveAll(s => s.ProductID_ == null);
+                ListViewSatirlar.ItemsSource = new List<TRN_EtiketBasimEmirleri>(viewModel.EtiketBasim.TRN_EtiketBasimEmirleri.OrderByDescending(s => s.Tarih).ThenByDescending(s => s.ID));
+            }
         }
-
 
  
     }

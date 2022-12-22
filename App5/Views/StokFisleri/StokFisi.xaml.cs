@@ -48,12 +48,16 @@ namespace GoldenMobileX.Views
 
         private async void FisKaydet_Clicked(object sender, EventArgs e)
         {
-            await CheckList();
-            Kaydet();
+            if (!await CheckList())
+                Kaydet();
+
         }
         void Kaydet()
         {
-            viewModel.Trans.Lines.RemoveAll(s => s.Amount == 0);
+            if (viewModel.Trans?.Lines != null)
+            {
+                viewModel.Trans.Lines.RemoveAll(s => s.Amount == 0);
+            }
             if (viewModel.Trans.Status_ == null)
                 viewModel.Trans.Status = appParams.Genel.YeniMalzemeFislerindeDurum;
             else if (viewModel.Trans.Status_.Code == 0)
@@ -84,8 +88,21 @@ namespace GoldenMobileX.Views
         }
         async Task<bool> CheckList()  //Depo transferinde eksik ya da fazla gelen ürünlere fiş oluşturur.
         {
-            if (viewModel.CheckListLines.Count() == 0) { return true; }
+            if (viewModel.CheckListLines.Count() == 0) { return false; }
 
+            DataLayer.WaitingSent.tRN_StockTrans.Where(s => s.ID == viewModel.CheckListLines.FirstOrDefault().StockTransID).FirstOrDefault().Status = 6;
+            await   appSettings.UyariGoster("Gelen fiş onaylanmıştır.");
+
+            //Gelmeyen ürünleri bul
+            foreach (var Line in viewModel.CheckListLines)
+            {
+                var listedekiUrun = viewModel.Trans.Lines.Where(s => s.ProductID == Line.ProductID && s.SeriNo + "" == Line.SeriNo + "" && s.SeriLot == Line.SeriLot && s.BalyaNo == Line.BalyaNo);
+                if (listedekiUrun.Count() == 0)  // Ürün gelmemiş. Geri iade transferi oluştur.
+                {
+                    eksikGelenUrunler.Add(Line);
+                }
+            }
+            //Eksik gelen ürünleri hesapla
             List<TRN_StockTransLines> eksikGelenUrunler = new List<TRN_StockTransLines>();
             foreach (var Line in viewModel.Trans.Lines)
             {
@@ -115,21 +132,18 @@ namespace GoldenMobileX.Views
                 }
             }
             viewModel.Trans.Lines.RemoveAll(s => s.Status == -1);
-            foreach (var Line in viewModel.CheckListLines)
-            {
-                var listedekiUrun = viewModel.Trans.Lines.Where(s => s.ProductID == Line.ProductID && s.SeriNo + "" == Line.SeriNo + "" && s.SeriLot == Line.SeriLot && s.BalyaNo == Line.BalyaNo);
-                if (listedekiUrun.Count() == 0)  // Ürün gelmemiş. Geri iade transferi oluştur.
-                {
-                    eksikGelenUrunler.Add(Line);
-                }
-            }
+
+
             var GelenFis = viewModel.TransList.Where(s => s.ID == viewModel.CheckListLines.FirstOrDefault().StockTransID).FirstOrDefault();
+
+            //Fazla gelen ürünleri bul
             if (viewModel.Trans.Lines.Count() > 0)
             {
                 viewModel.Trans.Status = 6;
                 viewModel.Trans.Notes = GelenFis.StockWareHouseID_.Name + " DEPOSUNDAN FAZLA GELEN ÜRÜNLER.";
+                newAdd = true;
                 Kaydet();
-                appSettings.UyariGoster("Fazladan gelen ürünler vardır. Bunlar farklı bir fişte gelen fiş olarak onaylı bir şekilde kaydedilmiştir..");
+                await appSettings.UyariGoster("Fazladan gelen ürünler vardır. Bunlar farklı bir fişte gelen fiş olarak onaylı bir şekilde kaydedilmiştir..");
             }
 
             if (eksikGelenUrunler.Count() > 0)
@@ -149,18 +163,12 @@ namespace GoldenMobileX.Views
                 };
 
                 viewModel.Trans = newt;
-                appSettings.UyariGoster("Eksik gelen ürünler vardır. Bunlar farklı bir fişte gönderilen ürünler olarak taşıma sürecinde durumu ile kaydedilmiştir.. Karşı taraf eksik gelen ürünleri onayladığında kendi deposuna giriş işlemi yapılacaktır. Bu işlem sizin deponuzu etkilemez.");
+                await appSettings.UyariGoster("Eksik gelen ürünler vardır. Bunlar farklı bir fişte gönderilen ürünler olarak taşıma sürecinde durumu ile kaydedilmiştir.. Karşı taraf eksik gelen ürünleri onayladığında kendi deposuna giriş işlemi yapılacaktır. Bu işlem sizin deponuzu etkilemez.");
+                newAdd = true;
+                Kaydet();
 
-
-                //Fis kaydet methoduna dönüp bu fiş zaten kaydediliyor.
             }
 
-
-
-
-            appSettings.UyariGoster("Gelen fiş onaylanmıştır.");
-            DataLayer.WaitingSent.tRN_StockTrans.Where(s => s.ID == viewModel.CheckListLines.FirstOrDefault().StockTransID).FirstOrDefault().Status = 6;
- 
             return true;
         }
         bool FisKaydetEnabled()
@@ -224,8 +232,11 @@ namespace GoldenMobileX.Views
         }
         void RebindSatir()
         {
-            viewModel.Trans.Lines.RemoveAll(s => s.ProductID == 0);
-            ListViewSatirlar.ItemsSource = new List<TRN_StockTransLines>(viewModel.Trans.Lines).OrderByDescending(s => s.Date).ThenByDescending(s=>s.ID);
+            if (viewModel.Trans?.Lines != null)
+            {
+                viewModel.Trans.Lines.RemoveAll(s => s.ProductID == 0);
+                ListViewSatirlar.ItemsSource = new List<TRN_StockTransLines>(viewModel.Trans.Lines).OrderByDescending(s => s.Date).ThenByDescending(s => s.ID);
+            }
         }
 
 

@@ -7,9 +7,10 @@
              Title="Stok Fişleri">
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Filtrele" x:Name="Filtrele" Clicked="Refresh_Clicked" IconImageSource="Refresh.png"  />
+        <ToolbarItem Text="Yenile" x:Name="Filtrele" Clicked="Refresh_Clicked" IconImageSource="Refresh.png"  />
         <ToolbarItem Text="Yeni Ekle"  IconImageSource="Add.png" x:Name="YeniFis" Clicked="YeniFis_Clicked"  />
-        <ToolbarItem Text="Sunucudaki Fişleri Göster"    x:Name="SunucuFisleri" Clicked="SunucuFisleri_Clicked"  />
+        <ToolbarItem Text="Sunucudaki Fişleri Göster"    x:Name="SunucuFisleri" Clicked="SunucuFisleri_Clicked" Order="Secondary" />
+        <ToolbarItem Text="Cihazdaki Fişleri Göster"    x:Name="CihazFisleri" Clicked="CihazFisleri_Clicked" Order="Secondary" />
     </ContentPage.ToolbarItems>
 
     <ListView ItemsSource="{Binding TransList}"  x:DataType="local:StokFisleriViewModel"  x:Name="listview1" HasUnevenRows="True">
@@ -20,7 +21,6 @@
                     <SwipeView>
                             <SwipeView.LeftItems>
                                 <SwipeItems>
-   
                                     <SwipeItem  IconImageSource="delete.png" Text="Sil" BackgroundColor="LightPink" CommandParameter="{Binding .}"  Invoked="Sil_Clicked"></SwipeItem>
                                     <SwipeItem  IconImageSource="incele.png" Text="Görüntüle" BackgroundColor="LightBlue" CommandParameter="{Binding .}"  Invoked="Goruntule_Clicked"></SwipeItem>
                                 </SwipeItems>
@@ -33,30 +33,22 @@
                                 </SwipeItems>
                         </SwipeView.RightItems>
                         <StackLayout BackgroundColor="{Binding Status_.rowColor}" Padding="3,0,0,0">
-
-
-
                             <StackLayout Orientation="Horizontal"  Padding="3" Margin="3,0,0,0">
-
                                 <StackLayout Orientation="Vertical" HorizontalOptions="StartAndExpand">
                                     <Label Text="{Binding TransDate, StringFormat='{0:dd.MM.yyyy}'}" ></Label>
                                     <StackLayout Orientation="Horizontal">
                                         <Label Text="{Binding StockWareHouseID_.Name}" ></Label>
                                         <Label Text="=>" ></Label>
-                                        <Label Text="{Binding DestStockWareHouseID_.Name}" ></Label>
-
-                                    </StackLayout>
+                                            <Label Text="{Binding DestStockWareHouseID_.Name}" ></Label>
+                                            <Label Text="{Binding ID, StringFormat='Referens No: {0}'}" ></Label>
+                                        </StackLayout>
                                 </StackLayout>
 
                                 <StackLayout Orientation="Vertical"  Padding="0" HorizontalOptions="End" WidthRequest="150" FlowDirection="LeftToRight">
-
                                     <Label Text="{Binding Type_.Name}" ></Label>
                                     <Label Text="{Binding Status_.Name}" ></Label>
-
-
                                     <Label Text="{Binding Notes}"></Label>
                                 </StackLayout>
-
                             </StackLayout>
                         </StackLayout>
                     </SwipeView>

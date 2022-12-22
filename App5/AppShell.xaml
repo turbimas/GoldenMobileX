@@ -122,7 +122,13 @@
 
     </FlyoutItem>
 
-  
+    <FlyoutItem Title="Bakım Onarım" Icon="Wrench.png" x:Name="FlyoutItemBakim">
+        <ShellContent Title="Bakım Onarım" Route="BakimOnarim"  ContentTemplate="{DataTemplate local:BakimOnarim}"  Icon="Wrench.png" />
+        <ShellContent Title="Cihazlar" Route="Cihazlar"  ContentTemplate="{DataTemplate local:Cihazlar}"  Icon="Application.png" />
+    </FlyoutItem>
+
+
+
     <FlyoutItem Title="Sunucu İşlemleri" Icon="server.png" x:Name="FlyoutItemServer">
         <ShellContent Route="GonderAl" ContentTemplate="{DataTemplate local:GonderAl}"  Title="Gönder Al" Icon="kirmizi.png" />
 

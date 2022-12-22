@@ -15,6 +15,7 @@ namespace GoldenMobileX
            Device.SetFlags(new string[] { "SwipeView_Experimental", "AppTheme_Experimental", "Shell_UWP_Experimental" });
 
             InitializeComponent();
+           
             appSettings.User = new Models.X_Users() { ID = 0 };
             //DevExpress.XamarinForms.Editors.Initializer.Init();
             //DevExpress.XamarinForms.DataForm.Initializer.Init();

@@ -96,9 +96,9 @@ namespace GoldenMobileX.Views
         {
 
             bool sayimResult = false;
-            var ayniurun = viewModel.Order.Lines.Where(s => s.ProductID_ != null).Where(s => s != viewModel.Line && s.SeriNo + "" == viewModel.Line.SeriNo + "" && s.ProductID == ((sender as Picker).SelectedItem as V_AllItems).ID);
+            var ayniurun = viewModel.Order.Lines.Where(s => s.ProductID_ != null).Where(s => s != viewModel.Line && s.SeriNo + "" == viewModel.Line.SeriNo + "" && s.ProductID == viewModel.Line.ProductID);
 
-            if (viewModel.Line.ID == -1)
+            if (viewModel.Line.Total == null)
             {
 
             }
@@ -114,7 +114,7 @@ namespace GoldenMobileX.Views
                 }
                 else
                 {
-                    viewModel.Line.ID = -1;
+                    viewModel.Line.Total = viewModel.Line.Amount.convDouble()* viewModel.Line.UnitPrice.convDouble();
                     viewModel.Order.Lines.Add(viewModel.Line);
                 }
             }
