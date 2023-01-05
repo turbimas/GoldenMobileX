@@ -18,12 +18,15 @@
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="model:X_Firms">
                         <ViewCell>
-                            <ViewCell.ContextActions>
-                                <MenuItem Text="Sil"  CommandParameter="{Binding .}" x:Name="Sil" Clicked="Sil_Clicked">
-                                </MenuItem>
-                 
-                            </ViewCell.ContextActions>
-                            <Frame   BorderColor="#ccc" Padding="4" Margin="3" >
+                            <SwipeView>
+                                <SwipeView.RightItems>
+                                    <SwipeItems>
+                                        <SwipeItem  IconImageSource="delete.png" Text="Sil" BackgroundColor="LightPink" CommandParameter="{Binding .}"  Invoked="Sil_Clicked"></SwipeItem>
+                           
+                                    </SwipeItems>
+                                </SwipeView.RightItems>
+             
+                                <Frame   BorderColor="#ccc" Padding="4" Margin="3" >
                             <StackLayout BackgroundColor="{StaticResource Primary}" Padding="8">
                                 <Label Text="{Binding Name,  Mode=TwoWay}" TextColor="{StaticResource TextColor}" FontSize="Title"></Label>
                                     <Label Text="{Binding Server,  Mode=TwoWay}" TextColor="{StaticResource TextColor2}" FontSize="Body"></Label>
@@ -37,11 +40,14 @@
                                     </StackLayout.GestureRecognizers>
                                 </StackLayout>
                             </Frame>
+                                </SwipeView>
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
             <StackLayout>
+                <ActivityIndicator Color="Orange" x:Name="loginActivity"   IsRunning="False" />
+
                 <Label Text="V1.41" x:Name="VersiyonLabel"></Label></StackLayout>
         </StackLayout>
     </ContentPage.Content>

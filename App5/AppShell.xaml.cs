@@ -26,8 +26,8 @@ namespace GoldenMobileX
                 Routing.RegisterRoute(nameof(AboutPage), typeof(AboutPage));
             }
             Routing.RegisterRoute(nameof(Siparisler), typeof(Siparisler));
-            appSettings.OfflineData = new Models.offlineData();
-            appSettings.LocalSettings = new Models.localSettings();
+            appSettings.OfflineData = new appSettings.offlineData();
+            appSettings.LocalSettings = new appSettings.localSettings();
 
             flyoutItemFinans = FlyoutItemFinans;
             flyoutItemSatinAlma = FlyoutItemSatinAlma;

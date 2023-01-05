@@ -111,10 +111,10 @@ public static class TurbimJSON
     }
 
 
-    static string JsonPath<T>(this T o)
+  public  static string JsonPath<T>(this T o)
     {
         var basePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-        return Path.Combine(basePath, appSettings.CurrentFirm + o.GetType().Name + ".json");
+        return Path.Combine(basePath, appSettings.CurrentFirm + "_" + appSettings.User.ID+"_" + o.GetType().Name + ".json");
     }
 }
 

@@ -81,7 +81,7 @@ namespace GoldenMobileX.Views
         bool SeriNoKontrolEt = true;
         private void SatirEntrySeriNo_Unfocused(object sender, FocusEventArgs e)
         {
-            if ((sender as DevExpress.XamarinForms.Editors.TextEdit).Text + "" == "") return;
+            if (SatirEntrySeriNo.Text + "" == "") return;
             List<V_AllItems> itm = DataLayer.V_AllItems.AsEnumerable().Where(x => x.Barcode == SatirEntrySeriNo.Text).ToList();
          
             if (itm.Count() == 0)
@@ -214,7 +214,7 @@ namespace GoldenMobileX.Views
 
         private async void SatirKaydet_Clicked(object sender, EventArgs e)
         {
-            if (viewModel.Line.Amount == 0)
+            if (viewModel.Line.Amount == 0 || viewModel.Line.Amount==null)
             {
                 appSettings.UyariGoster("Lütfen miktar giriniz.");
                 SatirEntryAmount.Focus();
@@ -272,7 +272,7 @@ namespace GoldenMobileX.Views
 
             BtnKaydet.IsEnabled = false;
             RebindSatirlar();
-            appSettings.OfflineData.TRN_StockTransLines = new List<TRN_StockTransLines>(viewModel.Trans.Lines.Where(s => s.StockTransID == 0));
+            appSettings.OfflineData.TRN_StockTransLines = new List<TRN_StockTransLines>(viewModel.Trans.Lines.Where(s => s.StockTransID == 0 || s.StockTransID==null));
             appSettings.OfflineData.SaveXML();
             SatirEntrySeriNo.Focus();
         }
@@ -285,7 +285,7 @@ namespace GoldenMobileX.Views
                 var checkEdilecekUrun = viewModel.CheckListLines.Where(s => s.ProductID == viewModel.Line.ProductID && s.SeriNo + "" == viewModel.Line.SeriNo + "" && s.SeriLot == viewModel.Line.SeriLot && s.BalyaNo == viewModel.Line.BalyaNo);
                 if (checkEdilecekUrun.Count() > 0)
                 {
-                    if ((bulunanurun.FirstOrDefault()?.Amount).convDouble() + viewModel.Line.Amount > (checkEdilecekUrun.FirstOrDefault()?.Amount))
+                    if ((bulunanurun.FirstOrDefault()?.Amount).convDouble() + viewModel.Line.Amount.convDouble() > (checkEdilecekUrun.FirstOrDefault()?.Amount))
                     {
                         Vibration.Vibrate(2000);
                         if (!await appSettings.Onay("Bu ürün fazla gelmiş. İşleme devam edecek misiniz?")) return false;
@@ -328,7 +328,8 @@ namespace GoldenMobileX.Views
                 {
                     Navigation.PopAsync();
                     SatirEntrySeriNo.Text = result.Text;
-                    SatirEntrySeriNo_Unfocused(null, null);
+                    SatirEntrySeriNo_Unfocused(SatirEntrySeriNo, null);
+                    SatirEntrySeriNo_Completed(null, null);
                 });
             };
             await Navigation.PushAsync(scanPage);

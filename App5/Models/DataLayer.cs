@@ -11,16 +11,18 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
-
+using GoldenMobileX.ViewModels;
 class DataLayer
 {
     public DataLayer()
     {
 
     }
-    public static void LoadStaticData()
+    public async static void LoadStaticData()
     {
         SqlLiteInitDataBase();
+        await Device.InvokeOnMainThreadAsync(() => appSettings.activity.viewModel = new BaseViewModel() { activityText = "Sqlite database initialized.." });
+
         offLineMod = true;
         CRD = new offLine.CRD();
         Products = new offLine.Products();
@@ -219,13 +221,18 @@ class DataLayer
         //LocalDataBase.CreateTableAsync<TRN_StockTrans>().Wait();
         //ProductDataBase.CreateTableAsync<TRN_StockTransLines>().Wait();
 
+        await Device.InvokeOnMainThreadAsync(() => appSettings.activity.viewModel = new BaseViewModel() { activityText = "JSON data yükleniyor.." });
 
         DataLayer.Types = TurbimJSON.Read<offLine.Types>(new offLine.Types());  //0
+        await Device.InvokeOnMainThreadAsync(() => appSettings.activity.viewModel = new BaseViewModel() { activityText = "JSON types yükleniyor.." });
         LoadTypes();
+        await Device.InvokeOnMainThreadAsync(() => appSettings.activity.viewModel = new BaseViewModel() { activityText = "JSON CRD yükleniyor.." });
         DataLayer.CRD = TurbimJSON.Read<offLine.CRD>(new offLine.CRD());  //1
-       
+        await Device.InvokeOnMainThreadAsync(() => appSettings.activity.viewModel = new BaseViewModel() { activityText = "JSON Products yükleniyor.." });
         DataLayer.Products = TurbimJSON.Read<offLine.Products>(new offLine.Products());  //2
+        await Device.InvokeOnMainThreadAsync(() => appSettings.activity.viewModel = new BaseViewModel() { activityText = "JSON Cari yükleniyor.." });
         DataLayer.Cari = TurbimJSON.Read<offLine.Cari>(new offLine.Cari());  //3 
+        await Device.InvokeOnMainThreadAsync(() => appSettings.activity.viewModel = new BaseViewModel() { activityText = "JSON waitingsent yükleniyor.." });
         DataLayer.WaitingSent = TurbimJSON.Read<offLine.WaitingSent>(new offLine.WaitingSent());  //4
         if (DataLayer.Products.v_AllItems.Count == 0) LoadDataFromSQL(true);
     }
@@ -383,19 +390,20 @@ class DataLayer
     #region Online
     public static List<TRN_StockTrans> TRN_StockTransGelenTransfer()
     {
-        using (GoldenContext c = new GoldenContext())
+        try
         {
-            if (DataLayer.Depolar.Count() == 0)
+            using (GoldenContext c = new GoldenContext())
             {
-                appSettings.UyariGoster("İşlem yapabileceğiniz bir depo bulunmamaktadır.");
-                return new List<TRN_StockTrans>();
-            }
-            if (IsOfflineAlert)
-            {
-                return new List<TRN_StockTrans>();
-            }
-            try
-            {
+                if (DataLayer.Depolar.Count() == 0)
+                {
+                    appSettings.UyariGoster("İşlem yapabileceğiniz bir depo bulunmamaktadır.");
+                    return new List<TRN_StockTrans>();
+                }
+                if (IsOfflineAlert)
+                {
+                    return new List<TRN_StockTrans>();
+                }
+
                 int warehouse = (appSettings.User.WareHouseID + "").convInt();
                 List<TRN_StockTrans> trn_StockTrans = c.TRN_StockTrans.Where(s => s.Status == 4 && s.Type == 2 && s.DestStockWareHouseID == warehouse).Select(s => s).OrderByDescending(s => s.ID).ToList();
 
@@ -407,33 +415,58 @@ class DataLayer
                         DataLayer.WaitingSent.tRN_StockTrans.Add(t);
                     }
                 }
+
+                return DataLayer.WaitingSent.tRN_StockTrans;
             }
-            catch (Exception ex)
-            {
-                appSettings.UyariGoster(ex.Message + " " + ex.InnerException?.Message);
-            }
-            return DataLayer.WaitingSent.tRN_StockTrans;
+        }
+        catch (Exception ex)
+        {
+            Task.Run(() => ex.UyariGoster());
+            return new List<TRN_StockTrans>();
         }
     }
     public static List<TRN_StockTransLines> TRN_StockTransLines(int TransID)
     {
+        try { 
         using (GoldenContext c = new GoldenContext())
         {
             return c.TRN_StockTransLines.Where(s => s.StockTransID == TransID).OrderByDescending(s => s.ID).ToList();
         }
+        }
+        catch (Exception ex)
+        {
+            Task.Run(() => ex.UyariGoster());
+            return new List<TRN_StockTransLines>();
+        }
     }
     public static List<TRN_StockTransLines> TRN_StockTransLinesByProductID(int ProductID)
     {
-        using (GoldenContext c = new GoldenContext())
+        try
         {
-            return c.TRN_StockTransLines.Where(s => s.ProductID == ProductID).OrderByDescending(s => s.ID).ToList();
+            using (GoldenContext c = new GoldenContext())
+            {
+                return c.TRN_StockTransLines.Where(s => s.ProductID == ProductID).OrderByDescending(s => s.ID).ToList();
+            }
+        }
+        catch (Exception ex)
+        {
+            Task.Run(() => ex.UyariGoster());
+            return new List<TRN_StockTransLines>();
         }
     }
-    public static void TRN_StockTransInsert(TRN_StockTrans t)
+    public static void TRN_StockTransInsert(TRN_StockTrans t, bool showError = true)
     {
-        if (t.ID > 0 && t.Status != 6 && t.Status != 1)
+        if (t.ID > 0 && t.Status != 6 && t.Status != 1 )
         {
-            appSettings.UyariGoster("Bu işlem sunucuya gönderilmiş. Tekrar gönderemezsiniz.");
+            if (showError)
+                appSettings.UyariGoster("Bu işlem sunucuya gönderilmiş. Tekrar gönderemezsiniz.");
+            DataLayer.MoveToAnotherList(DataLayer.WaitingSent.tRN_StockTrans, DataLayer.Sent.tRN_StockTrans, t);
+            DataLayer.WaitingSent.SaveJSON();
+            DataLayer.Sent.SaveJSON();
+            return;
+        }
+        if (t.ID > 0 && t.Status == 4 && t.DestStockWareHouseID == appSettings.User.WareHouseID)
+        {
             return;
         }
         if (IsOfflineAlert) return;
@@ -476,6 +509,8 @@ class DataLayer
                 {
                     c.Database.RollbackTransaction();
                     t.ID = 0;
+                    foreach (var l in t.Lines)
+                        l.ID = 0;
                 }
             }
 
@@ -489,44 +524,52 @@ class DataLayer
             return c.CRD_ItemBarcodes.Where(s => s.UrunID == UrunID).OrderByDescending(s => s.ID).ToList();
         }
     }
-    public static void TRN_EtiketBasimInsert(TRN_EtiketBasim t)
+    public static void TRN_EtiketBasimInsert(TRN_EtiketBasim t, bool showError=true)
     {
         if (t.ID > 0)
         {
-            appSettings.UyariGoster("Bu işlem sunucuya gönderilmiş. Tekrar gönderemezsiniz.");
+            if (showError)
+                appSettings.UyariGoster("Bu işlem sunucuya gönderilmiş. Tekrar gönderemezsiniz.");
+            DataLayer.MoveToAnotherList(DataLayer.WaitingSent.TRN_EtiketBasim, DataLayer.Sent.TRN_EtiketBasim, t);
+            DataLayer.WaitingSent.SaveJSON();
+            DataLayer.Sent.SaveJSON();
             return;
         }
         if (IsOfflineAlert) return;
 
         if (!DataLayer.IsOfflineAlert)
         {
-            using (GoldenContext c = new GoldenContext())
+            try
             {
-                c.Database.BeginTransaction();
-                c.TRN_EtiketBasim.Add(t);
-                if (!c.SaveContextWithException()) return;
-                if (t.ID > 0)
+                using (GoldenContext c = new GoldenContext())
                 {
-                    foreach (var l in t.TRN_EtiketBasimEmirleri)
+                    c.Database.BeginTransaction();
+                    c.TRN_EtiketBasim.Add(t);
+                    if (!c.SaveContextWithException()) return;
+                    if (t.ID > 0)
                     {
-                        l.FisID = t.ID;
+                        foreach (var l in t.TRN_EtiketBasimEmirleri)
+                        {
+                            l.FisID = t.ID;
 
-                        c.TRN_EtiketBasimEmirleri.Add(l);
+                            c.TRN_EtiketBasimEmirleri.Add(l);
+                        }
+                        if (c.SaveContextWithException())
+                        {
+                            c.Database.CommitTransaction();
+                            DataLayer.MoveToAnotherList(DataLayer.WaitingSent.TRN_EtiketBasim, DataLayer.Sent.TRN_EtiketBasim, t);
+                            DataLayer.WaitingSent.SaveJSON();
+                            DataLayer.Sent.SaveJSON();
+                        }
+                        else
+                            c.Database.RollbackTransaction();
                     }
-                    if (c.SaveContextWithException())
-                    {
-                        c.Database.CommitTransaction();
-                        DataLayer.MoveToAnotherList(DataLayer.WaitingSent.TRN_EtiketBasim, DataLayer.Sent.TRN_EtiketBasim, t);
-                        DataLayer.WaitingSent.SaveJSON();
-                        DataLayer.Sent.SaveJSON();
-                    }
-                    else
-                        c.Database.RollbackTransaction();
                 }
 
-
-
-
+            }
+            catch (Exception ex)
+            {
+                Task.Run(() => ex.UyariGoster());
             }
         }
     }
@@ -545,11 +588,15 @@ class DataLayer
     }
     #endregion
     #region TRN_Orders
-    public static void TRN_OrdersInsert(TRN_Orders t)
+    public static void TRN_OrdersInsert(TRN_Orders t, bool showError = true)
     {
         if (t.ID > 0)
         {
-            appSettings.UyariGoster("Bu işlem sunucuya gönderilmiş. Tekrar gönderemezsiniz.");
+            if (showError)
+                appSettings.UyariGoster("Bu işlem sunucuya gönderilmiş. Tekrar gönderemezsiniz.");
+            DataLayer.MoveToAnotherList(DataLayer.WaitingSent.tRN_Orders, DataLayer.Sent.tRN_Orders, t);
+            DataLayer.WaitingSent.SaveJSON();
+            DataLayer.Sent.SaveJSON();
             return;
         }
         if (IsOfflineAlert) return;
@@ -593,11 +640,18 @@ class DataLayer
     public static List<V_CariHareketler> V_CariHareketler(int CariID)
     {
         if (IsOfflineAlert) return new List<V_CariHareketler>();
-        using (GoldenContext c = new GoldenContext())
+        try
         {
-            return c.V_CariHareketler.Where(s => s.CariID == CariID).OrderByDescending(s => s.ID).ToList();
+            using (GoldenContext c = new GoldenContext())
+            {
+                return c.V_CariHareketler.Where(s => s.CariID == CariID).OrderByDescending(s => s.ID).ToList();
+            }
         }
- 
+        catch (Exception ex)
+        {
+            Task.Run(() => ex.UyariGoster());
+            return new List<V_CariHareketler>();
+        }
     }
     public static List<TRN_Files> TRN_Files(int RecordID)
     {
@@ -664,11 +718,18 @@ class DataLayer
         }
         return lst;
     }
-    public static void MoveToAnotherList<T>(List<T> source, List<T> dest, T o)
+    public static  void MoveToAnotherList<T>(List<T> source, List<T> dest, T o)
     {
-        dest.Add(o);
-        dest = new List<T>(dest);
-        source.Remove(o);
+        try
+        {
+            dest.Add(o);
+            dest = new List<T>(dest);
+            source.Remove(o);
+        }
+        catch (Exception ex)
+        {
+            Task.Run(() => appSettings.UyariGoster(ex.Message));
+        }
     }
 
     public  static SQLite.SQLiteAsyncConnection LocalDataBase { get; set; }

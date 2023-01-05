@@ -87,6 +87,21 @@ namespace GoldenMobileX.Views
 
         private async void SatirKaydet_Clicked(object sender, EventArgs e)
         {
+
+          if( DataLayer.V_AllItems.Where(s=>s.ID==viewModel.EtiketBasimEmirleri.ProductID).Count()>1 && viewModel.EtiketBasim.TRN_EtiketBasimEmirleri.Where(s=>s.ProductID==viewModel.EtiketBasimEmirleri.ProductID).Count()==1)
+            {
+                if(await appSettings.Onay("Bu ürüne ait farklı varyantlar mevcut. Onlarında fiyatları güncellensin mi?"))
+                {
+                    foreach(var i in DataLayer.V_AllItems.Where(s => s.ID == viewModel.EtiketBasimEmirleri.ProductID && s.Barcode!= viewModel.EtiketBasimEmirleri.ProductID_.Barcode))
+                    {
+                        viewModel.EtiketBasimEmirleri = viewModel.EtiketBasimEmirleri as TRN_EtiketBasimEmirleri;
+                        viewModel.EtiketBasimEmirleri.Barkod = i.Barcode;
+                        viewModel.EtiketBasim.TRN_EtiketBasimEmirleri.Add(viewModel.EtiketBasimEmirleri);
+                    }
+                }
+            }
+
+
             viewModel.EtiketBasimEmirleri = new TRN_EtiketBasimEmirleri();
             viewModel.EtiketBasimEmirleri.Tarih = DateTime.Now; //Sıralama için
             viewModel.EtiketBasim.TRN_EtiketBasimEmirleri.Add(viewModel.EtiketBasimEmirleri);

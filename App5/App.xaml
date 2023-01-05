@@ -75,6 +75,7 @@
             <Style TargetType="dxe:NumericEdit"  x:Key="InputsBaseStyle"  >
                 <Setter Property="TextColor" Value="#333"></Setter>
                 <Setter Property="TextFontSize" Value="12"></Setter>
+                <Setter Property="AffixFontSize" Value="12"></Setter>
                 <Setter Property="BoxPadding" Value="11"></Setter>
                 <Setter Property="HorizontalOptions" Value="FillAndExpand"></Setter>
             </Style>

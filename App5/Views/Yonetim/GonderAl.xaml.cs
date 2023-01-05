@@ -29,6 +29,7 @@ namespace GoldenMobileX.Views
             };
             bt2.Clicked += BtStokKayit_Clicked;
             StackContent.Children.Add(bt2);
+            OtomatikSenkronize.IsChecked = appSettings.LocalSettings.OnlineOluncaOtomatikAktarim;
         }
 
         private async void BtStokKayit_Clicked(object sender, EventArgs e)
@@ -82,14 +83,26 @@ namespace GoldenMobileX.Views
             DataLayer.LocalDataBase.ExecuteAsync("DELETE FROM V_AllItems");
             DataLayer.v_DepodakiLotlar.Clear();
             DataLayer.LocalDataBase.ExecuteAsync("DELETE FROM V_DepodakiLotlar");
-       
+
+
             DataLayer.CRD = new OfflineData.offLine.CRD();
-            DataLayer.CRD.SaveJSON();
-            DataLayer.Products.SaveJSON();
+            if (System.IO.File.Exists(DataLayer.CRD.JsonPath()))
+                System.IO.File.Delete(DataLayer.CRD.JsonPath());
+            if (System.IO.File.Exists(DataLayer.Products.JsonPath()))
+                System.IO.File.Delete(DataLayer.Products.JsonPath());
+
             DataLayer.Cari = new OfflineData.offLine.Cari();
-            DataLayer.Cari.SaveJSON();
+            if (System.IO.File.Exists(DataLayer.Cari.JsonPath()))
+                System.IO.File.Delete(DataLayer.Cari.JsonPath());
             DataLayer.Types = new OfflineData.offLine.Types();
-            DataLayer.Types.SaveJSON();
+            if (System.IO.File.Exists(DataLayer.Types.JsonPath()))
+                System.IO.File.Delete(DataLayer.Types.JsonPath());
+        }
+
+        private void OtomatikSenkronize_CheckedChanged(object sender, EventArgs e)
+        {
+            appSettings.LocalSettings.OnlineOluncaOtomatikAktarim = (OtomatikSenkronize.IsChecked).convBool();
+            appSettings.LocalSettings.SaveXML();
         }
     }
 }

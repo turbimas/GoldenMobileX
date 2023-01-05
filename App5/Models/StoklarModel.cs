@@ -376,6 +376,36 @@ namespace GoldenMobileX.Models
 
     public class TRN_StockTrans
     {
+        [NotMapped]
+        public bool Duzenlenebilir { get;set; }
+        public Nullable<int> Type
+        {
+            get
+            {
+                return (Type_?.Code).convInt();
+            }
+            set
+            {
+                Type_ = DataLayer.x_types_stokfisi.Where(x => x.Code == value).FirstOrDefault();
+            }
+        }
+        [NotMapped]
+        public X_Types Type_ { get; set; }
+
+
+        public Nullable<int> Status
+        {
+            get
+            {
+                return Status_.Code;
+            }
+            set
+            {
+                Status_ = DataLayer.x_types_satisdurum.Where(x => x.Code == value).FirstOrDefault();
+            }
+        }
+        [NotMapped]
+        public X_Types Status_ { get; set; }
         public Nullable<int> CariID
         {
             get
@@ -406,34 +436,7 @@ namespace GoldenMobileX.Models
         public string SoforTC { get; set; }
         public string SevkNo { get; set; }
         
-        public Nullable<int> Type
-        {
-            get
-            {
-                return (Type_?.Code).convInt();
-            }
-            set
-            {
-                Type_ = DataLayer.x_types_stokfisi.Where(x => x.Code == value).FirstOrDefault();
-            }
-        }
-        [NotMapped]
-        public X_Types Type_ { get; set; }
 
-        
-        public Nullable<int> Status
-        {
-            get
-            {
-                return Status_.Code;
-            }
-            set
-            {
-                Status_ = DataLayer.x_types_satisdurum.Where(x => x.Code == value).FirstOrDefault();
-            }
-        }
-        [NotMapped]
-        public X_Types Status_ { get; set; }
         public string OzelKod { get; set; }
         public Nullable<System.DateTime> TransDate { get; set; }
         public Nullable<System.DateTime> DueDate { get; set; }

@@ -44,7 +44,8 @@ namespace GoldenMobileX.Views
             {
                 IsBusy = true;
 
-                viewModel.TransList = DataLayer.WaitingSent.tRN_StockTrans.OrderByDescending(s=>s.TransDate).ToList();
+                viewModel.TransList = DataLayer.WaitingSent.tRN_StockTrans.OrderByDescending(s => s.TransDate).ToList();
+                viewModel.TransList.ForEach(s => s.Duzenlenebilir = true);
                 this.BindingContext = new StokFisleriViewModel() { TransList = new List<TRN_StockTrans>(viewModel.TransList), CheckListLines = new List<TRN_StockTransLines>() };
                 IsBusy = false;
             }
@@ -210,7 +211,8 @@ namespace GoldenMobileX.Views
                 {
                     int user = appSettings.User.ID;
                     int warehouse = appSettings.User.WareHouseID.convInt();
-                    List<TRN_StockTrans> t = new List<TRN_StockTrans>(c.TRN_StockTrans.Where(s => s.CreatedBy == user || s.DestStockWareHouseID == warehouse || s.StockWareHouseID == warehouse).Select(s => s)).OrderByDescending(s => s.ID).ToList();
+                    List<TRN_StockTrans> t = new List<TRN_StockTrans>(c.TRN_StockTrans.Where(s => s.CreatedBy == user || s.DestStockWareHouseID == warehouse || s.StockWareHouseID == warehouse).Select(s =>s)).OrderByDescending(s => s.ID).ToList();
+                    t.ForEach(s => s.Duzenlenebilir = false);
                     if (t.Count() > 0)
                         listview1.ItemsSource = t;
                     else

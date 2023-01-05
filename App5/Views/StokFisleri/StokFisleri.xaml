@@ -21,15 +21,15 @@
                     <SwipeView>
                             <SwipeView.LeftItems>
                                 <SwipeItems>
-                                    <SwipeItem  IconImageSource="delete.png" Text="Sil" BackgroundColor="LightPink" CommandParameter="{Binding .}"  Invoked="Sil_Clicked"></SwipeItem>
+                                    <SwipeItem  IconImageSource="delete.png" Text="Sil" BackgroundColor="LightPink" CommandParameter="{Binding .}"  Invoked="Sil_Clicked" IsVisible="{Binding Duzenlenebilir}"></SwipeItem>
                                     <SwipeItem  IconImageSource="incele.png" Text="Görüntüle" BackgroundColor="LightBlue" CommandParameter="{Binding .}"  Invoked="Goruntule_Clicked"></SwipeItem>
                                 </SwipeItems>
                             </SwipeView.LeftItems>
                             <SwipeView.RightItems>
                             <SwipeItems>
-                                    <SwipeItem  IconImageSource="edit.png" Text="Düzenle" BackgroundColor="LightBlue" CommandParameter="{Binding .}"  Invoked="Duzenle_Clicked"></SwipeItem>
-                                    <SwipeItem  IconImageSource="server.png" Text="Sunucuya Gönder" BackgroundColor="LightYellow" CommandParameter="{Binding .}"  Invoked="SunucuyaGonder_Invoked"></SwipeItem>
-                                    <SwipeItem  IconImageSource="onay.png" Text="Onayla" BackgroundColor="LightGreen" CommandParameter="{Binding .}"  Invoked="Onayla_Clicked"></SwipeItem>
+                                    <SwipeItem  IconImageSource="edit.png" Text="Düzenle" BackgroundColor="LightBlue" CommandParameter="{Binding .}"  Invoked="Duzenle_Clicked"  IsVisible="{Binding Duzenlenebilir}"></SwipeItem>
+                                    <SwipeItem  IconImageSource="server.png" Text="Sunucuya Gönder" BackgroundColor="LightYellow" CommandParameter="{Binding .}"  Invoked="SunucuyaGonder_Invoked"  IsVisible="{Binding Duzenlenebilir}"></SwipeItem>
+                                    <SwipeItem  IconImageSource="onay.png" Text="Onayla" BackgroundColor="LightGreen" CommandParameter="{Binding .}"  Invoked="Onayla_Clicked"  IsVisible="{Binding Duzenlenebilir}"></SwipeItem>
                                 </SwipeItems>
                         </SwipeView.RightItems>
                         <StackLayout BackgroundColor="{Binding Status_.rowColor}" Padding="3,0,0,0">

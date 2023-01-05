@@ -13,6 +13,7 @@ namespace GoldenMobileX.Models
     {
         public Nullable<double> Value { get; set; }
     }
+ 
     public partial class TRN_Files
     {
         public int ID  { get; set; }

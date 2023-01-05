@@ -73,8 +73,15 @@ namespace GoldenMobileX.Views
                 viewModel.Trans.CreatedDate = DateTime.Now;
             }
 
-
+            foreach (var s in viewModel.Trans.Lines)
+            {
+                s.UnitPrice = s.ProductID_.UnitPrice;
+                s.Direction = viewModel.Trans.Type_.Direction;
+                s.Total = s.UnitPrice * s.Amount;
+            }
             viewModel.Trans.Total = viewModel.Trans.Lines.Sum(x => x.Total).convDouble(2);
+        
+
             if (newAdd)
                 DataLayer.WaitingSent.tRN_StockTrans.Add(viewModel.Trans);
             DataLayer.WaitingSent.SaveJSON();
@@ -92,7 +99,7 @@ namespace GoldenMobileX.Views
 
             DataLayer.WaitingSent.tRN_StockTrans.Where(s => s.ID == viewModel.CheckListLines.FirstOrDefault().StockTransID).FirstOrDefault().Status = 6;
             await   appSettings.UyariGoster("Gelen fiş onaylanmıştır.");
-
+            List<TRN_StockTransLines> eksikGelenUrunler = new List<TRN_StockTransLines>();
             //Gelmeyen ürünleri bul
             foreach (var Line in viewModel.CheckListLines)
             {
@@ -103,7 +110,6 @@ namespace GoldenMobileX.Views
                 }
             }
             //Eksik gelen ürünleri hesapla
-            List<TRN_StockTransLines> eksikGelenUrunler = new List<TRN_StockTransLines>();
             foreach (var Line in viewModel.Trans.Lines)
             {
                 var checkEdilecekUrun = viewModel.CheckListLines.Where(s => s.ProductID == Line.ProductID && s.SeriNo + "" == Line.SeriNo + "" && s.SeriLot == Line.SeriLot && s.BalyaNo == Line.BalyaNo);

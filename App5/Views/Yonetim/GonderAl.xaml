@@ -2,13 +2,15 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="GoldenMobileX.Views.GonderAl"
+                           xmlns:dxe="clr-namespace:DevExpress.XamarinForms.Editors;assembly=DevExpress.XamarinForms.Editors"  
              Title="Sunucuya Gönder / Al">
     <ContentPage.Content>
         <StackLayout x:Name="StackContent">
 
             <Button Text="Cihazdaki verileri temizle"  Clicked="Temizle_Clicked"/>
             <Button Text="Sunucudan Güncel Verileri Al"  Clicked="Guncelle_Clicked"/>
+            <dxe:CheckEdit Label="Online olduğunda verileri otomatik senkronize et" x:Name="OtomatikSenkronize" CheckedChanged="OtomatikSenkronize_CheckedChanged"></dxe:CheckEdit>
         </StackLayout>
-       
+
     </ContentPage.Content>
 </ContentPage>

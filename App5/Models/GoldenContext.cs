@@ -17,7 +17,6 @@ namespace GoldenMobileX.Models
         {
 
             System.Data.SqlClient.SqlConnection sqlConnection = new System.Data.SqlClient.SqlConnection(TurbimSQLHelper.connBuilder.ToString());
-            sqlConnection.Open();
             optionsBuilder.UseSqlServer(sqlConnection);
 
 

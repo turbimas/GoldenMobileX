@@ -1,16 +1,25 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="GoldenMobileX.Views.Controls.Popup">
-  <ContentView.Content>
-        <ContentView x:Name="popupLoadingView" BackgroundColor="#C0808080" Padding="10, 0" IsVisible="false" AbsoluteLayout.LayoutBounds="0, 0, 1, 1" AbsoluteLayout.LayoutFlags="All">
-            <StackLayout VerticalOptions="Center" HorizontalOptions="Center">
-                <StackLayout Orientation="Vertical" HeightRequest="150" WidthRequest="200" BackgroundColor="White">
 
-                    <ActivityIndicator x:Name="activityIndicator" Margin="0,50,0,0" VerticalOptions="Center" HorizontalOptions="Center" Color="Black" WidthRequest="30" HeightRequest="30" ></ActivityIndicator>
-                    <Label x:Name="lblLoadingText" TextColor="Black" VerticalOptions="Center" HorizontalOptions="Center" VerticalTextAlignment="Center" Text="Yükleniyor..."></Label>
-                </StackLayout>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="GoldenMobileX.Views.Popup" 
+             xmlns:local="clr-namespace:GoldenMobileX.ViewModels"  
+             xmlns:model="clr-namespace:GoldenMobileX.Models"  
+             x:Name="popupLoadingView" 
+             BackgroundColor="#C0808080" 
+             Padding="10, 0" 
+             AbsoluteLayout.LayoutBounds="0, 0, 100, 100" 
+             AbsoluteLayout.LayoutFlags="All">
+
+    <Frame HasShadow="True"  BorderColor="{StaticResource Primary}"  BackgroundColor="{StaticResource Primary}" CornerRadius="10" VerticalOptions="Center" HorizontalOptions="Center"  HeightRequest="200" WidthRequest="300" x:DataType="local:BaseViewModel"   >
+            <StackLayout x:Name="mainStack" Orientation="Vertical">
+
+                <ActivityIndicator Color="White" x:Name="activityIndicator" Margin="0,50,0,0" VerticalOptions="Center" HorizontalOptions="Center"   WidthRequest="50" HeightRequest="50" IsRunning="True">
+
+                </ActivityIndicator>
+            <Label x:Name="lblLoadingText" TextColor="White" VerticalOptions="Center" HorizontalOptions="Center" VerticalTextAlignment="Center" Text="{Binding activityText}"></Label>
+
             </StackLayout>
-        </ContentView>
-    </ContentView.Content>
-</ContentView>
+        </Frame>
+
+</ContentPage>

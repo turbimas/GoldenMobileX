@@ -30,7 +30,7 @@
                     <dxe:TextEdit  Keyboard="Numeric"  HorizontalOptions="FillAndExpand" x:Name="SatirEntrySeriNo"   LabelText="Barkod" Completed="SatirEntrySeriNo_Completed"  Unfocused="SatirEntrySeriNo_Unfocused" Text="{Binding Line.SeriNo, Mode=TwoWay}"></dxe:TextEdit>
 
                     <dxe:NumericEdit  ClearIcon="Delete.png" ClearIconVisibility="Auto"
-                        x:Name="SatirEntryAmount"  AllowNullValue="True"   HorizontalOptions="FillAndExpand"   LabelText="Miktar" MaxDecimalDigitCount="2" Completed="SatirEntryAmount_Completed"
+                        x:Name="SatirEntryAmount"  AllowNullValue="True"   HorizontalOptions="FillAndExpand"    LabelText="Miktar" MaxDecimalDigitCount="2" Completed="SatirEntryAmount_Completed"
                         Value="{Binding Line.Amount, Mode=TwoWay }"   >
                         
                     </dxe:NumericEdit>

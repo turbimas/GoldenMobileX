@@ -19,6 +19,8 @@ namespace GoldenMobileX.ViewModels
             set { SetProperty(ref isBusy, value); }
         }
 
+        public string activityText { get; set; }
+
         string title = string.Empty;
         public string Title
         {

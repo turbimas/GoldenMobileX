@@ -19,7 +19,12 @@ using System.Collections.Concurrent;
 
 public static class appSettings
 {
-    static ActivityIndicator activityIndicator = new ActivityIndicator { IsRunning = false, Color = Color.Blue };
+    public static Popup activity = new Popup() {
+        viewModel = new GoldenMobileX.ViewModels.BaseViewModel()
+        {
+            activityText = "Lütfen Bekleyiniz..."
+        }
+    };
 
 
     public static async Task UyariGoster(string txt, string baslik = "Uyarı", string cancel = "TAMAM")
@@ -37,7 +42,6 @@ public static class appSettings
         set
         {
             _isbusy = value;
-            activityIndicator.IsRunning = value;
           
         }
     }
@@ -187,15 +191,79 @@ public static class appSettings
     static string IDler = "";
 
 
- 
- 
-    public static localSettings LocalSettings
+    public static localSettings LocalSettings { get; set; }
+    public static offlineData OfflineData { get; set; }
+    public class localSettings
     {
-        get;set;
+        public localSettings()
+        {
+            Firms = new List<X_Firms>();
+            UserSettings = new List<X_UserSettings>();
+        }
+        List<X_Firms> _Firms;
+        public List<X_Firms> Firms { get { if (_Firms == null) _Firms = new List<X_Firms>(); return _Firms; } set { _Firms = value; } }
+
+        static List<X_UserSettings> _UserSettings;
+        public List<X_UserSettings> UserSettings { get { if (_UserSettings == null) _UserSettings = new List<X_UserSettings>(); return _UserSettings; } set { _UserSettings = value; } }
+
+        bool _onlineAktarim = false;
+
+        public bool OnlineOluncaOtomatikAktarim
+        {
+            get { return _onlineAktarim; }
+            set
+            {
+                _onlineAktarim = value;
+                if (appSettings.User != null)
+                    if (appSettings.User.ID > 0)
+                        if (DataLayer.IsOnline)
+                            if (_onlineAktarim)
+                                Device.StartTimer(new TimeSpan(0, 3, 0), () =>
+                                {
+                                    Device.BeginInvokeOnMainThread(() =>
+                                    {
+                                        if (DataLayer.WaitingSent.tRN_StockTrans.Count() > 0)
+                                        {
+                                            for (int i = 1; i <= DataLayer.WaitingSent.tRN_StockTrans.Count(); i++)
+                                                DataLayer.TRN_StockTransInsert(DataLayer.WaitingSent.tRN_StockTrans.Take(1).First(), false);
+                                        }
+                                        if (DataLayer.WaitingSent.tRN_Orders.Count() > 0)
+                                        {
+                                            for (int i = 1; i <= DataLayer.WaitingSent.tRN_Orders.Count(); i++)
+                                                DataLayer.TRN_OrdersInsert(DataLayer.WaitingSent.tRN_Orders.Take(1).First(), false);
+                                        }
+                                        if (DataLayer.WaitingSent.TRN_EtiketBasim.Count() > 0)
+                                        {
+                                            for (int i = 1; i <= DataLayer.WaitingSent.TRN_EtiketBasim.Count(); i++)
+                                                DataLayer.TRN_EtiketBasimInsert(DataLayer.WaitingSent.TRN_EtiketBasim.Take(1).First(), false);
+                                        }
+                                    });
+                                    return value; // runs again, or false to stop
+                    });
+            }
+        }
     }
-    public static offlineData OfflineData
+    public  class offlineData
     {
-        get; set;
+        public offlineData()
+        {
+            SQLListToRun = new List<string>();
+            JSON_TRN_StockTransListToRun = new List<string>();
+            TRN_StockTransLines = new List<TRN_StockTransLines>();
+        }
+        public  List<string> SQLListToRun
+        {
+            get; set;
+        }
+
+
+        public  List<string> JSON_TRN_StockTransListToRun
+        {
+            get; set;
+        }
+
+        public  List<TRN_StockTransLines> TRN_StockTransLines
+        { get; set; }
     }
 
     public static void MenuYetkileri()

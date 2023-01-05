@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:local="clr-namespace:GoldenMobileX.ViewModels"  
              mc:Ignorable="d"
              x:Class="GoldenMobileX.Views.LoginPage"
              Shell.NavBarIsVisible="True"
@@ -14,6 +15,7 @@
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Kullanıcı Ayarlarını Temizle"  IconImageSource="No.png" Clicked="ToolbarItem_Clicked" Order="Secondary" />
         <ToolbarItem Text="Veritabanı Güncelle"  IconImageSource="No.png" Clicked="Guncelle_Clicked"  Order="Secondary" />
+        <ToolbarItem Text="Çıkış"  IconImageSource="No.png" Clicked="Cikis_Clicked"  Order="Secondary" />
     </ContentPage.ToolbarItems>
 
     <ContentPage.Content> 
@@ -32,8 +34,8 @@
             <Button VerticalOptions="Center" Text="Giriş" Command="{Binding LoginCommand}" x:Name="btnLogin"
                     Clicked="Button_Clicked"/>
 
-                  <ActivityIndicator Color="Orange" x:Name="loginActivity"  IsVisible="False" IsRunning="True" />
-            <controls:Popup x:Name="p1"></controls:Popup>
+ 
+ 
         </StackLayout>
 
 

@@ -68,7 +68,10 @@ namespace GoldenMobileX.Views
 
         private async void Firms_Tapped(object sender, EventArgs e)
         {
-            appSettings.isBusy = true;
+ 
+            await Navigation.PushModalAsync(appSettings.activity);
+            Task.Delay(500).Wait();
+    
             var mi = sender as StackLayout;
             appSettings.ApiURL = "";
            X_Firms f = (X_Firms)((TapGestureRecognizer)mi.GestureRecognizers.First()).CommandParameter;
@@ -95,7 +98,7 @@ namespace GoldenMobileX.Views
                 else
                     appSettings.UyariGoster("Lütfen bağlantı ayarlarını kontrol ediniz. İnternete bağlı olduğunuzdan emin olununuz..");
             }
-            appSettings.isBusy = false;
+            Navigation.PopModalAsync();
         }
 
         private async void Sil_Clicked(object sender, EventArgs e)
@@ -105,7 +108,7 @@ namespace GoldenMobileX.Views
 
             if (await appSettings.Onay(f.Name+ " bağlantısı silinecektir. Onaylıyor musunuz?"))
             {
-                appSettings.LocalSettings.Firms.Remove(appSettings.LocalSettings.Firms.Where(x => x.Name == f.Name).FirstOrDefault());
+                appSettings.LocalSettings.Firms.Remove(f);
                 appSettings.LocalSettings.SaveXML();
 
                 Rebind();

@@ -115,10 +115,13 @@
 
     <FlyoutItem Title="Satış Pazarlama" Icon="Up.png" x:Name="FlyoutItemSatisPazarlama">
         <ShellContent Title="Siparişler" Route="Siparisler"  ContentTemplate="{DataTemplate local:Siparisler}"  Icon="kirmizi.png" />
-        
+        <ShellContent Title="Teklifler" Route="SatisTeklifleri"  ContentTemplate="{DataTemplate local:SatisTeklifleri}"  Icon="kirmizi.png" />
+
     </FlyoutItem>
     <FlyoutItem Title="Satınalma" Icon="Down.png" x:Name="FlyoutItemSatinAlma">
         <ShellContent Title="Satın Alma Talepleri" Route="SatinAlmaTalepleri"  ContentTemplate="{DataTemplate local:SatinAlmaTalepleri}"  Icon="kirmizi.png" />
+        <ShellContent Title="Satın Alma Teklifleri" Route="SatinAlmaTeklifleri"  ContentTemplate="{DataTemplate local:SatinAlmaTeklifleri}"  Icon="kirmizi.png" />
+        <ShellContent Title="Satın Alma Siparişleri" Route="SatinAlmaSiparisleri"  ContentTemplate="{DataTemplate local:SatinAlmaSiparisleri}"  Icon="kirmizi.png" />
 
     </FlyoutItem>
 
