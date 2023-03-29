@@ -1,8 +1,4 @@
-﻿using GoldenMobileX.Models;
-using Xamarin.Forms;
-using System.Linq;
-using System;
-using System.Threading.Tasks;
+﻿using Xamarin.Forms;
 namespace GoldenMobileX.Views.Controls
 {
     public class NumericInput : Entry

@@ -1,17 +1,14 @@
 ﻿using GoldenMobileX.Models;
 using GoldenMobileX.OfflineData;
+using GoldenMobileX.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
-using GoldenMobileX.ViewModels;
 class DataLayer
 {
     public DataLayer()
@@ -116,12 +113,14 @@ class DataLayer
 
     public static List<X_Currency> X_Currency
     {
-        get { return Types.X_Currency; } set { Types.X_Currency = value; }
+        get { return Types.X_Currency; }
+        set { Types.X_Currency = value; }
     }
 
     public static List<CRD_Cari> Cariler
     {
-        get { return Cari.cRD_Cari; } set { Cari.cRD_Cari = value; }
+        get { return Cari.cRD_Cari; }
+        set { Cari.cRD_Cari = value; }
     }
 
     public static List<V_AllItems> V_AllItems
@@ -191,8 +190,8 @@ class DataLayer
     public static List<X_Types> x_types_stokfisi { get; set; }
     public static List<X_Types> x_types_Invoice { get; set; }
     public static List<X_Types> x_types_siparisTuru { get; set; }
-    public static List<X_Types> x_types_satisdurum { get; set; }
-    public static List<X_Types> x_types_satinalmadurum { get; set; }
+    public static List<X_Types> x_types_SatisSiparisleriDurum { get; set; }
+    public static List<X_Types> x_types_SatinAlmaSiparisleriDurum { get; set; }
 
 
     static void LoadTypes()
@@ -202,8 +201,8 @@ class DataLayer
         x_types_stokfisi = X_Types.Where(x => x.TableName == "TRN_StockTrans" && x.ColumnsName == "Type").ToList();
         x_types_Invoice = X_Types.Where(x => x.TableName == "TRN_Invoice" && x.ColumnsName == "Type").ToList();
         x_types_siparisTuru = X_Types.Where(x => x.TableName == "Orders" && x.ColumnsName == "Type").ToList();
-        x_types_satisdurum = X_Types.Where(x => x.TableName == "Orders" && x.ColumnsName == "Status").ToList();
-        x_types_satinalmadurum = X_Types.Where(x => x.TableName == "SatinAlma" && x.ColumnsName == "Durum").ToList();
+        x_types_SatisSiparisleriDurum = X_Types.Where(x => x.TableName == "OrderStatus" && x.ColumnsName == "5").ToList();
+        x_types_SatinAlmaSiparisleriDurum = X_Types.Where(x => x.TableName == "OrderStatus" && x.ColumnsName == "3").ToList();
     }
     static async void LoadDataFromJSON()
     {
@@ -234,7 +233,7 @@ class DataLayer
         DataLayer.Cari = TurbimJSON.Read<offLine.Cari>(new offLine.Cari());  //3 
         await Device.InvokeOnMainThreadAsync(() => appSettings.activity.viewModel = new BaseViewModel() { activityText = "JSON waitingsent yükleniyor.." });
         DataLayer.WaitingSent = TurbimJSON.Read<offLine.WaitingSent>(new offLine.WaitingSent());  //4
-        if (DataLayer.Products.v_AllItems.Count == 0) LoadDataFromSQL(true);
+  LoadDataFromSQL(true);
     }
     public static void LoadDataFromSQL(bool FromServer = false)
     {
@@ -322,7 +321,7 @@ class DataLayer
             }
             catch (Exception ex)
             {
-                appSettings.UyariGoster("V_AllItems : " + ex.Message +  ex.InnerException?.Message);
+                appSettings.UyariGoster("V_AllItems : " + ex.Message + ex.InnerException?.Message);
             }
             try
             {
@@ -340,7 +339,7 @@ class DataLayer
                     DataLayer.v_DepodakiLotlar.AddRange(items.Where(s => DataLayer.v_DepodakiLotlar.Where(t => t.HareketID == s.HareketID).Count() == 0));
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 appSettings.UyariGoster("V_DepodakiLotlar : " + ex.Message + ex.InnerException?.Message);
             }
@@ -427,11 +426,12 @@ class DataLayer
     }
     public static List<TRN_StockTransLines> TRN_StockTransLines(int TransID)
     {
-        try { 
-        using (GoldenContext c = new GoldenContext())
+        try
         {
-            return c.TRN_StockTransLines.Where(s => s.StockTransID == TransID).OrderByDescending(s => s.ID).ToList();
-        }
+            using (GoldenContext c = new GoldenContext())
+            {
+                return c.TRN_StockTransLines.Where(s => s.StockTransID == TransID).OrderByDescending(s => s.ID).ToList();
+            }
         }
         catch (Exception ex)
         {
@@ -456,7 +456,7 @@ class DataLayer
     }
     public static void TRN_StockTransInsert(TRN_StockTrans t, bool showError = true)
     {
-        if (t.ID > 0 && t.Status != 6 && t.Status != 1 )
+        if (t.ID > 0 && t.Status != 6 && t.Status != 1)
         {
             if (showError)
                 appSettings.UyariGoster("Bu işlem sunucuya gönderilmiş. Tekrar gönderemezsiniz.");
@@ -490,7 +490,7 @@ class DataLayer
                     l.DestStockWareHouseID = t.DestStockWareHouseID;
                     l.Date = t.TransDate;
                     l.Type = t.Type_.Code;
-                    l.Status = t.Status_.Code;
+                    l.Status = t.Status_?.Code;
                     if (DataLayer.DepolakiLotlar?.Count() > 0)
                         DataLayer.DepolakiLotlar.Add(new V_DepodakiLotlar() { ProductID = l.ProductID, SeriLot = l.SeriLot, SeriNo = l.SeriNo, LotID = l.LotID, BalyaNo = l.BalyaNo, Miktar = (l.Amount * l.Direction).convDouble(), Direction = l.Direction, Date = l.Date, Depo = (l.Direction == 1 ? l.DestStockWareHouseID : l.StockWareHouseID), PaketNo = l.PaketNo, WorkOrderID = l.WorkOrderID });
                     if (l.ID > 0)
@@ -524,7 +524,7 @@ class DataLayer
             return c.CRD_ItemBarcodes.Where(s => s.UrunID == UrunID).OrderByDescending(s => s.ID).ToList();
         }
     }
-    public static void TRN_EtiketBasimInsert(TRN_EtiketBasim t, bool showError=true)
+    public static void TRN_EtiketBasimInsert(TRN_EtiketBasim t, bool showError = true)
     {
         if (t.ID > 0)
         {
@@ -622,10 +622,10 @@ class DataLayer
                 }
                 else
                     c.Database.RollbackTransaction();
- 
+
 
             }
- 
+
         }
     }
     public static List<TRN_OrderLines> TRN_OrderLines(int OrderID)
@@ -634,7 +634,7 @@ class DataLayer
         {
             return c.TRN_OrderLines.Where(s => s.OrderID == OrderID).OrderByDescending(s => s.ID).ToList();
         }
-   
+
     }
     #endregion
     public static List<V_CariHareketler> V_CariHareketler(int CariID)
@@ -658,9 +658,9 @@ class DataLayer
         if (IsOfflineAlert) return new List<TRN_Files>();
         using (GoldenContext c = new GoldenContext())
         {
-            return c.TRN_Files.Where(s => s.TableName == "Items" && s.RecordID==RecordID).OrderByDescending(s => s.ID).ToList();
+            return c.TRN_Files.Where(s => s.TableName == "Items" && s.RecordID == RecordID).OrderByDescending(s => s.ID).ToList();
         }
-     }
+    }
     public static IEnumerable<T> ExecuteObject<T>(string sql)
     {
         List<T> items = new List<T>();
@@ -718,7 +718,7 @@ class DataLayer
         }
         return lst;
     }
-    public static  void MoveToAnotherList<T>(List<T> source, List<T> dest, T o)
+    public static void MoveToAnotherList<T>(List<T> source, List<T> dest, T o)
     {
         try
         {
@@ -732,11 +732,11 @@ class DataLayer
         }
     }
 
-    public  static SQLite.SQLiteAsyncConnection LocalDataBase { get; set; }
+    public static SQLite.SQLiteAsyncConnection LocalDataBase { get; set; }
     public static void SqlLiteInitDataBase()
     {
         var basePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-        LocalDataBase = new SQLite.SQLiteAsyncConnection(System.IO.Path.Combine(basePath, appSettings.CurrentFirm  + "LocalDataBase.sqlite"));
+        LocalDataBase = new SQLite.SQLiteAsyncConnection(System.IO.Path.Combine(basePath, appSettings.CurrentFirm + "LocalDataBase.sqlite"));
 
     }
 

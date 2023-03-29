@@ -1,25 +1,16 @@
 ﻿using GoldenMobileX.Models;
 using GoldenMobileX.ViewModels;
-using GoldenMobileX.Views;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Data;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using ZXing.Net.Mobile.Forms;
 
 namespace GoldenMobileX.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class FiyatDegisiklikFisleri : ContentPage
     {
- 
+
         StokFisleriViewModel viewModel
         {
             get { return (StokFisleriViewModel)BindingContext; }
@@ -31,7 +22,7 @@ namespace GoldenMobileX.Views
             Rebind();
 
         }
- 
+
         void Rebind()
         {
             try
@@ -50,9 +41,9 @@ namespace GoldenMobileX.Views
             {
                 IsBusy = false;
             }
-      
+
         }
- 
+
 
 
         private void Fm_Disappearing(object sender, EventArgs e)
@@ -60,7 +51,7 @@ namespace GoldenMobileX.Views
             Rebind();
         }
 
-      
+
 
         private void Filtrele_Clicked(object sender, EventArgs e)
         {
@@ -78,26 +69,26 @@ namespace GoldenMobileX.Views
             fm.Disappearing += Fm_Disappearing;
 
 
- 
+
             if ((t.Tarih).convDateTime().Date < DateTime.Now.Date)
             {
                 appSettings.UyariGoster("Geçmiş tarihli fişleri değiştiremezsiniz.");
                 return;
             }
-            
+
             viewModel.EtiketBasim = t;
             fm.viewModel = viewModel;
 
             Navigation.PushAsync(fm);
         }
 
- 
+
 
         private void Sil_Clicked(object sender, EventArgs e)
         {
             var mi = sender as SwipeItem;
             TRN_EtiketBasim t = (TRN_EtiketBasim)mi.CommandParameter;
- 
+
             DataLayer.WaitingSent.TRN_EtiketBasim.Remove(t);
             DataLayer.WaitingSent.SaveJSON();
             Rebind();

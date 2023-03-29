@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using System.Text;
 
 namespace GoldenMobileX.Models
 {
 
     public class TRN_Orders
     {
-         public int ID { get; set; }
+        public int ID { get; set; }
         public Guid UniqueID { get; set; }
         public Nullable<int> TalepID { get; set; }
         public Nullable<int> TeklifID { get; set; }
@@ -23,7 +22,7 @@ namespace GoldenMobileX.Models
             }
             set
             {
-                Status_ = DataLayer.x_types_satisdurum.Where(x => x.Code == value).FirstOrDefault();
+                Status_ = DataLayer.x_types_SatisSiparisleriDurum.Where(x => x.Code == value).FirstOrDefault();
             }
         }
         [NotMapped]

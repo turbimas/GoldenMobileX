@@ -1,14 +1,12 @@
 ﻿using GoldenMobileX.Models;
-using Xamarin.Forms;
 using System.Linq;
-using System;
-using System.Threading.Tasks;
+using Xamarin.Forms;
 
 namespace GoldenMobileX.Views.Controls
 {
     class GoldenEntryProductPicker : DevExpress.XamarinForms.Editors.TextEdit
     {
- 
+
         public GoldenEntryProductPicker()
         {
             this.Focused += GoldenEntryProductPicker_Focused;
@@ -16,7 +14,7 @@ namespace GoldenMobileX.Views.Controls
             this.LabelText = "Ürün";
         }
 
- 
+
 
         private void GoldenProductPicker_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {

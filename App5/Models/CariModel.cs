@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Linq;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 namespace GoldenMobileX.Models
 {
@@ -30,7 +29,7 @@ namespace GoldenMobileX.Models
             }
             set
             {
-               CardType_ = DataLayer.x_types_carihesap.AsParallel().Where(x => x.Code == value).FirstOrDefault();
+                CardType_ = DataLayer.x_types_carihesap.AsParallel().Where(x => x.Code == value).FirstOrDefault();
             }
         }
         public string Phone { get; set; }
@@ -65,13 +64,13 @@ namespace GoldenMobileX.Models
         public Nullable<bool> Cinsiyet { get; set; }
         public Nullable<int> Uyruk { get; set; }
 
-        public Nullable<double> Bakiye { get; set; }
-        public Nullable<double> DovizliBakiye { get; set; }
-        public Nullable<double> CekSenetBakiye { get; set; }
-        public Nullable<double> PuanBakiye { get; set; }
+        public Nullable<decimal> Bakiye { get; set; }
+        public Nullable<decimal> DovizliBakiye { get; set; }
+        public Nullable<decimal> CekSenetBakiye { get; set; }
+        public Nullable<decimal> PuanBakiye { get; set; }
         public string Password { get; set; }
-        public Nullable<double> USDBakiye { get; set; }
-        public Nullable<double> EUROBakiye { get; set; }
+        public Nullable<decimal> USDBakiye { get; set; }
+        public Nullable<decimal> EUROBakiye { get; set; }
 
 
 
@@ -109,12 +108,12 @@ namespace GoldenMobileX.Models
     }
     public class V_CariHareketler
     {
- 
+
         [NotMapped]
         public X_Currency CurrencyID_ { get; set; }
 
         public Nullable<int> ProjectID { get; set; }
-        public Nullable<int> CurrencyID { get {return  CurrencyID_.CurrencyNumber; } set { CurrencyID_ = DataLayer.X_Currency.Where(s => s.CurrencyNumber == value).FirstOrDefault(); } }
+        public Nullable<int> CurrencyID { get { return CurrencyID_.CurrencyNumber; } set { CurrencyID_ = DataLayer.X_Currency.Where(s => s.CurrencyNumber == value).FirstOrDefault(); } }
         public int ID { get; set; }
         public Nullable<int> CariID { get; set; }
         public Nullable<double> Tutar { get; set; }

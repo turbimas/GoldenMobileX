@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Net;
-using System.IO;
-using System.Drawing;
-using System.Text.RegularExpressions;
-using System.Web;
 using System.Data;
-
-using System.Security.Cryptography;
+using System.IO;
 using System.IO.Compression;
+using System.Net;
+using System.Security.Cryptography;
+using System.Text;
+using System.Text.RegularExpressions;
 // getinnertex'te end text yok ise starttext ten sonrasını vermesi sağlandı,ignorecase removed _return = Regex.Split(text, starttext, RegexOptions.Compiled | RegexOptions.IgnoreCase)[1];
 // 1.3.2.4 Encrypt, Decrypt eklendi
 //1.3.2.6 Selectfilesfrompath eklendi
@@ -30,7 +27,7 @@ using System.IO.Compression;
 public class TurbimTools
 {
 
-    public static string SaveRemoteFile(string url, string savepath, bool showProgress=false)
+    public static string SaveRemoteFile(string url, string savepath, bool showProgress = false)
     {
         if (savepath.Substring(savepath.Length - 5, 5).IndexOf(".") < 0)
             savepath = savepath + "/" + url.Split(@"/".ToCharArray())[url.Split(@"/".ToCharArray()).Length - 1];
@@ -51,14 +48,14 @@ public class TurbimTools
     /// <param name="url"></param>
     /// <param name="savepath"></param>
     /// <returns></returns>
-    public static string GetRemotePage(string url, string cookies="")
+    public static string GetRemotePage(string url, string cookies = "")
     {
         string _return = "";
         using (WebClient client = new WebClient())
         {
-            if(cookies!="")
+            if (cookies != "")
             {
-                
+
                 client.Headers.Add("Cookie", cookies);
             }
             //client.Headers.Add(HttpRequestHeader.AcceptLanguage, "tr-TR");
@@ -66,7 +63,7 @@ public class TurbimTools
 
             //client.Encoding = Encoding.UTF8;  // Sonradan eklendi kodu bozabilir.
             StreamReader sr = new StreamReader(client.OpenRead(url), Encoding.UTF8, true);
-           
+
             _return = sr.ReadToEnd();
         }
         return _return;
@@ -118,7 +115,7 @@ public class TurbimTools
     public static string[] getinnertexts(string text, string starttext, string endtext, bool onlyinner)
     {
         string[] _return = new string[Regex.Split(text, starttext).Length];
-        int i = 0;    
+        int i = 0;
         foreach (string str in Regex.Split(text, starttext))
         {
             _return[i] = Regex.Split(str, endtext)[0];
@@ -146,7 +143,7 @@ public class TurbimTools
     public static List<string> getinnertexts(string text, char startchar, char endchar, bool onlyinner, int maxtextlength)
     {
         List<string> _return = new List<string>();
-        
+
         if (text.Length == 0)
         {
             _return.Add("Text length larger then zero");
@@ -154,7 +151,7 @@ public class TurbimTools
         }
 
 
-        string selecttext="";
+        string selecttext = "";
         bool select = false;
         foreach (char c in text.ToCharArray())
         {
@@ -324,7 +321,7 @@ public class TurbimTools
         catch { }
         return _return;
     }
- 
+
 
     public static byte[] UncompressFile(byte[] docData)
     {
@@ -407,7 +404,7 @@ public class TurbimTools
                 DirectoryCopy(subdir.FullName, temppath, copySubDirs, overwrite);
             }
         }
-    }  
+    }
 
 
 
@@ -418,11 +415,11 @@ public class TurbimTools
         {
             dt.Columns.Add(str);
         }
-        string[] values= new string[dt.Columns.Count];
+        string[] values = new string[dt.Columns.Count];
         int j = 0;
         foreach (string str in Regex.Split(GetRemotePage(filepath), "\n"))
         {
-            int i =0;
+            int i = 0;
             foreach (string val in str.Split(@";".ToCharArray()))
             {
                 values[i] = val;
@@ -441,7 +438,7 @@ public class TurbimTools
     }
 
 
-    public  static string Encrypt(string text, string key)
+    public static string Encrypt(string text, string key)
     {
         byte[] Key;
         byte[] IV = new byte[8];
@@ -470,7 +467,7 @@ public class TurbimTools
             return ex.Message;
         }
     }
-    public  static string Decrypt(string text, string key)
+    public static string Decrypt(string text, string key)
     {
         byte[] bkey;
         byte[] IV = new byte[8];
@@ -495,13 +492,13 @@ public class TurbimTools
             System.Text.Encoding encoding = System.Text.Encoding.UTF8;
             return encoding.GetString(ms.ToArray());
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             return ex.Message;
         }
     }
 
-    public   static string CompressString(string text)
+    public static string CompressString(string text)
     {
         byte[] buffer = Encoding.UTF8.GetBytes(text);
         MemoryStream memoryStream = new MemoryStream();
@@ -526,7 +523,7 @@ public class TurbimTools
     /// </summary>
     /// <param name="compressedText">The compressed text.</param>
     /// <returns></returns>
-    public   static string DecompressString(string compressedText)
+    public static string DecompressString(string compressedText)
     {
         byte[] gZipBuffer = Convert.FromBase64String(compressedText);
         using (MemoryStream memoryStream = new MemoryStream())
@@ -554,7 +551,7 @@ public class TurbimTools
         tw.Write("<table border=" + borderwidth + "><tr>");
         foreach (DataColumn dc in datatable.Columns)
         {
-            tw.Write("<th>"+dc.Caption + "</th>");
+            tw.Write("<th>" + dc.Caption + "</th>");
         }
         tw.Write("</tr>");
         foreach (DataRow dr in datatable.Rows)
@@ -566,8 +563,8 @@ public class TurbimTools
                 tw.Write("<td>" + dr[i] + "</td>");
                 if (i == datatable.Columns.Count - 1)
                     tw.WriteLine("</tr>");
-                    
-                  
+
+
             }
         }
         tw.Write("</table>");
@@ -578,11 +575,11 @@ public class TurbimTools
     public static string DataTableToHTMLTable(DataTable datatable, int borderwidth)
     {
 
-        string  _return=("<table border=" + borderwidth + "><tr>");
+        string _return = ("<table border=" + borderwidth + "><tr>");
 
         foreach (DataColumn dc in datatable.Columns)
         {
-            _return+=("<th>" + dc.Caption + "</th>");
+            _return += ("<th>" + dc.Caption + "</th>");
         }
         _return += ("</tr>");
         foreach (DataRow dr in datatable.Rows)

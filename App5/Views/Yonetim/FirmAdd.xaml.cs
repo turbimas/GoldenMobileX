@@ -1,9 +1,6 @@
 ﻿using GoldenMobileX.Models;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -78,11 +75,11 @@ namespace GoldenMobileX.Views
         private void IsApi_Toggled(object sender, ToggledEventArgs e)
         {
             bool isapi = (sender as Switch).IsToggled;
-            if(isapi)
+            if (isapi)
             {
                 UserInfo.IsVisible = false;
                 EntryVeriTabani.IsVisible = false;
-                
+
             }
             else
             {

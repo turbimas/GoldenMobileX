@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Web;
 using Xamarin.Forms;
 /// <summary>
 /// Summary description for conv
@@ -25,9 +22,9 @@ public class conv
             return 0;
         }
     }
-    public static double ToDouble(object obj, int decimalPlaces=-1)
+    public static double ToDouble(object obj, int decimalPlaces = -1)
     {
-        if (obj+"" == "")
+        if (obj + "" == "")
             return 0;
         try
         {
@@ -89,7 +86,7 @@ public class conv
     }
     public static string ToShortSqlDate(object obj)
     {
-        if (obj+"" == "")
+        if (obj + "" == "")
             return "1900-01-01";
         try
         {
@@ -251,7 +248,7 @@ public static class convExtensions
 
         try
         {
-            return " '"+obj + "' ";
+            return " '" + obj + "' ";
         }
         catch
         {
@@ -273,7 +270,7 @@ public static class convExtensions
 
     public static int convInt(this object obj)
     {
-        if (obj+"" == "")
+        if (obj + "" == "")
             return 0;
         try
         {
@@ -314,7 +311,7 @@ public static class convExtensions
             return 0;
         }
     }
- 
+
     public static decimal convDecimal(this object obj, int decimalplace = 4)
     {
         return Convert.ToDecimal(obj.convDouble().ToString("F" + decimalplace));

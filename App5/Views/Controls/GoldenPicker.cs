@@ -1,24 +1,22 @@
-﻿using GoldenMobileX.Models;
+﻿using System;
 using Xamarin.Forms;
-using System.Linq;
-using System;
 
 namespace GoldenMobileX.Views.Controls
 {
-    class  GoldenPicker : Picker
+    class GoldenPicker : Picker
     {
         public static EventHandler ItemSelected;
 
         public GoldenPicker()
         {
             this.Focused += GoldenPicker_Focused;
-    
+
         }
 
         private void GoldenPicker_Focused(object sender, FocusEventArgs e)
         {
             Stoklar fm = new Stoklar();
- 
+
 
             fm.ItemSelected += (s2, e2) =>
             {

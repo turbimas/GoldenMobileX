@@ -1,13 +1,11 @@
-﻿using System;
+﻿using SQLiteNetExtensions.Attributes;
+using System;
 using System.Collections.Generic;
-using System.Text;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Xml.Serialization;
-using System.ComponentModel;
-using SQLite;
-using SQLiteNetExtensions.Attributes;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
 
 namespace GoldenMobileX.Models
 {
@@ -64,7 +62,7 @@ namespace GoldenMobileX.Models
         public string MuhasebeKodu { get; set; }
         public string Ozellikler { get; set; }
         public string TradeMark { get; set; }
-        [XmlElement, DefaultValue(11)]    
+        [XmlElement, DefaultValue(11)]
         public Nullable<int> UnitID
         {
             get
@@ -85,7 +83,7 @@ namespace GoldenMobileX.Models
             }
             set
             {
-               Type_= DataLayer.x_types_stokkarti.AsParallel().Where(x => x.Code == value).FirstOrDefault();
+                Type_ = DataLayer.x_types_stokkarti.AsParallel().Where(x => x.Code == value).FirstOrDefault();
             }
         }
         public X_Types Type_ { get; set; }
@@ -129,7 +127,7 @@ namespace GoldenMobileX.Models
         public Nullable<System.DateTime> ModifiedDate { get; set; }
         public Nullable<double> Agirlik { get; set; }
         public Nullable<double> Derinlik { get; set; }
-  
+
         [OneToMany]
         public virtual ICollection<CRD_ItemProperties> CRD_ItemProperties { get; set; }
     }
@@ -157,7 +155,7 @@ namespace GoldenMobileX.Models
     }
     public partial class V_AllItems
     {
-         public int ID { get; set; }
+        public int ID { get; set; }
 
 
         public Nullable<int> UnitID
@@ -237,12 +235,12 @@ namespace GoldenMobileX.Models
         public Nullable<bool> WebInSale { get; set; }
         public Nullable<bool> WebCanShipped { get; set; }
     }
- 
+
 
     public class CRD_StockWareHouse
     {
         public int ID { get; set; }
- 
+
         public string AuthCode { get; set; }
         public string Name { get; set; }
         public Nullable<double> Kapasite { get; set; }
@@ -273,7 +271,7 @@ namespace GoldenMobileX.Models
             }
             set
             {
-                CariID_= DataLayer.Cariler.AsParallel().Where(x => x.ID == value).FirstOrDefault();
+                CariID_ = DataLayer.Cariler.AsParallel().Where(x => x.ID == value).FirstOrDefault();
             }
         }
         [NotMapped]
@@ -296,7 +294,7 @@ namespace GoldenMobileX.Models
             }
             set
             {
-                Type_= DataLayer.x_types_Invoice.AsParallel().Where(x => x.Code == value).FirstOrDefault();
+                Type_ = DataLayer.x_types_Invoice.AsParallel().Where(x => x.Code == value).FirstOrDefault();
             }
         }
         [NotMapped]
@@ -329,7 +327,7 @@ namespace GoldenMobileX.Models
         {
             get
             {
-                return CurrencyID_.CurrencyNumber;
+                return CurrencyID_?.CurrencyNumber;
             }
             set
             {
@@ -338,7 +336,7 @@ namespace GoldenMobileX.Models
         }
         [NotMapped]
         public X_Currency CurrencyID_ { get; set; }
-        
+
         public Nullable<double> CurrencyRate { get; set; }
         public Nullable<bool> Cancelled { get; set; }
         public Nullable<int> CreatedBy { get; set; }
@@ -352,7 +350,7 @@ namespace GoldenMobileX.Models
         public string EInvoiceXML { get; set; }
         public Nullable<bool> KabulRed { get; set; }
         public Nullable<int> EntegratorID { get; set; }
-        
+
         public Nullable<int> WareHouseID
         {
             get
@@ -366,7 +364,7 @@ namespace GoldenMobileX.Models
         }
         [NotMapped]
         public CRD_StockWareHouse WareHouseID_ { get; set; }
-        
+
         public Nullable<double> StopajOrani { get; set; }
         public Nullable<int> IhracatID { get; set; }
         public string CariCode { get; set; }
@@ -377,7 +375,7 @@ namespace GoldenMobileX.Models
     public class TRN_StockTrans
     {
         [NotMapped]
-        public bool Duzenlenebilir { get;set; }
+        public bool Duzenlenebilir { get; set; }
         public Nullable<int> Type
         {
             get
@@ -397,11 +395,11 @@ namespace GoldenMobileX.Models
         {
             get
             {
-                return Status_.Code;
+                return (Status_?.Code).convInt();
             }
             set
             {
-                Status_ = DataLayer.x_types_satisdurum.Where(x => x.Code == value).FirstOrDefault();
+                Status_ = DataLayer.x_types_SatisSiparisleriDurum.Where(x => x.Code == value).FirstOrDefault();
             }
         }
         [NotMapped]
@@ -414,7 +412,7 @@ namespace GoldenMobileX.Models
             }
             set
             {
-                CariID_= DataLayer.Cariler.Where(x => x.ID == value).FirstOrDefault();
+                CariID_ = DataLayer.Cariler.Where(x => x.ID == value).FirstOrDefault();
             }
         }
         [NotMapped]
@@ -435,7 +433,7 @@ namespace GoldenMobileX.Models
         public string SoforTelefon { get; set; }
         public string SoforTC { get; set; }
         public string SevkNo { get; set; }
-        
+
 
         public string OzelKod { get; set; }
         public Nullable<System.DateTime> TransDate { get; set; }
@@ -448,7 +446,7 @@ namespace GoldenMobileX.Models
         public string KonteynerNo { get; set; }
         public string KonteynerAracPlaka { get; set; }
         public Nullable<int> KonteynerTipID { get; set; }
-        
+
         public Nullable<int> StockWareHouseID
         {
             get
@@ -457,10 +455,10 @@ namespace GoldenMobileX.Models
             }
             set
             {
-               StockWareHouseID_ = DataLayer.Depolar.Where(x => x.ID == value).FirstOrDefault();
+                StockWareHouseID_ = DataLayer.Depolar.Where(x => x.ID == value).FirstOrDefault();
             }
         }
-        
+
         public Nullable<int> DestStockWareHouseID
         {
             get
@@ -469,7 +467,7 @@ namespace GoldenMobileX.Models
             }
             set
             {
-                DestStockWareHouseID_= DataLayer.Depolar.Where(x => x.ID == value).FirstOrDefault();
+                DestStockWareHouseID_ = DataLayer.Depolar.Where(x => x.ID == value).FirstOrDefault();
             }
         }
         [NotMapped]
@@ -485,7 +483,7 @@ namespace GoldenMobileX.Models
         public string IrsaliyeNotlari { get; set; }
 
         public Nullable<int> DeliveryAdressID { get; set; }
-        [OneToMany] 
+        [OneToMany]
         [NotMapped] //  [System.ComponentModel.DataAnnotations.Schema.ForeignKey("StockTransID")]
         public List<TRN_StockTransLines> Lines { get; set; }
 
@@ -528,7 +526,7 @@ namespace GoldenMobileX.Models
         public Nullable<int> OrderLinesID { get; set; }
         public Nullable<int> WorkOrderID { get; set; }
         public Nullable<int> PromosyonID { get; set; }
-        public Nullable<double> PromosyonTutari { get; set; }
+        public Nullable<decimal> PromosyonTutari { get; set; }
         public string SpeCode { get; set; }
         public Nullable<int> Status { get; set; }
         public Nullable<int> InvoiceID { get; set; }
@@ -553,9 +551,9 @@ namespace GoldenMobileX.Models
         public Nullable<bool> Guarantee { get; set; }
         public Nullable<int> ProductType { get; set; }
         public string LineExp { get; set; }
-        public Nullable<double> Amount { get; set; }
-        public Nullable<double> RealAmount { get; set; }
-        public Nullable<double> OrderAmount { get; set; }
+        public Nullable<decimal> Amount { get; set; }
+        public Nullable<decimal> RealAmount { get; set; }
+        public Nullable<decimal> OrderAmount { get; set; }
         public Nullable<double> UnitPrice { get; set; }
         public Nullable<double> PerakendeFiyati { get; set; }
         public Nullable<double> LineTotal { get; set; }
@@ -566,11 +564,11 @@ namespace GoldenMobileX.Models
         public Nullable<double> Discount3 { get; set; }
         public Nullable<double> DiscountRate3 { get; set; }
         public Nullable<System.DateTime> SonKullanmaTarihi { get; set; }
-        public Nullable<double> Total { get; set; }
+        public Nullable<decimal> Total { get; set; }
         public Nullable<int> CurrencyID { get; set; }
         public Nullable<double> CurrencyRate { get; set; }
         public Nullable<double> TaxRate { get; set; }
-        public Nullable<double> TotalTax { get; set; }
+        public Nullable<decimal> TotalTax { get; set; }
         public Nullable<int> AddTaxID { get; set; }
         public string TevkifatOrani { get; set; }
         public Nullable<int> WorkerOrOutServiceID { get; set; }
@@ -594,7 +592,7 @@ namespace GoldenMobileX.Models
         public Nullable<int> CaseNo { get; set; }
         public Nullable<int> AuthBy { get; set; }
         public Nullable<bool> PosTrans { get; set; }
-        public Nullable<double> MalKabulAmount { get; set; }
+        public Nullable<decimal> MalKabulAmount { get; set; }
         public string CariCode { get; set; }
         public Nullable<double> Dara { get; set; }
         public string FisNo { get; set; }

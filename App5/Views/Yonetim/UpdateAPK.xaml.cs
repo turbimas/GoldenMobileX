@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
-using Xamarin.Essentials;
 using Xamarin.Forms;
-using Xamarin.Forms.PlatformConfiguration;
 using Xamarin.Forms.Xaml;
 
 namespace GoldenMobileX.Views
@@ -23,28 +18,28 @@ namespace GoldenMobileX.Views
 
         private async void UpdateAPK_Appearing(object sender, EventArgs e)
         {
-           await DownloadApkAsync();
+            await DownloadApkAsync();
         }
 
         private async Task DownloadApkAsync()
         {
 
-           string downloadedFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "GoldenMobileX.apk");
+            string downloadedFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "GoldenMobileX.apk");
 
             var success = await DownloadFileAsync("https://turbim.com/GoldenMobileX.apk", downloadedFilePath);
 
             if (success)
             {
-               appSettings.UyariGoster($"File downloaded to: {downloadedFilePath}");
-          /*
+                appSettings.UyariGoster($"File downloaded to: {downloadedFilePath}");
+                /*
 
-             await   Launcher.OpenAsync
-                               (new OpenFileRequest()
-                               {
-                                   File = new ReadOnlyFile(downloadedFilePath)
-                               }
-                           );
-          */
+                   await   Launcher.OpenAsync
+                                     (new OpenFileRequest()
+                                     {
+                                         File = new ReadOnlyFile(downloadedFilePath)
+                                     }
+                                 );
+                */
             }
             else
             {
@@ -80,4 +75,3 @@ namespace GoldenMobileX.Views
 
 }
 
- 

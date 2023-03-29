@@ -15,8 +15,8 @@
                   
               
                                 </ViewCell.ContextActions>
-                                <Frame BorderColor="#ccc" Padding="3" Margin="3" VerticalOptions="Fill" x:DataType="model:CRD_BankaHesaplari"  BackgroundColor="{StaticResource Primary}">
-                                    <StackLayout Orientation="Horizontal">
+                                <Frame BorderColor="#ccc"   Margin="0,2,0,0" VerticalOptions="Fill" x:DataType="model:CRD_BankaHesaplari"  BackgroundColor="{StaticResource Primary}">
+                                    <StackLayout Orientation="Horizontal" Padding="4">
                                         <StackLayout Orientation="Vertical" HorizontalOptions="StartAndExpand">
                                             <Label Text="{Binding HesapNo}"  TextColor="{StaticResource TextColor}"></Label>
                                             <Label Text="{Binding HesapAdi}"  TextColor="{StaticResource TextColor}"></Label>

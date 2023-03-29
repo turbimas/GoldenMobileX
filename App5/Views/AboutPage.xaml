@@ -2,6 +2,8 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="GoldenMobileX.Views.AboutPage"
+                                       xmlns:local="clr-namespace:GoldenMobileX.ViewModels"  
+             xmlns:model="clr-namespace:GoldenMobileX.Models"
              Title="{Binding Title}">
     
 
@@ -31,22 +33,39 @@
             <StackLayout Orientation="Vertical" Padding="30,24,30,24" Spacing="10">
                 <Label Text="Sizi Geleceğe Taşır..." FontSize="Title"/>
                 <Label Text="Golden ERP mobil uygulama ile ofisinizde yapabildiğiniz bir çok işlemi ofis dışında da kolaylıkla yapabilirsiniz." FontSize="16" Padding="0,0,0,0"/>
-                <Label FontSize="16" Padding="0,24,0,0">
-                    <Label.FormattedText>
-                        <FormattedString>
-                            <FormattedString.Spans>
-                                <Span Text="Daha fazla bilgi için. Web sitesini ziyaret edin. "/>
-                                <Span Text="http://www.goldenerp.com" FontAttributes="Bold"/>
-                            </FormattedString.Spans>
-                        </FormattedString>
-                    </Label.FormattedText>
-                </Label>
-                <Button Margin="0,10,0,0" Text="Firma Girişi"
-                        Clicked="Button_Clicked"
-                        BackgroundColor="{StaticResource Primary}"
-                        TextColor="White" />
 
-        
+                <ListView  x:Name="ListViewBankalar"  >
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="model:Bilanco">
+                            <ViewCell>
+
+                                <StackLayout Padding="0,2,0,0">
+
+
+
+                                    <StackLayout Orientation="Horizontal" VerticalOptions="FillAndExpand"  BackgroundColor="{StaticResource Primary}" Padding="4">
+                                        <StackLayout Orientation="Vertical" HorizontalOptions="StartAndExpand">
+                                            <Label Text="{Binding HESAP}" TextColor="{StaticResource TextColor}" ></Label>
+                                   
+                                        </StackLayout>
+                                        <StackLayout Orientation="Vertical"  Padding="0" HorizontalOptions="End" WidthRequest="150" FlowDirection="LeftToRight">
+                                            <StackLayout Orientation="Horizontal"  HorizontalOptions="End">
+                                                <Label Text="{Binding  TUTAR, StringFormat='{0:n2} TL'}"  TextColor="{StaticResource TextColor2}" ></Label>
+                                            </StackLayout>
+                                        </StackLayout>
+   
+
+                                    </StackLayout>
+
+
+
+                                </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+
+
             </StackLayout>
         </ScrollView>
     </Grid>

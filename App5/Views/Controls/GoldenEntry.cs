@@ -5,8 +5,8 @@ namespace GoldenMobileX.Views.Controls
     public class GoldenEntry : Entry
     {
 
- 
- 
+
+
     }
 }
 

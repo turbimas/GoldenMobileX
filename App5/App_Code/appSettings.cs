@@ -1,25 +1,20 @@
 ﻿using GoldenMobileX;
 using GoldenMobileX.Models;
 using GoldenMobileX.Views;
+using Plugin.Media;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Text;
-using Xamarin.Forms;
-using ZXing.Net.Mobile.Forms;
-using System.Linq;
-using System.IO;
 using System.Data;
+using System.Linq;
 using System.Threading.Tasks;
-using System.Runtime.CompilerServices;
-using Plugin.Media;
 using Xamarin.Essentials;
-using System.Diagnostics;
-using System.Collections.Concurrent;
+using Xamarin.Forms;
+
 
 public static class appSettings
 {
-    public static Popup activity = new Popup() {
+    public static Popup activity = new Popup()
+    {
         viewModel = new GoldenMobileX.ViewModels.BaseViewModel()
         {
             activityText = "Lütfen Bekleyiniz..."
@@ -36,13 +31,13 @@ public static class appSettings
         await App.Current.MainPage.DisplayAlert("UYARI", ex.Message + " " + ex.InnerException?.Message, "TAMAM");
     }
     static bool _isbusy;
-   public static bool isBusy
+    public static bool isBusy
     {
         get { return _isbusy; }
         set
         {
             _isbusy = value;
-          
+
         }
     }
     public static async void GoPage(string Page)
@@ -55,11 +50,11 @@ public static class appSettings
     public static string ApiURL { get; set; }
     public static bool UseApi { get { return (ApiURL.StartsWith("http")); } }
 
- 
+
     public static async Task<bool> Onay(string uyari = "Kayıt silinecektir onaylıyor musunuz?", string baslik = "Uyarı")
     {
         return await App.Current.MainPage.DisplayAlert(baslik, uyari, "Evet", "Hayır");
- 
+
     }
 
 
@@ -83,7 +78,7 @@ public static class appSettings
     public static X_Users User { get; set; }
 
 
- 
+
     public static int UserDefaultFirm
     {
         get
@@ -154,10 +149,10 @@ public static class appSettings
 
     public static string GetCounter(string Module, string TableName, string ColumnName, string startmask = "", bool CheckDublicateFiche = true)
     {
- 
-        return Module.Substring(0,1)+ System.DateTime.Now.ToString("ddMMyyHHmmss");
+
+        return Module.Substring(0, 1) + System.DateTime.Now.ToString("ddMMyyHHmmss");
     }
- 
+
     public static int UserDepartman
     {
         get;
@@ -239,11 +234,11 @@ public static class appSettings
                                         }
                                     });
                                     return value; // runs again, or false to stop
-                    });
+                                });
             }
         }
     }
-    public  class offlineData
+    public class offlineData
     {
         public offlineData()
         {
@@ -251,18 +246,18 @@ public static class appSettings
             JSON_TRN_StockTransListToRun = new List<string>();
             TRN_StockTransLines = new List<TRN_StockTransLines>();
         }
-        public  List<string> SQLListToRun
+        public List<string> SQLListToRun
         {
             get; set;
         }
 
 
-        public  List<string> JSON_TRN_StockTransListToRun
+        public List<string> JSON_TRN_StockTransListToRun
         {
             get; set;
         }
 
-        public  List<TRN_StockTransLines> TRN_StockTransLines
+        public List<TRN_StockTransLines> TRN_StockTransLines
         { get; set; }
     }
 

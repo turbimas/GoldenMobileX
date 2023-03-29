@@ -1,14 +1,8 @@
 ﻿using System;
-using System.Data.SqlClient;
-using System.Data;
-using System.IO;
 using System.Collections.Generic;
-using System.Security.Cryptography;
-using System.Text;
+using System.Data;
+using System.Data.SqlClient;
 using Xamarin.Forms;
-using GoldenMobileX.Models;
-using System.Linq;
-using GoldenMobileX;
 
 public static class db
 {
@@ -27,7 +21,7 @@ public static class db
     public static DataTable SQLSelectToDataTable(string sql)
     {
         return TurbimSQLHelper.defaultconn.SQLSelectToDataTable(sql, TurbimTools.getinnertext(sql.Replace("  ", " "), " FROM ", " ", true).Replace(" ", ""));
- 
+
     }
     public static int connTimeOut
     {
@@ -68,9 +62,9 @@ public static class db
                 }
                 else
                 {
-                    
+
                     SqlParameter pp = new SqlParameter();
-                   
+
                     pp.ParameterName = "@" + prp.Name;
                     pp.SqlDbType = ConverSqlDbType(prp.PropertyType);
                     object val = prp.GetValue(obj) ?? null;
@@ -83,7 +77,7 @@ public static class db
                         else
                             pp.Value = val == null ? DBNull.Value : val;
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         throw (ex);
                     }
@@ -108,7 +102,7 @@ public static class db
         SqlParameter p = new SqlParameter("@ID", SqlDbType.Int, 4);
         p.Direction = ParameterDirection.Output;
         param.Add(p);
-        
+
         db.SQLExecuteWithParameter(sql, param.ToArray());
         return p.Value.convInt();
     }
@@ -117,7 +111,7 @@ public static class db
         SqlCommand cmd = new SqlCommand();
         string sql = "";
         int ID = 0;
- 
+
         List<string> ColumnsName = new List<string>();
 
         List<string> update = new List<string>();
@@ -131,18 +125,18 @@ public static class db
                 if (prp.PropertyType.FullName.Contains("GoldenMobileX") && prp.PropertyType.FullName.Contains("Collection")) continue;
                 if (prp.PropertyType.FullName.Contains("GoldenMobileX"))
                 {
-                   /*if (prp.PropertyType.FullName.Contains("GoldenMobileX.Models.X_Currency"))
-                    {
-                        cmd.Parameters.Add(new SqlParameter("@" + prp.Name, ((X_Currency)prp.GetValue(obj)).CurrencyNumber.convInt()));
-                    }
-                   */
+                    /*if (prp.PropertyType.FullName.Contains("GoldenMobileX.Models.X_Currency"))
+                     {
+                         cmd.Parameters.Add(new SqlParameter("@" + prp.Name, ((X_Currency)prp.GetValue(obj)).CurrencyNumber.convInt()));
+                     }
+                    */
 
                 }
                 else
                 {
                     SqlParameter pp = new SqlParameter();
                     pp.ParameterName = "@" + prp.Name;
-            
+
 
 
                     if (prp.PropertyType == typeof(Int32))
@@ -174,9 +168,9 @@ public static class db
         SqlParameter p = new SqlParameter("@ID", SqlDbType.Int, 4);
         p.Direction = ParameterDirection.Output;
         cmd.Parameters.Add(p);
-  
+
         cmd.CommandText = sql;
-     
+
         return cmd;
     }
     public static SqlDbType ConverSqlDbType(Type giveType)
@@ -194,6 +188,7 @@ public static class db
         typeMap[typeof(Int64)] = SqlDbType.BigInt;
         typeMap[typeof(Int64?)] = SqlDbType.BigInt;
         typeMap[typeof(Byte[])] = SqlDbType.VarBinary;
+        typeMap[typeof(byte[])] = SqlDbType.VarBinary;
         typeMap[typeof(Image)] = SqlDbType.VarBinary;
         typeMap[typeof(Boolean)] = SqlDbType.Bit;
         typeMap[typeof(Boolean?)] = SqlDbType.Bit;
@@ -203,15 +198,15 @@ public static class db
         typeMap[typeof(Decimal)] = SqlDbType.Decimal;
         typeMap[typeof(Double)] = SqlDbType.Float;
         typeMap[typeof(Nullable<double>)] = SqlDbType.Float;
-        typeMap[typeof(Nullable<decimal>)] = SqlDbType.Money;
+        typeMap[typeof(Nullable<decimal>)] = SqlDbType.Decimal;
         //typeMap[typeof(Decimal)] = SqlDbType.Money;
         typeMap[typeof(Byte)] = SqlDbType.TinyInt;
         typeMap[typeof(TimeSpan)] = SqlDbType.Time;
         typeMap[typeof(Guid)] = SqlDbType.UniqueIdentifier;
         return typeMap[(giveType)];
     }
- 
- 
+
+
 }
 
 /// <summary>
@@ -229,14 +224,16 @@ public class TurbimSQLHelper
 
     public static string server { get; set; }
     public static string database { get; set; }
-    public static string User  { get; set; }
-    public static string Pass    { get; set; }
+    public static string User { get; set; }
+    public static string Pass { get; set; }
     public static SqlConnectionStringBuilder connBuilder { get; set; }
     public static TurbimSQLHelper defaultconn { get; set; }
     public int connTimeOut
     {
         get { return connBuilder.ConnectTimeout; }
-        set { connBuilder.ConnectTimeout = value;
+        set
+        {
+            connBuilder.ConnectTimeout = value;
             if (conn.State == ConnectionState.Open)
                 this.Close();
             conn.ConnectionString = connBuilder.ToString();
@@ -255,7 +252,7 @@ public class TurbimSQLHelper
                 conn.Open();
             }
             catch (Exception ex)
-            { 
+            {
                 SqlHatasi("Cannot Connect Database", ex, false);
             }
     }
@@ -281,7 +278,7 @@ public class TurbimSQLHelper
         }
     }
 
-    public async void SqlHatasi(string sql, Exception ex, bool saveQuery= false)
+    public async void SqlHatasi(string sql, Exception ex, bool saveQuery = false)
     {
         return;
         System.Diagnostics.StackTrace stackTrace = new System.Diagnostics.StackTrace();
@@ -405,7 +402,7 @@ public class TurbimSQLHelper
             SqlDataAdapter da = new SqlDataAdapter(sql, conn);
             if (conn.State == ConnectionState.Closed)
                 conn.Open();
-   
+
             da.Fill(dt);
             da.Dispose();
         }
@@ -421,7 +418,7 @@ public class TurbimSQLHelper
 
     #endregion SQLSelect
     #region Execute
-    public string SQLExecuteNonQuery(string sql, int commandTimeOut=3)
+    public string SQLExecuteNonQuery(string sql, int commandTimeOut = 3)
     {
         string _return = "";
         try
@@ -430,7 +427,7 @@ public class TurbimSQLHelper
             {
                 if (conn.State == ConnectionState.Closed)
                     conn.Open();
-          
+
                 cmd.CommandTimeout = commandTimeOut;
                 cmd.ExecuteNonQuery();
             }
@@ -457,7 +454,7 @@ public class TurbimSQLHelper
         {
 
             SqlCommand cmd = new SqlCommand(sql, conn);
-             
+
             int i = 0;
             foreach (SqlParameter param in parameters)
             {
@@ -487,8 +484,8 @@ public class TurbimSQLHelper
         string _return = "";
 
 
-            if (conn.State == ConnectionState.Closed)
-                conn.Open();
+        if (conn.State == ConnectionState.Closed)
+            conn.Open();
         try
         {
             foreach (SqlCommand cmd in commands)
@@ -500,7 +497,7 @@ public class TurbimSQLHelper
         }
         catch (Exception ex)
         {
-  
+
             _return = ex.ToString();
             transaction.Rollback();
         }
@@ -556,7 +553,7 @@ public class TurbimSQLHelper
         }
         return _return;
     }
- 
+
     #endregion
 
     // Getting Query for Table Creation

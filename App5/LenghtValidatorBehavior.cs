@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
 
 public class LengthValidateBehavior : Behavior<Entry>
 {
@@ -40,7 +37,7 @@ public class LengthValidateBehavior : Behavior<Entry>
             {
                 entry.Text = args.OldTextValue;
             }
-            if(entry.Text.Contains(","))
+            if (entry.Text.Contains(","))
             {
                 entry.Text = entry.Text.Replace(",", ".");
             }

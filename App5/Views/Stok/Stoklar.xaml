@@ -43,7 +43,7 @@
                                 <StackLayout Orientation="Vertical" >
 
                                     <StackLayout Orientation="Horizontal" WidthRequest="150" HorizontalOptions="End">
-                                        <Label Text="{Binding StokAdeti, StringFormat='Stokta: {0}'}" TextColor="{StaticResource TextColor2}"></Label>
+                                        <Label Text="{Binding StokAdeti, StringFormat='Stokta: {0:n2}'}" TextColor="{StaticResource TextColor2}"></Label>
                                         <Label Text="{Binding UnitID_.UnitCode}"  TextColor="{StaticResource TextColor2}"></Label>
                                     </StackLayout>
                                     <StackLayout Orientation="Horizontal">

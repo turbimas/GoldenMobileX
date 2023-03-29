@@ -1,38 +1,31 @@
 ﻿using GoldenMobileX.Models;
 using System;
 using System.Collections.Generic;
-using System.Text;
-using Xamarin.Forms;
-using System.Linq;
-using System.Diagnostics;
-using System.Data;
-using System.Collections.ObjectModel;
-using System.Threading.Tasks;
 
 namespace GoldenMobileX.ViewModels
 {
- 
+
     public class OrdersViewModel : BaseViewModel
     {
- 
+
         public OrdersViewModel()
         {
             Items = DataLayer.V_AllItems;
             types = DataLayer.x_types_siparisTuru;
-            durum = DataLayer.x_types_satisdurum;
+            durum = DataLayer.x_types_SatisSiparisleriDurum;
             depolar = DataLayer.Depolar;
             cariList = DataLayer.Cariler;
             x_Currencies = DataLayer.X_Currency;
             ListEditable = true;
         }
- 
+
         public Nullable<bool> ListEditable
         {
             get; set;
         }
         public List<CRD_StockWareHouse> depolar
         {
-            get;set;
+            get; set;
         }
         public List<X_Currency> x_Currencies
         {
@@ -44,7 +37,7 @@ namespace GoldenMobileX.ViewModels
         }
         public List<X_Types> types
         {
-            get;set;
+            get; set;
         }
         public List<X_Types> durum
         {
@@ -72,6 +65,6 @@ namespace GoldenMobileX.ViewModels
         {
             get; set;
         }
-   
+
     }
 }

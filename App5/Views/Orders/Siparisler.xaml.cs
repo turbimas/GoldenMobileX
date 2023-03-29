@@ -1,18 +1,11 @@
 ﻿using GoldenMobileX.Models;
 using GoldenMobileX.ViewModels;
-using GoldenMobileX.Views;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Data;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using ZXing.Net.Mobile.Forms;
 
 namespace GoldenMobileX.Views
 {
@@ -21,7 +14,7 @@ namespace GoldenMobileX.Views
     {
         public X_Types OrderType
         {
-            get;set;
+            get; set;
         }
         public OrdersViewModel viewModel
         {
@@ -47,7 +40,7 @@ namespace GoldenMobileX.Views
             try
             {
                 IsBusy = true;
-                viewModel.OrderList = DataLayer.TRN_Orders(OrderType.Code.convInt()).OrderByDescending(s=>s.ID).ToList();
+                viewModel.OrderList = DataLayer.TRN_Orders(OrderType.Code.convInt()).OrderByDescending(s => s.ID).ToList();
                 this.BindingContext = new OrdersViewModel() { OrderList = new List<TRN_Orders>(viewModel.OrderList) };
                 IsBusy = false;
             }
@@ -78,7 +71,7 @@ namespace GoldenMobileX.Views
                     Branch = appSettings.UserDefaultBranch,
                     Lines = new List<TRN_OrderLines>()
                 }
-             
+
             };
             fm.Disappearing += Fm_Disappearing;
 

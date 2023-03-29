@@ -3,8 +3,6 @@ using GoldenMobileX.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -32,7 +30,7 @@ namespace GoldenMobileX.Views
                     {
                         UnitID_ = DataLayer.L_Units.Where(s => s.ID == 11).FirstOrDefault(),
                         Type_ = DataLayer.x_types_stokkarti.Where(s => s.Code == 1).FirstOrDefault(),
-                        TaxRate = 18, 
+                        TaxRate = 18,
                         Active = true
                     }
                     ,
@@ -53,7 +51,7 @@ namespace GoldenMobileX.Views
             }
 
 
-            if(DataLayer.V_AllItems.Where(s=>s.Barcode==viewModel.item.Barcode && s!=viewModel.item).Count()>0)
+            if (DataLayer.V_AllItems.Where(s => s.Barcode == viewModel.item.Barcode && s != viewModel.item).Count() > 0)
             {
                 appSettings.UyariGoster("Bu barkod kullanımda");
                 return;
@@ -78,7 +76,7 @@ namespace GoldenMobileX.Views
                 viewModel.item.ID = itm.ID;
                 DataLayer.V_AllItems.Add(viewModel.item);
             }
- 
+
             if (viewModel.files != null)
                 foreach (var f in viewModel.files)
                 {
@@ -134,7 +132,7 @@ namespace GoldenMobileX.Views
 
         private void BtnYeniBarkod_Clicked(object sender, EventArgs e)
         {
-            EntryBarcode.Text= DataLayer.GetBarkod("AnaBarkod", "63", 6);
+            EntryBarcode.Text = DataLayer.GetBarkod("AnaBarkod", "63", 6);
         }
 
         private async void PasifYap_Clicked(object sender, EventArgs e)

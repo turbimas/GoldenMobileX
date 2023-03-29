@@ -1,10 +1,7 @@
-﻿using GoldenMobileX.ViewModels;
+﻿using GoldenMobileX.Models;
+using GoldenMobileX.ViewModels;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GoldenMobileX.Models;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -14,7 +11,7 @@ namespace GoldenMobileX.Views
     public partial class CariHesapKarti : ContentPage
     {
         public int ID = 0;
- 
+
         public FinansViewModel viewModel
         {
             get { return (FinansViewModel)BindingContext; }
@@ -56,7 +53,7 @@ namespace GoldenMobileX.Views
                 Navigation.PopAsync();
             }
         }
-        
+
         async void BtnIptal_Clicked(object sender, EventArgs e)
         {
             Navigation.PopAsync();

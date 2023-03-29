@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Linq;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 namespace GoldenMobileX.Models
 {
@@ -63,7 +61,7 @@ namespace GoldenMobileX.Models
         public Nullable<double> FaizOrani { get; set; }
         public Nullable<double> Masraf { get; set; }
         public Nullable<double> ToplamOdenecekTutar { get; set; }
-     
+
         public Nullable<int> CurrencyID
         {
             get
@@ -72,13 +70,13 @@ namespace GoldenMobileX.Models
             }
             set
             {
-                CurrencyID_= DataLayer.X_Currency.Where(x => x.CurrencyNumber == value).FirstOrDefault();
+                CurrencyID_ = DataLayer.X_Currency.Where(x => x.CurrencyNumber == value).FirstOrDefault();
             }
         }
         [NotMapped]
         public X_Currency CurrencyID_ { get; set; }
-        public Nullable<double> Bakiye { get; set; }
-        public Nullable<double> DovizBakiye { get; set; }
+        public Nullable<decimal> Bakiye { get; set; }
+        public Nullable<decimal> DovizBakiye { get; set; }
         public Nullable<System.DateTime> SonIslemTarihi { get; set; }
         public Nullable<double> KrediKartiLimit { get; set; }
         public Nullable<System.DateTime> KrediKartiHesapKesim { get; set; }

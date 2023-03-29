@@ -1,13 +1,12 @@
-﻿using System;
+﻿using GoldenMobileX.Models;
+using GoldenMobileX.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using GoldenMobileX.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using GoldenMobileX.Models;
- 
+
 
 namespace GoldenMobileX.Views
 {
@@ -25,7 +24,7 @@ namespace GoldenMobileX.Views
         {
             InitializeComponent();
             this.Appearing += StokFisi_Appearing;
-   
+
         }
 
         private void FisPickerCikis_SelectedIndexChanged(object sender, EventArgs e)
@@ -35,7 +34,7 @@ namespace GoldenMobileX.Views
 
         private async void StokFisi_Appearing(object sender, EventArgs e)
         {
-            if(ReadOnly)
+            if (ReadOnly)
             {
                 BtnSatirEkle.IsVisible = false;
                 ToolbarItems.Remove(BtnKaydet);
@@ -60,7 +59,7 @@ namespace GoldenMobileX.Views
             }
             if (viewModel.Trans.Status_ == null)
                 viewModel.Trans.Status = appParams.Genel.YeniMalzemeFislerindeDurum;
-            else if (viewModel.Trans.Status_.Code == 0)
+            else if (viewModel.Trans.Status_?.Code == 0)
                 viewModel.Trans.Status = appParams.Genel.YeniMalzemeFislerindeDurum;
             if (viewModel.Trans.ID > 0)
             {
@@ -77,10 +76,10 @@ namespace GoldenMobileX.Views
             {
                 s.UnitPrice = s.ProductID_.UnitPrice;
                 s.Direction = viewModel.Trans.Type_.Direction;
-                s.Total = s.UnitPrice * s.Amount;
+                s.Total = s.UnitPrice.convDecimal() * s.Amount;
             }
             viewModel.Trans.Total = viewModel.Trans.Lines.Sum(x => x.Total).convDouble(2);
-        
+
 
             if (newAdd)
                 DataLayer.WaitingSent.tRN_StockTrans.Add(viewModel.Trans);
@@ -98,7 +97,7 @@ namespace GoldenMobileX.Views
             if (viewModel.CheckListLines.Count() == 0) { return false; }
 
             DataLayer.WaitingSent.tRN_StockTrans.Where(s => s.ID == viewModel.CheckListLines.FirstOrDefault().StockTransID).FirstOrDefault().Status = 6;
-            await   appSettings.UyariGoster("Gelen fiş onaylanmıştır.");
+            await appSettings.UyariGoster("Gelen fiş onaylanmıştır.");
             List<TRN_StockTransLines> eksikGelenUrunler = new List<TRN_StockTransLines>();
             //Gelmeyen ürünleri bul
             foreach (var Line in viewModel.CheckListLines)
@@ -206,7 +205,7 @@ namespace GoldenMobileX.Views
         }
         private void SatirEkle_Clicked(object sender, EventArgs e)
         {
-            if(!FisKaydetEnabled())
+            if (!FisKaydetEnabled())
             {
                 appSettings.UyariGoster("Lütfen önce ilgili depoyu seçiniz..");
                 return;
@@ -220,7 +219,7 @@ namespace GoldenMobileX.Views
             viewModel.Line = new TRN_StockTransLines();
             viewModel.Line.Date = DateTime.Now;
             fm.viewModel = viewModel; //new StokFisleriViewModel() { Trans = viewModel.Trans, Line=viewModel.Line }; 
-      
+
             Navigation.PushAsync(fm);
         }
         private void Duzenle_Clicked(object sender, EventArgs e)
@@ -228,7 +227,7 @@ namespace GoldenMobileX.Views
             var mi = sender as SwipeItem;
             TRN_StockTransLines l = (TRN_StockTransLines)mi.CommandParameter;
 
-   
+
             StokSatiriEkle fm = new StokSatiriEkle();
             viewModel.Line = l;
             l.Date = DateTime.Now;
@@ -274,19 +273,19 @@ namespace GoldenMobileX.Views
             FisKaydetEnabled();
 
             CariList.IsVisible = ((new int[] { 0, 1, 9, 10, 11 }).Where(x => x == viewModel.Trans.Type).Count() > 0);
-     
+
         }
 
         private async void Sil_Clicked(object sender, EventArgs e)
         {
             var mi = sender as SwipeItem;
-  
+
             if (await appSettings.Onay())
             {
                 viewModel.Trans.Lines.Remove((TRN_StockTransLines)mi.CommandParameter);
                 RebindSatir();
             }
         }
- 
+
     }
 }

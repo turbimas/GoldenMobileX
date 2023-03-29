@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
-using System.Net;
+using System;
 using System.IO;
-using System.Net.Http;
-using System.Threading.Tasks;
+using System.Net;
 using System.Text;
 
 /// <summary>
@@ -23,18 +18,18 @@ public static class TurbimJSON
     public static T deSerializeObject<T>(string URL, object data = null)
     {
         setURL(ref URL);
-  
+
         try
         {
             return JsonConvert.DeserializeObject<T>(GetJObjectFromUrl(URL, data)["data"] + "");
-  /*
-            return JsonConvert.DeserializeObject<T>(GetJObjectFromUrl(URL,data)["data"] + "", new JsonSerializerSettings
-            {
-                NullValueHandling = NullValueHandling.Ignore
-            });
-  */
+            /*
+                      return JsonConvert.DeserializeObject<T>(GetJObjectFromUrl(URL,data)["data"] + "", new JsonSerializerSettings
+                      {
+                          NullValueHandling = NullValueHandling.Ignore
+                      });
+            */
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             return default(T);
         }
@@ -42,7 +37,7 @@ public static class TurbimJSON
     public static void SaveJSON<T>(this T o)
     {
         File.WriteAllText(o.JsonPath(), JsonConvert.SerializeObject(o), Encoding.UTF8);
-      
+
     }
     public static T Read<T>(this T o)
     {
@@ -54,7 +49,7 @@ public static class TurbimJSON
         {
             string json = File.ReadAllText(o.JsonPath(), Encoding.UTF8);
 
-         
+
 
             returnObject = JsonConvert.DeserializeObject<T>(json);
         }
@@ -65,7 +60,7 @@ public static class TurbimJSON
         return returnObject;
     }
 
-    public static  JObject GetJObjectFromUrl(string URL,  object data = null)
+    public static JObject GetJObjectFromUrl(string URL, object data = null)
     {
         setURL(ref URL);
         string _return = "";
@@ -82,7 +77,7 @@ public static class TurbimJSON
             return JObject.Parse(_return, s);
         }
 
- 
+
     }
     public static string Post(string URL, object data = null)
     {
@@ -95,7 +90,7 @@ public static class TurbimJSON
                 _return = client.UploadString(URL, (data + ""));
             else
                 _return = client.UploadString(URL, serializeObject(data));
-     
+
             return _return;
         }
 
@@ -103,18 +98,18 @@ public static class TurbimJSON
     }
 
 
-    public static  string setURL(ref string URL)
+    public static string setURL(ref string URL)
     {
-        if (!URL.Contains("http")) URL = TurbimSQLHelper.server +  (URL.EndsWith("/") ? "" : "/") + "api"  + (URL.StartsWith("/") ? "" : "/") + URL;
-    
+        if (!URL.Contains("http")) URL = TurbimSQLHelper.server + (URL.EndsWith("/") ? "" : "/") + "api" + (URL.StartsWith("/") ? "" : "/") + URL;
+
         return URL;
     }
 
 
-  public  static string JsonPath<T>(this T o)
+    public static string JsonPath<T>(this T o)
     {
         var basePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-        return Path.Combine(basePath, appSettings.CurrentFirm + "_" + appSettings.User.ID+"_" + o.GetType().Name + ".json");
+        return Path.Combine(basePath, appSettings.CurrentFirm + "_" + appSettings.User.ID + "_" + o.GetType().Name + ".json");
     }
 }
 

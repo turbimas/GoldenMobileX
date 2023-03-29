@@ -1,12 +1,10 @@
-﻿using System;
+﻿using GoldenMobileX.Models;
+using GoldenMobileX.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GoldenMobileX.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using GoldenMobileX.Models;
 using ZXing.Net.Mobile.Forms;
 namespace GoldenMobileX.Views
 {
@@ -114,7 +112,7 @@ namespace GoldenMobileX.Views
                 }
                 else
                 {
-                    viewModel.Line.Total = viewModel.Line.Amount.convDouble()* viewModel.Line.UnitPrice.convDouble();
+                    viewModel.Line.Total = viewModel.Line.Amount.convDouble() * viewModel.Line.UnitPrice.convDouble();
                     viewModel.Order.Lines.Add(viewModel.Line);
                 }
             }
@@ -163,8 +161,8 @@ namespace GoldenMobileX.Views
         {
             try
             {
-                viewModel = new  OrdersViewModel() { Order = viewModel.Order, Line = viewModel.Line };
-        
+                viewModel = new OrdersViewModel() { Order = viewModel.Order, Line = viewModel.Line };
+
 
                 ListViewSatirlar.ItemsSource = new List<TRN_OrderLines>(viewModel.Order.Lines.Where(s => s.ProductID_ != null).Where(s => s.ProductID > 0).OrderBy(s => s.ID));
             }

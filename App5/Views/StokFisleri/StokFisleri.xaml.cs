@@ -1,25 +1,18 @@
 ﻿using GoldenMobileX.Models;
 using GoldenMobileX.ViewModels;
-using GoldenMobileX.Views;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Data;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using ZXing.Net.Mobile.Forms;
 
 namespace GoldenMobileX.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class StokFisleri : ContentPage
     {
- 
+
         StokFisleriViewModel viewModel
         {
             get { return (StokFisleriViewModel)BindingContext; }
@@ -28,7 +21,7 @@ namespace GoldenMobileX.Views
         {
             InitializeComponent();
             this.BindingContext = new StokFisleriViewModel();
-            
+
             Appearing += StokFisleri_Appearing;
         }
 
@@ -58,7 +51,7 @@ namespace GoldenMobileX.Views
             {
                 IsBusy = false;
             }
-      
+
         }
 
         private async void YeniFis_Clicked(object sender, EventArgs e)
@@ -81,11 +74,11 @@ namespace GoldenMobileX.Views
                 TransDate = DateTime.Now,
                 Lines = appSettings.OfflineData.TRN_StockTransLines,
                 Status = appParams.Genel.YeniMalzemeFislerindeDurum,
-                Branch=appSettings.UserDefaultBranch
+                Branch = appSettings.UserDefaultBranch
             };
             fm.viewModel = viewModel;
             fm.Disappearing += Fm_Disappearing;
-     
+
             Navigation.PushAsync(fm);
 
 
@@ -96,7 +89,7 @@ namespace GoldenMobileX.Views
             Rebind();
         }
 
-      
+
 
         private void Refresh_Clicked(object sender, EventArgs e)
         {
@@ -114,7 +107,7 @@ namespace GoldenMobileX.Views
             fm.Disappearing += Fm_Disappearing;
 
 
-            if (t.Status_.Code != 4)
+            if (t.Status_?.Code != 4)
             {
                 appSettings.UyariGoster("Bu fiş onaylanmış. Değişiklik Yapamazsınız.");
                 return;
@@ -122,19 +115,19 @@ namespace GoldenMobileX.Views
 
             viewModel.Trans = t;
 
-            if (t.Status_.Code == 4 && t.Type_.Direction == 0 && DataLayer.Depolar.Where(s=>s.ID== t.DestStockWareHouseID_.ID).Count()>0 && t.ID>0) // Kullanıcının depoya giriş yetkisi var ise
+            if (t.Status_?.Code == 4 && t.Type_.Direction == 0 && DataLayer.Depolar.Where(s => s.ID == t.DestStockWareHouseID_.ID).Count() > 0 && t.ID > 0) // Kullanıcının depoya giriş yetkisi var ise
             {
-                var newt = new TRN_StockTrans() { CreatedBy = appSettings.User.ID, CreatedDate = DateTime.Now, Type_ = t.Type_, DestStockWareHouseID_ = t.DestStockWareHouseID_, StockWareHouseID_ = t.StockWareHouseID_, TransDate=DateTime.Now, FicheNo=appSettings.GetCounter("Depo", "TRN_StockTransLines","FicheNo") };
+                var newt = new TRN_StockTrans() { CreatedBy = appSettings.User.ID, CreatedDate = DateTime.Now, Type_ = t.Type_, DestStockWareHouseID_ = t.DestStockWareHouseID_, StockWareHouseID_ = t.StockWareHouseID_, TransDate = DateTime.Now, FicheNo = appSettings.GetCounter("Depo", "TRN_StockTransLines", "FicheNo") };
                 newt.Lines = new List<TRN_StockTransLines>();
                 viewModel.CheckListLines = t.Lines;
                 viewModel.Trans = newt;
                 viewModel.Trans.Lines = new List<TRN_StockTransLines>();
- 
+
             }
             fm.viewModel = viewModel;
             Navigation.PushAsync(fm);
         }
-  
+
 
         private async void Sil_Clicked(object sender, EventArgs e)
         {
@@ -145,7 +138,7 @@ namespace GoldenMobileX.Views
             DataLayer.WaitingSent.tRN_StockTrans.Remove(t);
             DataLayer.WaitingSent.SaveJSON();
             Rebind();
- 
+
         }
 
         private async void SunucuyaGonder_Invoked(object sender, EventArgs e)
@@ -160,7 +153,7 @@ namespace GoldenMobileX.Views
         {
             var mi = sender as SwipeItem;
             TRN_StockTrans t = (TRN_StockTrans)mi.CommandParameter;
-            if(t.Type_.Direction!=0)
+            if (t.Type_.Direction != 0)
             {
                 appSettings.UyariGoster("Bu kaydı onaylayamazsınız..");
                 return;
@@ -182,7 +175,7 @@ namespace GoldenMobileX.Views
             StokFisi fm = new StokFisi();
             viewModel.Trans = t;
             if (t.ID > 0)
-                if (t.Lines==null || t.Lines?.Count() == 0)
+                if (t.Lines == null || t.Lines?.Count() == 0)
                 {
                     if (DataLayer.IsOnline)
                         try
@@ -192,7 +185,7 @@ namespace GoldenMobileX.Views
                                 t.Lines = c.TRN_StockTransLines.Where(s => s.StockTransID == t.ID).Select(s => s).ToList();
                             }
                         }
-                        catch(Exception ex)
+                        catch (Exception ex)
                         {
                             ex.UyariGoster();
                         }
@@ -211,14 +204,21 @@ namespace GoldenMobileX.Views
                 {
                     int user = appSettings.User.ID;
                     int warehouse = appSettings.User.WareHouseID.convInt();
-                    List<TRN_StockTrans> t = new List<TRN_StockTrans>(c.TRN_StockTrans.Where(s => s.CreatedBy == user || s.DestStockWareHouseID == warehouse || s.StockWareHouseID == warehouse).Select(s =>s)).OrderByDescending(s => s.ID).ToList();
-                    t.ForEach(s => s.Duzenlenebilir = false);
+                    var t = c.TRN_StockTrans.Where(s => s.CreatedBy == user || s.DestStockWareHouseID == warehouse || s.StockWareHouseID == warehouse).OrderByDescending(s => s.ID);
+
+
+
                     if (t.Count() > 0)
+                    {
+                        t.ToList().ForEach(s => s.Duzenlenebilir = true);
+
+
                         listview1.ItemsSource = t;
+                    }
                     else
                         appSettings.UyariGoster("Sunucuda sizin eklediğiniz bir kayıt bulunmuyor.");
                 }
-                catch { }
+                catch (Exception ex) { ex.UyariGoster(); }
             }
         }
 

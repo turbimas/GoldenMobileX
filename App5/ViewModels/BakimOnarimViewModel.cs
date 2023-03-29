@@ -1,13 +1,5 @@
 ﻿using GoldenMobileX.Models;
-using System;
 using System.Collections.Generic;
-using System.Text;
-using Xamarin.Forms;
-using System.Linq;
-using System.Diagnostics;
-using System.Data;
-using System.Collections.ObjectModel;
-using System.Threading.Tasks;
 
 namespace GoldenMobileX.ViewModels
 {
@@ -27,25 +19,25 @@ namespace GoldenMobileX.ViewModels
 
         }
 
- 
+
 
         public List<V_AllItems> items
         {
             get; set;
 
         }
- 
+
         public List<L_Units> units
         {
             get
             {
-                return DataLayer.L_Units ;
+                return DataLayer.L_Units;
             }
         }
 
         public List<Kalite_KalibrasyonGirisi> BakimOnarimListesi
         {
-            get;set;
+            get; set;
         }
         public List<Kalite_KalibrasyonCihazlar> CihazListesi
         {
@@ -62,6 +54,6 @@ namespace GoldenMobileX.ViewModels
             set;
         }
 
-  
+
     }
 }

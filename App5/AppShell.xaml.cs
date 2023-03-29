@@ -1,18 +1,13 @@
-﻿using GoldenMobileX.ViewModels;
-using GoldenMobileX.Views;
+﻿using GoldenMobileX.Views;
 using System;
-using System.Collections.Generic;
-using System.Data;
 using Xamarin.Forms;
-using System.Linq;
-using GoldenMobileX.Models;
 
 namespace GoldenMobileX
 {
     public partial class AppShell : Xamarin.Forms.Shell
     {
         public FlyoutItem flyoutItemFinans, flyoutItemStoklar, flyoutItemSatinAlma, flyoutItemSatisPazarlama;
- 
+
 
 
 
@@ -21,7 +16,7 @@ namespace GoldenMobileX
             InitializeComponent();
             if (Device.RuntimePlatform == Device.UWP)
             {
-                 Routing.RegisterRoute(nameof(Firms), typeof(Firms));
+                Routing.RegisterRoute(nameof(Firms), typeof(Firms));
                 Routing.RegisterRoute(nameof(LoginPage), typeof(LoginPage));
                 Routing.RegisterRoute(nameof(AboutPage), typeof(AboutPage));
             }
@@ -38,7 +33,7 @@ namespace GoldenMobileX
 
         private void AppShell_Appearing(object sender, EventArgs e)
         {
-      
+
         }
 
         private async void OnMenuItemClicked(object sender, EventArgs e)

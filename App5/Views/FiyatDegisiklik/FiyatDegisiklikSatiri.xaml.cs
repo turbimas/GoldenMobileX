@@ -3,8 +3,6 @@ using GoldenMobileX.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -16,7 +14,7 @@ namespace GoldenMobileX.Views
     public partial class FiyatDegisiklikSatiri : ContentPage
     {
         public int FisID = 0;
-        public bool edit = false, EtiketBasimEmri=false;
+        public bool edit = false, EtiketBasimEmri = false;
         public StokFisleriViewModel viewModel
         {
             get { return (StokFisleriViewModel)BindingContext; }
@@ -26,7 +24,7 @@ namespace GoldenMobileX.Views
         {
             InitializeComponent();
             this.Appearing += StokSatiriEkle_Appearing;
-          
+
         }
 
         private void StokSatiriEkle_Appearing(object sender, EventArgs e)
@@ -41,7 +39,7 @@ namespace GoldenMobileX.Views
                 BtnKaydet.IsEnabled = true;
 
             }
-            if(EtiketBasimEmri)
+            if (EtiketBasimEmri)
             {
                 Fiyatlar.IsVisible = false;
             }
@@ -81,18 +79,18 @@ namespace GoldenMobileX.Views
             barkodOkundu = false;
         }
 
- 
+
 
 
 
         private async void SatirKaydet_Clicked(object sender, EventArgs e)
         {
 
-          if( DataLayer.V_AllItems.Where(s=>s.ID==viewModel.EtiketBasimEmirleri.ProductID).Count()>1 && viewModel.EtiketBasim.TRN_EtiketBasimEmirleri.Where(s=>s.ProductID==viewModel.EtiketBasimEmirleri.ProductID).Count()==1)
+            if (DataLayer.V_AllItems.Where(s => s.ID == viewModel.EtiketBasimEmirleri.ProductID).Count() > 1 && viewModel.EtiketBasim.TRN_EtiketBasimEmirleri.Where(s => s.ProductID == viewModel.EtiketBasimEmirleri.ProductID).Count() == 1)
             {
-                if(await appSettings.Onay("Bu ürüne ait farklı varyantlar mevcut. Onlarında fiyatları güncellensin mi?"))
+                if (await appSettings.Onay("Bu ürüne ait farklı varyantlar mevcut. Onlarında fiyatları güncellensin mi?"))
                 {
-                    foreach(var i in DataLayer.V_AllItems.Where(s => s.ID == viewModel.EtiketBasimEmirleri.ProductID && s.Barcode!= viewModel.EtiketBasimEmirleri.ProductID_.Barcode))
+                    foreach (var i in DataLayer.V_AllItems.Where(s => s.ID == viewModel.EtiketBasimEmirleri.ProductID && s.Barcode != viewModel.EtiketBasimEmirleri.ProductID_.Barcode))
                     {
                         viewModel.EtiketBasimEmirleri = viewModel.EtiketBasimEmirleri as TRN_EtiketBasimEmirleri;
                         viewModel.EtiketBasimEmirleri.Barkod = i.Barcode;
@@ -140,7 +138,7 @@ namespace GoldenMobileX.Views
             await Navigation.PushAsync(scanPage);
         }
 
- 
+
 
         private void Satir_Clicked(object sender, EventArgs e)
         {
@@ -167,7 +165,7 @@ namespace GoldenMobileX.Views
 
         private void SatirEntryUnitPrice1_TextChanged(object sender, TextChangedEventArgs e)
         {
-            
+
         }
 
         private void SatirEntryUnitPrice1_TezxtChanged(object sender, TextChangedEventArgs e)
@@ -175,7 +173,7 @@ namespace GoldenMobileX.Views
             var entry = (Entry)sender;
 
             var amt = e.NewTextValue;
-          
+
 
 
             if (decimal.TryParse(amt, out decimal num))

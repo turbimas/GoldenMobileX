@@ -1,12 +1,10 @@
-﻿using System;
+﻿using GoldenMobileX.Models;
+using GoldenMobileX.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GoldenMobileX.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using GoldenMobileX.Models;
 
 namespace GoldenMobileX.Views
 {
@@ -34,7 +32,7 @@ namespace GoldenMobileX.Views
             if (ReadOnly)
             {
                 ToolbarItems.Remove(BtnSatirEkle);
-        
+
                 ToolbarItems.Remove(BtnKaydet);
                 SiparisStack.IsEnabled = false;
             }
@@ -42,12 +40,12 @@ namespace GoldenMobileX.Views
             FisKaydetEnabled();
             if (this.Title == "") this.Title = viewModel.Order.OrderType_.Name;
             if (viewModel.Order.OrderType_.Code == 1) CariList.IsVisible = false;
-                       
+
         }
 
         private void FisKaydet_Clicked(object sender, EventArgs e)
         {
-            viewModel.Order.Status_ = DataLayer.x_types_satisdurum.Where(t => t.Code == 0).First();
+            viewModel.Order.Status_ = DataLayer.x_types_SatisSiparisleriDurum.Where(t => t.Code == 0).First();
             if (viewModel.Order.ID > 0)
             {
                 viewModel.Order.ModifiedBy = appSettings.User.ID;
@@ -58,7 +56,7 @@ namespace GoldenMobileX.Views
                 viewModel.Order.CreatedBy = appSettings.User.ID;
                 viewModel.Order.CreatedDate = DateTime.Now;
             }
-            
+
             viewModel.Order.Total = viewModel.Order.Lines.Sum(x => x.Total).convDouble();
             if (newAdd)
                 DataLayer.WaitingSent.tRN_Orders.Add(viewModel.Order);
@@ -68,14 +66,14 @@ namespace GoldenMobileX.Views
         void FisKaydetEnabled()
         {
             bool kaydet = false;
-            if (viewModel.Order.OrderType_ != null && viewModel.Order.CurrencyID_ !=null)
+            if (viewModel.Order.OrderType_ != null && viewModel.Order.CurrencyID_ != null)
             {
                 kaydet = true;
             }
-            
+
             BtnKaydet.IsEnabled = kaydet;
             BtnSatirEkle.IsEnabled = kaydet;
- 
+
         }
         private void SatirEkle_Clicked(object sender, EventArgs e)
         {
@@ -86,8 +84,8 @@ namespace GoldenMobileX.Views
             }
             SiparisSatiriEkle fm = new SiparisSatiriEkle();
             viewModel.Line = new TRN_OrderLines();
-            fm.viewModel = new OrdersViewModel() { Order = viewModel.Order, Line=viewModel.Line }; 
-      
+            fm.viewModel = new OrdersViewModel() { Order = viewModel.Order, Line = viewModel.Line };
+
             Navigation.PushAsync(fm);
         }
         private void Satir_Clicked(object sender, EventArgs e)

@@ -1,13 +1,5 @@
 ﻿using GoldenMobileX.Models;
-using System;
 using System.Collections.Generic;
-using System.Text;
-using Xamarin.Forms;
-using System.Linq;
-using System.Diagnostics;
-using System.Data;
-using System.Collections.ObjectModel;
-using System.Threading.Tasks;
 
 namespace GoldenMobileX.ViewModels
 {
@@ -61,7 +53,7 @@ namespace GoldenMobileX.ViewModels
         {
             get
             {
-                return DataLayer.L_Units ;
+                return DataLayer.L_Units;
             }
         }
 
@@ -79,6 +71,6 @@ namespace GoldenMobileX.ViewModels
             set;
         }
 
-  
+
     }
 }

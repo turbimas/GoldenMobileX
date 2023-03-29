@@ -1,15 +1,10 @@
 ﻿using GoldenMobileX.Models;
+using GoldenMobileX.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Data;
-using System.Text;
-using System.Threading.Tasks;
-
+using System.IO;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using GoldenMobileX.ViewModels;
-using System.IO;
 
 namespace GoldenMobileX.Views
 {
@@ -26,15 +21,15 @@ namespace GoldenMobileX.Views
         public Raporlar()
         {
             InitializeComponent();
-             BindingContext = new RaporlarViewModel();
+            BindingContext = new RaporlarViewModel();
             this.Appearing += Raporlar_Appearing;
         }
 
         private void Raporlar_Appearing(object sender, EventArgs e)
         {
             List<X_Reports> _reports = DataLayer.X_Reports;
- 
-            BindingContext = new RaporlarViewModel() { reports = new List<X_Reports>( _reports) };
+
+            BindingContext = new RaporlarViewModel() { reports = new List<X_Reports>(_reports) };
         }
 
         private void Raporlar_Tapped(object sender, EventArgs e)
@@ -58,7 +53,7 @@ namespace GoldenMobileX.Views
 
 namespace GoldenMobileX.ViewModels
 {
-    public partial class RaporlarViewModel: BaseViewModel
+    public partial class RaporlarViewModel : BaseViewModel
     {
         public List<X_Reports> reports { get; set; }
         public RaporlarViewModel()

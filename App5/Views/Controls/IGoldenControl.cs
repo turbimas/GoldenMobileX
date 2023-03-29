@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Xamarin.Forms;
-
-namespace GoldenMobileX.Views.Controls
+﻿namespace GoldenMobileX.Views.Controls
 {
-    interface IGoldenControl 
+    interface IGoldenControl
     {
     }
 }

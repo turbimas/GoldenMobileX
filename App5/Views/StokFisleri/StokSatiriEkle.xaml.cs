@@ -1,16 +1,14 @@
-﻿using System;
+﻿using GoldenMobileX.Models;
+using GoldenMobileX.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
-using GoldenMobileX.ViewModels;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using GoldenMobileX.Models;
 using ZXing.Net.Mobile.Forms;
-using Xamarin.Essentials;
-using Android.Views;
-using System.Threading;
 
 namespace GoldenMobileX.Views
 {
@@ -39,7 +37,7 @@ namespace GoldenMobileX.Views
 
         }
 
- 
+
         private void SatirEntrySeriNo_Completed(object sender, EventArgs e)
         {
             if (HizliEkle.IsToggled)
@@ -59,7 +57,7 @@ namespace GoldenMobileX.Views
                 Direction = viewModel.Invoice.Type_?.Direction;
                 Fiyatlar.IsVisible = true;
             }
-  
+
             BtnKaydet.IsEnabled = false;
 
             if (viewModel.Line.ProductID == 0) BtnKaydet.IsEnabled = false;
@@ -69,9 +67,9 @@ namespace GoldenMobileX.Views
 
             }
             if (viewModel.Trans.Type_.Direction == 1)
-                DepoID = viewModel.Trans.DestStockWareHouseID_.ID;
+                DepoID = (viewModel.Trans.DestStockWareHouseID).convInt();
             else
-                DepoID = viewModel.Trans.StockWareHouseID_.ID;
+                DepoID = (viewModel.Trans.StockWareHouseID).convInt();
 
 
 
@@ -83,7 +81,7 @@ namespace GoldenMobileX.Views
         {
             if (SatirEntrySeriNo.Text + "" == "") return;
             List<V_AllItems> itm = DataLayer.V_AllItems.AsEnumerable().Where(x => x.Barcode == SatirEntrySeriNo.Text).ToList();
-         
+
             if (itm.Count() == 0)
             {
                 if (viewModel.Trans.Type_.Direction == 1)  //Eğer depo giriş işlemi ise seri numaralarında arama....
@@ -92,7 +90,7 @@ namespace GoldenMobileX.Views
                     Vibration.Vibrate(1000);
                     return;
                 }
-                var Satirlar =new  List<V_DepodakiLotlar>();
+                var Satirlar = new List<V_DepodakiLotlar>();
                 if (SeriNoKontrolEt && DataLayer.IsOnline)
                 {
 
@@ -103,7 +101,7 @@ namespace GoldenMobileX.Views
                         if (DataLayer.DepolakiLotlar == null) SeriNoKontrolEt = false;
                         if (DataLayer.DepolakiLotlar.Count == 0) SeriNoKontrolEt = false;
                         Satirlar = DataLayer.DepolakiLotlar.Where(s => s.Depo == DepoID && (s.SeriLot == SatirEntrySeriNo.Text || s.BalyaNo == SatirEntrySeriNo.Text || s.LotID == SatirEntrySeriNo.Text)).ToList();
-                        if (Satirlar.Sum(s => s.Miktar) + viewModel.Trans.Lines.Where(s => s.ProductID == viewModel.Line.ProductID && s.SeriLot == viewModel.Line.SeriLot && s.BalyaNo == viewModel.Line.BalyaNo && s.LotID == viewModel.Line.BalyaNo).Sum(s => s.Amount * s.Direction) <= 0)
+                        if (Satirlar.Sum(s => s.Miktar).convDecimal() + viewModel.Trans.Lines.Where(s => s.ProductID == viewModel.Line.ProductID && s.SeriLot == viewModel.Line.SeriLot && s.BalyaNo == viewModel.Line.BalyaNo && s.LotID == viewModel.Line.BalyaNo).Sum(s => s.Amount * s.Direction) <= 0)
                         {
                             appSettings.UyariGoster("Bu üründen depoda yeteri kadar bulunmuyor.");
                             Vibration.Vibrate(2000);
@@ -143,7 +141,7 @@ namespace GoldenMobileX.Views
             }
             else
             {
- 
+
                 ProductEntry.SelectedItem = itm.FirstOrDefault();
 
                 barkodOkundu = true;
@@ -155,7 +153,7 @@ namespace GoldenMobileX.Views
         {
             Controls.GoldenEntryProductPicker p = sender as Controls.GoldenEntryProductPicker;
             if (p.SelectedItem.ID == 0) return;
-            SatirEntrySeriNo.Text = p.SelectedItem.Barcode +"";
+            SatirEntrySeriNo.Text = p.SelectedItem.Barcode + "";
 
             if (SatirEntryUnitPrice.Value.convDouble() == 0)
             {
@@ -192,11 +190,11 @@ namespace GoldenMobileX.Views
             else
             {
                 SatirEntryAmount.Focus();
-               
+
             }
             barkodOkundu = false;
-            
-         
+
+
 
         }
 
@@ -214,7 +212,7 @@ namespace GoldenMobileX.Views
 
         private async void SatirKaydet_Clicked(object sender, EventArgs e)
         {
-            if (viewModel.Line.Amount == 0 || viewModel.Line.Amount==null)
+            if (viewModel.Line.Amount == 0 || viewModel.Line.Amount == null)
             {
                 appSettings.UyariGoster("Lütfen miktar giriniz.");
                 SatirEntryAmount.Focus();
@@ -240,7 +238,7 @@ namespace GoldenMobileX.Views
             if (viewModel.Line.CreatedBy > 0)
             {
                 viewModel.Line.ModifiedBy = appSettings.User.ID;
-            //Satır düzenleniyor. İşlem Yapma
+                //Satır düzenleniyor. İşlem Yapma
             }
             else
             {
@@ -268,24 +266,24 @@ namespace GoldenMobileX.Views
             viewModel.Line.Date = DateTime.Now; //Sıralama için
             viewModel.Line.Amount = (sabitmiktar > 0 ? sabitmiktar : 1);
 
- 
+
 
             BtnKaydet.IsEnabled = false;
             RebindSatirlar();
-            appSettings.OfflineData.TRN_StockTransLines = new List<TRN_StockTransLines>(viewModel.Trans.Lines.Where(s => s.StockTransID == 0 || s.StockTransID==null));
+            appSettings.OfflineData.TRN_StockTransLines = new List<TRN_StockTransLines>(viewModel.Trans.Lines.Where(s => s.StockTransID == 0 || s.StockTransID == null));
             appSettings.OfflineData.SaveXML();
             SatirEntrySeriNo.Focus();
         }
-       async Task<bool> CheckList()
+        async Task<bool> CheckList()
         {
             if (viewModel.CheckListLines.Count() == 0) { return true; }
             else
             {
-                var bulunanurun = viewModel.Trans.Lines.Where(s => s.ProductID == viewModel.Line.ProductID && s.SeriNo + "" == viewModel.Line.SeriNo + "" && s.SeriLot+"" == viewModel.Line.SeriLot+"" && s.BalyaNo+"" == viewModel.Line.BalyaNo+"");
+                var bulunanurun = viewModel.Trans.Lines.Where(s => s.ProductID == viewModel.Line.ProductID && s.SeriNo + "" == viewModel.Line.SeriNo + "" && s.SeriLot + "" == viewModel.Line.SeriLot + "" && s.BalyaNo + "" == viewModel.Line.BalyaNo + "");
                 var checkEdilecekUrun = viewModel.CheckListLines.Where(s => s.ProductID == viewModel.Line.ProductID && s.SeriNo + "" == viewModel.Line.SeriNo + "" && s.SeriLot == viewModel.Line.SeriLot && s.BalyaNo == viewModel.Line.BalyaNo);
                 if (checkEdilecekUrun.Count() > 0)
                 {
-                    if ((bulunanurun.FirstOrDefault()?.Amount).convDouble() + viewModel.Line.Amount.convDouble() > (checkEdilecekUrun.FirstOrDefault()?.Amount))
+                    if ((bulunanurun.FirstOrDefault()?.Amount) + viewModel.Line.Amount > (checkEdilecekUrun.FirstOrDefault()?.Amount))
                     {
                         Vibration.Vibrate(2000);
                         if (!await appSettings.Onay("Bu ürün fazla gelmiş. İşleme devam edecek misiniz?")) return false;
@@ -296,8 +294,8 @@ namespace GoldenMobileX.Views
                 {
                     Vibration.Vibrate(2000);
                     if (!await appSettings.Onay("Bu ürün bu depo transferinde mevcut değil..Fişe eklenecektir ve sonrasına yeni bir fiş olarak kaydedilecektir.")) return false;
-                  
-                    
+
+
                     return true;
 
                 }
@@ -308,7 +306,7 @@ namespace GoldenMobileX.Views
         {
             try
             {
-                viewModel = new StokFisleriViewModel() { Trans = viewModel.Trans, Line = viewModel.Line, CheckListLines=viewModel.CheckListLines };
+                viewModel = new StokFisleriViewModel() { Trans = viewModel.Trans, Line = viewModel.Line, CheckListLines = viewModel.CheckListLines };
                 ListViewSatirlar.ItemsSource = new List<TRN_StockTransLines>(viewModel.Trans.Lines.Where(s => s.ProductID_ != null).Where(s => s.ProductID > 0).OrderByDescending(s => s.Date).ThenByDescending(s => s.ID));
             }
             catch (Exception ex)
@@ -335,7 +333,7 @@ namespace GoldenMobileX.Views
             await Navigation.PushAsync(scanPage);
         }
 
- 
+
         int sabitmiktar = 1;
         private void MiktariSabitle_Toggled(object sender, ToggledEventArgs e)
         {
@@ -351,14 +349,14 @@ namespace GoldenMobileX.Views
             TRN_StockTransLines l = (TRN_StockTransLines)mi.CommandParameter;
 
             viewModel.Line = l;
-     
+
             RebindSatirlar();
         }
 
         private async void Sil_Clicked(object sender, EventArgs e)
         {
             var mi = sender as SwipeItem;
-         
+
             if (await appSettings.Onay())
             {
                 viewModel.Trans.Lines.Remove((TRN_StockTransLines)mi.CommandParameter);
@@ -369,7 +367,7 @@ namespace GoldenMobileX.Views
         private void BtnStokEkle_Clicked(object sender, EventArgs e)
         {
             StokKarti fm = new StokKarti();
-            
+
             Navigation.PushAsync(fm);
         }
 

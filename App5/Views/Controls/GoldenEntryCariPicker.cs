@@ -1,23 +1,20 @@
 ﻿using GoldenMobileX.Models;
 using Xamarin.Forms;
-using System.Linq;
-using System;
-using System.Threading.Tasks;
 
 namespace GoldenMobileX.Views.Controls
 {
     class GoldenEntryCariPicker : DevExpress.XamarinForms.Editors.TextEdit
     {
- 
+
         public GoldenEntryCariPicker()
         {
             this.Focused += GoldenEntryPicker_Focused;
             this.PropertyChanged += GoldenPicker_PropertyChanged;
             this.LabelText = "Cari Hesap";
- 
+
         }
 
- 
+
 
         private void GoldenPicker_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
@@ -39,7 +36,7 @@ namespace GoldenMobileX.Views.Controls
         private async void GoldenEntryPicker_Focused(object sender, FocusEventArgs e)
         {
             CariHesaplar fm = new CariHesaplar();
- 
+
 
 
             fm.ItemSelected += (s2, e2) =>

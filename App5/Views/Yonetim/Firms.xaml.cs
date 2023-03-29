@@ -1,16 +1,11 @@
-﻿using System;
+﻿using GoldenMobileX.Models;
+using GoldenMobileX.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using GoldenMobileX.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using System.Collections.ObjectModel;
-using GoldenMobileX.Models;
-using System.Diagnostics;
-using System.Data;
-using System.ComponentModel;
 
 
 
@@ -29,16 +24,16 @@ namespace GoldenMobileX.Views
             BindingContext = new FirmsViewModel();
             Appearing += Firms_Appearing;
             Rebind();
-     
+
         }
 
- 
+
         private void Firms_Appearing(object sender, EventArgs e)
         {
 
             //VersiyonLabel.Text = Application.Context.ApplicationContext.PackageManager.GetPackageInfo(Application.Context.ApplicationContext.PackageName, 0).VersionName;
 
-         
+
         }
 
         void Rebind()
@@ -47,7 +42,7 @@ namespace GoldenMobileX.Views
             appSettings.LocalSettings = appSettings.LocalSettings.ReadXML();
             BindingContext = new FirmsViewModel() { items = appSettings.LocalSettings.Firms };
 
-            
+
         }
 
 
@@ -68,15 +63,15 @@ namespace GoldenMobileX.Views
 
         private async void Firms_Tapped(object sender, EventArgs e)
         {
- 
+
             await Navigation.PushModalAsync(appSettings.activity);
             Task.Delay(500).Wait();
-    
+
             var mi = sender as StackLayout;
             appSettings.ApiURL = "";
-           X_Firms f = (X_Firms)((TapGestureRecognizer)mi.GestureRecognizers.First()).CommandParameter;
+            X_Firms f = (X_Firms)((TapGestureRecognizer)mi.GestureRecognizers.First()).CommandParameter;
             appSettings.CurrentFirm = f.Server + "_" + f.DataBase;
-           
+
             if (f.Server.StartsWith("http"))
                 appSettings.ApiURL = f.Server;
             else
@@ -106,7 +101,7 @@ namespace GoldenMobileX.Views
             MenuItem mi = sender as MenuItem;
             X_Firms f = mi.CommandParameter as X_Firms;
 
-            if (await appSettings.Onay(f.Name+ " bağlantısı silinecektir. Onaylıyor musunuz?"))
+            if (await appSettings.Onay(f.Name + " bağlantısı silinecektir. Onaylıyor musunuz?"))
             {
                 appSettings.LocalSettings.Firms.Remove(f);
                 appSettings.LocalSettings.SaveXML();
@@ -137,13 +132,13 @@ namespace GoldenMobileX.ViewModels
             get; set;
         }
 
- 
+
         public X_Firms _item;
         public X_Firms item
         {
             get => _item;
             set => SetProperty(ref _item, value);
         }
- 
+
     }
 }

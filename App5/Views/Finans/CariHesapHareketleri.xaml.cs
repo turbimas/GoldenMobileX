@@ -1,11 +1,6 @@
 ﻿using GoldenMobileX.Models;
 using GoldenMobileX.ViewModels;
 using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -26,7 +21,7 @@ namespace GoldenMobileX.Views
             BindingContext = new FinansViewModel();
 
         }
- 
+
         protected override void OnAppearing()
         {
             IsBusy = true;
@@ -36,8 +31,8 @@ namespace GoldenMobileX.Views
 
             IsBusy = false;
         }
- 
- 
+
+
         private void HareketDetay_Clicked(object sender, EventArgs e)
         {
 

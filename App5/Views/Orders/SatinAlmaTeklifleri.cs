@@ -1,18 +1,6 @@
-﻿using GoldenMobileX.Models;
-using GoldenMobileX.ViewModels;
-using GoldenMobileX.Views;
-using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Data;
-using System.Diagnostics;
+﻿using System.Data;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using ZXing.Net.Mobile.Forms;
 
 namespace GoldenMobileX.Views
 {
@@ -22,9 +10,9 @@ namespace GoldenMobileX.Views
         public SatinAlmaTeklifleri()
         {
             OrderType = viewModel.types.Where(s => s.Code == 2).FirstOrDefault();
-       
+
         }
 
- 
+
     }
 }

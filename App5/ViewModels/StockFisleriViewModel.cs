@@ -1,13 +1,8 @@
 ﻿using GoldenMobileX.Models;
-using System;
 using System.Collections.Generic;
-using System.Text;
-using Xamarin.Forms;
-using System.Linq;
-using System.Diagnostics;
 using System.Data;
-using System.Collections.ObjectModel;
-using System.Threading.Tasks;
+using System.Linq;
+using Xamarin.Forms;
 
 namespace GoldenMobileX.ViewModels
 {
@@ -25,7 +20,7 @@ namespace GoldenMobileX.ViewModels
         }
         public List<CRD_StockWareHouse> depolar
         {
-            get;set;
+            get; set;
         }
         public List<CRD_Cari> cariList
         {
@@ -33,13 +28,16 @@ namespace GoldenMobileX.ViewModels
         }
         public List<X_Types> types
         {
-            get;set;
+            get; set;
         }
         public string TransType
         {
             get { return _transType; }
-            set { _transType = value;
-                TransList = TransList.Where(s => s.Type == value.convInt()).ToList(); }
+            set
+            {
+                _transType = value;
+                TransList = TransList.Where(s => s.Type == value.convInt()).ToList();
+            }
         }
         public List<V_AllItems> Items
         {

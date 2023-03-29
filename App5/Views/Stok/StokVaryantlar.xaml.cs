@@ -3,8 +3,6 @@ using GoldenMobileX.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -41,12 +39,12 @@ namespace GoldenMobileX.Views
             }
             viewModel.varyant.UrunID = viewModel.item.ID;
             if (DataLayer.IsOfflineAlert) return;
-            using(GoldenContext c = new GoldenContext())
+            using (GoldenContext c = new GoldenContext())
             {
                 c.CRD_ItemBarcodes.Add(viewModel.varyant);
                 if (!c.SaveContextWithException()) return;
             }
- 
+
             DataLayer.V_AllItems.Add(new V_AllItems()
             {
                 ID = viewModel.varyant.UrunID.convInt(),
@@ -57,8 +55,8 @@ namespace GoldenMobileX.Views
                 UnitID_ = viewModel.item.UnitID_,
                 Name = viewModel.item.Name
             });
-            BindingContext = new StoklarViewModel() { varyantlar= viewModel.varyantlar, varyant = new Models.CRD_ItemBarcodes(), item=viewModel.item};
-           
+            BindingContext = new StoklarViewModel() { varyantlar = viewModel.varyantlar, varyant = new Models.CRD_ItemBarcodes(), item = viewModel.item };
+
 
         }
         void RebindSatirlar()

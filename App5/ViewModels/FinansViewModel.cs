@@ -1,13 +1,7 @@
 ﻿using GoldenMobileX.Models;
-using System;
 using System.Collections.Generic;
-using System.Text;
-using Xamarin.Forms;
-using System.Linq;
-using System.Diagnostics;
-using System.Data;
 using System.Collections.ObjectModel;
-using System.Threading.Tasks;
+using Xamarin.Forms;
 namespace GoldenMobileX.ViewModels
 {
 
@@ -50,7 +44,7 @@ namespace GoldenMobileX.ViewModels
         {
             get; set;
         }
-        public List<CRD_BankaHesaplari> CRD_BankaHesaplari{get;set;}
+        public List<CRD_BankaHesaplari> CRD_BankaHesaplari { get; set; }
         public List<CRD_Bankalar> CRD_Bankalar { get; set; }
     }
 }

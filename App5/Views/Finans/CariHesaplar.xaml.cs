@@ -1,23 +1,19 @@
-﻿using GoldenMobileX.ViewModels;
-using GoldenMobileX.Models;
+﻿using GoldenMobileX.Models;
+using GoldenMobileX.ViewModels;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Data;
-using System.Text;
-using System.Threading.Tasks;
-using System.Collections.ObjectModel;
+using System.Globalization;
+using System.Linq;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using System.Globalization;
 
 namespace GoldenMobileX.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class CariHesaplar : ContentPage
     {
- 
-         public EventHandler ItemSelected;
+
+        public EventHandler ItemSelected;
         public CRD_Cari SelectedCari;
         FinansViewModel viewModel
         {
@@ -34,7 +30,7 @@ namespace GoldenMobileX.Views
         void CariHesaplariGoster()
         {
             Rebind("");
-            
+
         }
 
         void Rebind(string ara)
@@ -45,8 +41,8 @@ namespace GoldenMobileX.Views
             else
             {
                 var searchwords = ara.ToLower(c).Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
-     
-                ListViewCariHesaplar.ItemsSource = DataLayer.Cariler.Where(x => searchwords.All(t => (x.Name + " " + x.TaxNumber + " " +x.TCKNo).ToLower(c).Split(' ').Any(s => s.Contains(t)))).OrderBy(x => x.Name).ToList();
+
+                ListViewCariHesaplar.ItemsSource = DataLayer.Cariler.Where(x => searchwords.All(t => (x.Name + " " + x.TaxNumber + " " + x.TCKNo).ToLower(c).Split(' ').Any(s => s.Contains(t)))).OrderBy(x => x.Name).ToList();
 
             }
         }
@@ -104,11 +100,11 @@ namespace GoldenMobileX.Views
 
         }
 
- 
+
 
         private void SearchBar_TextChanged(object sender, TextChangedEventArgs e)
         {
-                Rebind(EntryAra.Text);
+            Rebind(EntryAra.Text);
         }
 
         private void CariListesi_Tapped(object sender, EventArgs e)

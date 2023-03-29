@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Xamarin.Forms;
-using System.Linq;
-using Xamarin.Essentials;
+﻿using Xamarin.Forms;
 
 class GldnButton : Button
 {
@@ -53,7 +48,7 @@ class GldnButton : Button
         this.TextColor = foreColor;
         this.BackgroundColor = backColor;
         this.CornerRadius = 5;
- 
+
 
 
     }
@@ -106,7 +101,7 @@ class GldnLabel : Label
         this.Text = text;
         this.TextColor = foreColor;
         this.BackgroundColor = backColor;
- 
+
 
 
     }
@@ -131,7 +126,7 @@ public class GldnStackLayout : StackLayout
             case 5:
                 return Color.FromRgb(102, 51, 0);
             case 6:
-                return  Color.FromRgb(102, 102, 0);
+                return Color.FromRgb(102, 102, 0);
             case 7:
                 return Color.FromRgb(102, 0, 51);
             case 11:
@@ -143,7 +138,7 @@ public class GldnStackLayout : StackLayout
     {
         return Color.White;
     }
-    public string txt{get;set;}
+    public string txt { get; set; }
 
- 
+
 }

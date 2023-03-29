@@ -14,6 +14,7 @@
 
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Kullanıcı Ayarlarını Temizle"  IconImageSource="No.png" Clicked="ToolbarItem_Clicked" Order="Secondary" />
+        <ToolbarItem Text="Veritabanı Karşılaştır"  IconImageSource="No.png" Clicked="Karsilastir_Clicked"  Order="Secondary" />
         <ToolbarItem Text="Veritabanı Güncelle"  IconImageSource="No.png" Clicked="Guncelle_Clicked"  Order="Secondary" />
         <ToolbarItem Text="Çıkış"  IconImageSource="No.png" Clicked="Cikis_Clicked"  Order="Secondary" />
     </ContentPage.ToolbarItems>

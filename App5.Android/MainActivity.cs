@@ -4,6 +4,8 @@ using Android.App;
 using Android.Content.PM;
 using Android.Runtime;
 using Android.OS;
+using Android.Content;
+using Android.Preferences;
 
 namespace GoldenMobileX.Droid
 {
@@ -30,6 +32,40 @@ namespace GoldenMobileX.Droid
             */
 
         }
+
+        private int currentState = 0;
+        protected override void OnPause()
+        {
+            base.OnPause();
+            // uygulama arka plana atıldığında yapılacak işlemler
+            SaveAppState();
+        }
+
+        protected override void OnResume()
+        {
+            base.OnResume();
+            // uygulama yeniden ön planda çalıştırıldığında yapılacak işlemler
+            LoadAppState();
+        }
+
+        private void SaveAppState()
+        {
+            // uygulama durumunu kaydetmek için kullanılacak kodlar
+            ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutInt("CurrentState", currentState);
+            editor.Apply();
+        }
+
+        private void LoadAppState()
+        {
+            // uygulama durumunu geri yüklemek için kullanılacak kodlar
+            ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
+            currentState = prefs.GetInt("CurrentState", 0);
+        }
+
+
+
         /*
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
         {

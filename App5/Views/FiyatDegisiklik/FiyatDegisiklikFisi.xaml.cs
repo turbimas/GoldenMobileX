@@ -1,12 +1,10 @@
-﻿using System;
+﻿using GoldenMobileX.Models;
+using GoldenMobileX.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GoldenMobileX.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using GoldenMobileX.Models;
 
 namespace GoldenMobileX.Views
 {
@@ -24,7 +22,7 @@ namespace GoldenMobileX.Views
         {
             InitializeComponent();
             this.Appearing += StokFisi_Appearing;
- 
+
         }
 
 
@@ -32,7 +30,7 @@ namespace GoldenMobileX.Views
         {
             RebindSatir();
             FisKaydetEnabled();
-      
+
         }
 
         private void FisKaydet_Clicked(object sender, EventArgs e)
@@ -60,19 +58,19 @@ namespace GoldenMobileX.Views
         void FisKaydetEnabled()
         {
             bool kaydet = true;
- 
+
             BtnKaydet.IsEnabled = kaydet;
             BtnSatirEkle.IsEnabled = kaydet;
- 
+
         }
         private void SatirEkle_Clicked(object sender, EventArgs e)
         {
- 
+
             FiyatDegisiklikSatiri fm = new FiyatDegisiklikSatiri();
             viewModel.EtiketBasimEmirleri = new TRN_EtiketBasimEmirleri();
             viewModel.EtiketBasimEmirleri.Tarih = DateTime.Now; //Sıralama için
             viewModel.EtiketBasim.TRN_EtiketBasimEmirleri.Add(viewModel.EtiketBasimEmirleri);
-            fm.viewModel = new StokFisleriViewModel() { EtiketBasim = viewModel.EtiketBasim, EtiketBasimEmirleri=viewModel.EtiketBasimEmirleri };
+            fm.viewModel = new StokFisleriViewModel() { EtiketBasim = viewModel.EtiketBasim, EtiketBasimEmirleri = viewModel.EtiketBasimEmirleri };
             fm.EtiketBasimEmri = EtiketBasimEmri;
             Navigation.PushAsync(fm);
         }
@@ -97,6 +95,6 @@ namespace GoldenMobileX.Views
             }
         }
 
- 
+
     }
 }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GoldenMobileX.ViewModels;
+﻿using GoldenMobileX.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -22,7 +17,7 @@ namespace GoldenMobileX.Views
             InitializeComponent();
             BindingContext = new BaseViewModel();
             this.BackgroundColor = new Color(0, 0, 0, 0.5);
-         
+
         }
 
         public static readonly BindableProperty PopupTextProperty =

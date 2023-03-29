@@ -4,10 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using Plugin.Media;
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -33,18 +29,18 @@ namespace GoldenMobileX.Views
             filesListview.ItemsSource = new List<TRN_Files>(DataLayer.TRN_Files(viewModel.item.ID));
         }
 
-        private void  ResimSil_Clicked(object sender, EventArgs e)
+        private void ResimSil_Clicked(object sender, EventArgs e)
         {
             var mi = sender as MenuItem;
             viewModel.files.Remove((TRN_Files)mi.CommandParameter);
             if (DataLayer.IsOfflineAlert) return;
-            using(GoldenContext c = new GoldenContext())
+            using (GoldenContext c = new GoldenContext())
             {
                 var file = new TRN_Files { ID = ((TRN_Files)mi.CommandParameter).ID };
                 c.Entry(file).State = EntityState.Deleted;
                 if (!c.SaveContextWithException()) return;
             }
- 
+
             Rebind();
 
         }
@@ -67,7 +63,7 @@ namespace GoldenMobileX.Views
             {
                 appSettings.UyariGoster("Kamera etkinleştirilemedi. " + ex.Message);
             }
- 
+
 
 
             DateTime currDate = DateTime.Now;
@@ -89,9 +85,9 @@ namespace GoldenMobileX.Views
                     Name = currDate.ToString("yyyyMMddHHmm")
                 ,
                     RecordID = viewModel.item.ID,
-                    ID=0
+                    ID = 0
                 });
-           
+
                 Rebind();
             }
 

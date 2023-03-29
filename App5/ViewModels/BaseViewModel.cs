@@ -1,17 +1,15 @@
-﻿using GoldenMobileX.Models;
-
+﻿
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using Xamarin.Forms;
 
 namespace GoldenMobileX.ViewModels
 {
 
     public class BaseViewModel : INotifyPropertyChanged
     {
-       
+
         bool isBusy = false;
         public bool IsBusy
         {

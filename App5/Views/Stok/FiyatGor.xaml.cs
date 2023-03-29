@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using ZXing.Mobile;
 using ZXing.Net.Mobile.Forms;
 
 namespace GoldenMobileX.Views
@@ -44,21 +40,21 @@ namespace GoldenMobileX.Views
 
         private async void BarkodOku_Clicked(object sender, EventArgs e)
         {
-    
-                ZXingScannerPage scanPage = new ZXingScannerPage();
 
-                scanPage.OnScanResult += (result) =>
+            ZXingScannerPage scanPage = new ZXingScannerPage();
+
+            scanPage.OnScanResult += (result) =>
+            {
+                scanPage.IsScanning = false;
+                Device.BeginInvokeOnMainThread(() =>
                 {
-                    scanPage.IsScanning = false;
-                    Device.BeginInvokeOnMainThread(() =>
-                    {
-                        Navigation.PopAsync();
-                        EntryBarcode.Text = result.Text;
-                        FiyatGetir(result.Text);
-                    });
-                };
-                await Navigation.PushAsync(scanPage);
- 
+                    Navigation.PopAsync();
+                    EntryBarcode.Text = result.Text;
+                    FiyatGetir(result.Text);
+                });
+            };
+            await Navigation.PushAsync(scanPage);
+
         }
     }
 }

@@ -1,9 +1,7 @@
-﻿using System;
+﻿using GoldenMobileX.Models;
 using System.Collections.Generic;
-using System.Text;
-using System.Linq;
-using GoldenMobileX.Models;
 using System.Data;
+using System.Linq;
 
 class appParams
 {
@@ -12,19 +10,19 @@ class appParams
         public static string Set(string SettingName, string SettingValue, string SettingDesc = null)
         {
             SettingName = SettingName.Replace("get_", "").Replace("set_", "");
-           List<x_Settings> drs = DataLayer.X_Settings.Where(x => x.SettingName == SettingName).ToList();
+            List<x_Settings> drs = DataLayer.X_Settings.Where(x => x.SettingName == SettingName).ToList();
 
             if (drs.Count == 0)
             {
-                DataLayer.X_Settings.Add(new x_Settings() { SettingName = SettingName, SettingValue = SettingValue, SettingDesc = (SettingDesc!=null? SettingDesc:SettingName) });
+                DataLayer.X_Settings.Add(new x_Settings() { SettingName = SettingName, SettingValue = SettingValue, SettingDesc = (SettingDesc != null ? SettingDesc : SettingName) });
 
             }
             else
             {
                 drs.First().SettingValue = SettingValue;
-               
+
             }
-           // appSettings.DATA.SettingsTA.Update(appSettings.DATA.SettingsDT);
+            // appSettings.DATA.SettingsTA.Update(appSettings.DATA.SettingsDT);
             return SettingValue;
         }
         public static string lastSettingDesc = "";

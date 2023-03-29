@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using GoldenMobileX.Models;
+using GoldenMobileX.ViewModels;
+using System;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using GoldenMobileX.ViewModels;
-using GoldenMobileX.Models;
 namespace GoldenMobileX.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
@@ -34,7 +30,7 @@ namespace GoldenMobileX.Views
                 {
                     viewModel = new BakimOnarimViewModel() { BakimOnarimListesi = c.Kalite_KalibrasyonGirisi.Select(s => s).OrderByDescending(s => s.ID).ToList() };
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     appSettings.UyariGoster(ex.Message + " " + ex.InnerException?.Message);
                 }

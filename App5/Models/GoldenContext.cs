@@ -1,8 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GoldenMobileX.Models
 {
@@ -25,7 +22,7 @@ namespace GoldenMobileX.Models
         {
             modelBuilder.Entity<V_AllItems>().HasNoKey();
             modelBuilder.Entity<X_Currency>().HasNoKey();
- 
+
         }
         public virtual DbSet<X_Currency> X_Currency { get; set; }
         public virtual DbSet<X_Types> X_Types { get; set; }
@@ -58,7 +55,7 @@ namespace GoldenMobileX.Models
     }
     public static class contextExtensions
     {
-        public static  bool SaveContextWithException(this DbContext o)
+        public static bool SaveContextWithException(this DbContext o)
         {
             try
             {

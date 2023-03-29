@@ -1,22 +1,25 @@
 ﻿
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.IO;
 using System.Linq;
- 
+
 namespace GoldenMobileX.Models
 {
     [NotMapped]
     public class Toplam
     {
-        public Nullable<double> Value { get; set; }
+        public Nullable<decimal> Value { get; set; }
     }
- 
+    public partial class Bilanco
+    {
+        public string HESAP { get; set; }
+        public Nullable<decimal> TUTAR { get; set; }
+    }
     public partial class TRN_Files
     {
-        public int ID  { get; set; }
+        public int ID { get; set; }
         public string TableName { get; set; }
         public byte[] File { get; set; }
         public Nullable<int> RecordID { get; set; }
@@ -33,7 +36,7 @@ namespace GoldenMobileX.Models
     }
     public class CRD_Kasalar
     {
-        public int ID  { get; set; }
+        public int ID { get; set; }
         public Nullable<int> FirmaNo { get; set; }
         public string AuthCode { get; set; }
         public string KasaKodu { get; set; }
@@ -52,7 +55,7 @@ namespace GoldenMobileX.Models
     }
     public class TRN_KasaHareketleri
     {
-        public int ID  { get; set; }
+        public int ID { get; set; }
         public Nullable<int> KasaFisID { get; set; }
         public Nullable<int> FirmaNo { get; set; }
         public Nullable<int> Branch { get; set; }
@@ -70,7 +73,7 @@ namespace GoldenMobileX.Models
             }
             set
             {
-               CariID_= DataLayer.Cariler.Where(x => x.ID == value).FirstOrDefault();
+                CariID_ = DataLayer.Cariler.Where(x => x.ID == value).FirstOrDefault();
             }
         }
         [NotMapped]
@@ -102,7 +105,7 @@ namespace GoldenMobileX.Models
 
     public class x_Settings
     {
-        public int ID  { get; set; }
+        public int ID { get; set; }
         public string SettingCategory { get; set; }
         public string SettingDesc { get; set; }
         public string SettingName { get; set; }
@@ -113,7 +116,7 @@ namespace GoldenMobileX.Models
     }
     public class X_Types
     {
-        public int ID  { get; set; }
+        public int ID { get; set; }
         public string TableName { get; set; }
         public string ColumnsName { get; set; }
         public Nullable<int> Code { get; set; }
@@ -144,14 +147,14 @@ namespace GoldenMobileX.Models
         public Nullable<int> Departman { get; set; }
         public Nullable<int> Gorevi { get; set; }
         public Nullable<int> AylikKota { get; set; }
-        public Nullable<int> EkIskontoVerebilir { get; set; }
+        public Nullable<bool> EkIskontoVerebilir { get; set; }
         public string DomainName { get; set; }
         public string Terminals { get; set; }
         public Nullable<int> WareHouseID { get; set; }
     }
     public class L_Units
     {
-        public int ID  { get; set; }
+        public int ID { get; set; }
         public string UnitCode { get; set; }
 
     }
@@ -165,20 +168,20 @@ namespace GoldenMobileX.Models
 
     public class V_OrderLines
     {
-        public int ID  { get; set; }
+        public int ID { get; set; }
         public string Product { get; set; }
         public X_Types Status { get; set; }
- 
+
         public Nullable<double> Amount { get; set; }
         public string Unit { get; set; }
         public string Cari { get; set; }
         public Nullable<System.DateTime> OrderDate { get; set; }
-   
+
     }
 
     public class CRD_Projects
     {
-        public int ID  { get; set; }
+        public int ID { get; set; }
         public Nullable<int> UpperProjectID { get; set; }
         public string AuthCode { get; set; }
         public string Name { get; set; }
@@ -198,7 +201,7 @@ namespace GoldenMobileX.Models
 
     public class X_UserSettings
     {
-        public int ID  { get; set; }
+        public int ID { get; set; }
         public Nullable<int> UserID { get; set; }
         public string SettingCategory { get; set; }
         public string SettingDesc { get; set; }
@@ -217,13 +220,13 @@ namespace GoldenMobileX.Models
         }
         public List<string> SQLListToRun
         {
-            get;set;
+            get; set;
         }
 
-   
+
         public List<string> JSON_TRN_StockTransListToRun
         {
-            get;set;
+            get; set;
         }
 
         public List<TRN_StockTransLines> TRN_StockTransLines
@@ -243,7 +246,7 @@ namespace GoldenMobileX.Models
 
     public class X_Reports
     {
-        public int ID  { get; set; }
+        public int ID { get; set; }
         public string ReportName { get; set; }
         public string ReportModule { get; set; }
         public byte[] ReportFile { get; set; }

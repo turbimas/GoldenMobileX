@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using GoldenMobileX.ViewModels;
+using System;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GoldenMobileX.ViewModels;
-using GoldenMobileX.Models;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -28,7 +23,7 @@ namespace GoldenMobileX.Views
 
         private void StokHareketleri_Appearing(object sender, EventArgs e)
         {
-            ListViewHareketler.ItemsSource = DataLayer.CRD_BankaHesaplari.Where(s => s.BankaID == BankaID);
+            ListViewHareketler.ItemsSource = DataLayer.CRD_BankaHesaplari.Where(s => s.BankaID == BankaID && s.Active==true);
             Title = DataLayer.CRD_Bankalar.Where(s => s.ID == BankaID).FirstOrDefault().BankaAdi;
         }
 

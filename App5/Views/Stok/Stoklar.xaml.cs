@@ -1,34 +1,24 @@
 ﻿using GoldenMobileX.Models;
 using GoldenMobileX.ViewModels;
-using GoldenMobileX.Views;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
-using System.Collections.ObjectModel;
 using System.Data;
-using System.Diagnostics;
-using ZXing.Net.Mobile.Forms;
-using Plugin.Media;
-using System.Collections.Concurrent;
+using System.Linq;
+using Xamarin.Forms;
 
 namespace GoldenMobileX.Views
 {
     public partial class Stoklar : ContentPage
     {
- 
+
         public V_AllItems item;
         public EventHandler ItemSelected;
- 
+
         StoklarViewModel viewModel
         {
             get { return (StoklarViewModel)BindingContext; }
         }
-       
+
         public Stoklar()
         {
             InitializeComponent();
@@ -78,17 +68,24 @@ namespace GoldenMobileX.Views
 
 
 
- 
+
 
         private void Yenile_Clicked(object sender, EventArgs e)
         {
             EntryAra.Text = "";
+            if (!DataLayer.IsOfflineAlert)
+            {
+                using (GoldenContext c = new GoldenContext())
+                {
+                    DataLayer.V_AllItems = c.V_AllItems.Where(s => s.Active == true).Select(s => s).ToList();
+                }
+            }
             Rebind("");
         }
 
         private void Duzenle_Clicked(object sender, EventArgs e)
         {
-             StokKarti fm = new StokKarti();
+            StokKarti fm = new StokKarti();
             var mi = sender as MenuItem;
             fm.viewModel = new StoklarViewModel() { item = (V_AllItems)mi.CommandParameter, items = viewModel.items };
             fm.Disappearing += Fm_Disappearing;
@@ -118,20 +115,20 @@ namespace GoldenMobileX.Views
 
         }
 
- 
+
 
         private void ItemsListview_Scrolled(object sender, ScrolledEventArgs e)
         {
             if (e.ScrollY == (sender as ListView).Height)
-            { 
-            
+            {
+
             }
         }
 
         private void ButtonAra_Clicked(object sender, TextChangedEventArgs e)
         {
 
-                Rebind(EntryAra.Text);
+            Rebind(EntryAra.Text);
         }
 
         private void Hareketler_Clicked(object sender, EventArgs e)

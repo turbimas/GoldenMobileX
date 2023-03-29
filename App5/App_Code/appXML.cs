@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Xml;
@@ -50,7 +49,7 @@ public static class appXML
         {
             byte[] b = File.ReadAllBytes(XmlFilename);
             XmlSerializer serializer = new XmlSerializer(typeof(T));
-        
+
             string xml = b.ByteToString();
             xml = removeXMLEmptyChar(xml);
             returnObject = (T)serializer.Deserialize(xml.convStream());

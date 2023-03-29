@@ -1,9 +1,5 @@
 ﻿using Plugin.Media;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -29,13 +25,13 @@ namespace GoldenMobileX.Views
                 Device.BeginInvokeOnMainThread(() =>
                 {
                     Navigation.PopAsync();
- 
+
 
                 });
             };
             await Navigation.PushAsync(scanPage);
         }
-       async void TakePhoto(string photoname="")
+        async void TakePhoto(string photoname = "")
         {
             try
             {

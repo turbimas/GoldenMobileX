@@ -1,8 +1,5 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Globalization;
+﻿using System.Globalization;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 
 namespace GoldenMobileX
 {
@@ -12,10 +9,10 @@ namespace GoldenMobileX
         public App()
         {
 
-           Device.SetFlags(new string[] { "SwipeView_Experimental", "AppTheme_Experimental", "Shell_UWP_Experimental" });
+            Device.SetFlags(new string[] { "SwipeView_Experimental", "AppTheme_Experimental", "Shell_UWP_Experimental" });
 
             InitializeComponent();
-           
+
             appSettings.User = new Models.X_Users() { ID = 0 };
             //DevExpress.XamarinForms.Editors.Initializer.Init();
             //DevExpress.XamarinForms.DataForm.Initializer.Init();
@@ -48,10 +45,12 @@ namespace GoldenMobileX
             if (appSettings.User.ID > 0)
             {
                 appSettings.MenuYetkileri();
-           
+
             }
             CultureInfo.CurrentCulture = new CultureInfo("tr-TR");
             CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("tr-TR");
         }
+
+
     }
 }

@@ -1,7 +1,5 @@
-﻿using System;
+﻿using GoldenMobileX.Models;
 using System.Collections.Generic;
-using System.Text;
-using GoldenMobileX.Models;
 
 namespace GoldenMobileX.OfflineData
 {
@@ -9,7 +7,7 @@ namespace GoldenMobileX.OfflineData
     {
         public offLine()
         {
- 
+
         }
         public class Products
         {
@@ -40,7 +38,7 @@ namespace GoldenMobileX.OfflineData
                 X_Settings = new List<x_Settings>();
                 L_Units = new List<L_Units>();
                 X_Currency = new List<X_Currency>();
-     
+
             }
             public List<X_Types> X_Types { get; set; }
             public List<x_Settings> X_Settings { get; set; }

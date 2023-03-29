@@ -1,8 +1,6 @@
 ﻿using Android.Content;
 using Android.Util;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 public interface OnHomePressedListener
 {
@@ -42,7 +40,7 @@ public class HomeWatcher
     {
         if (mReceiver != null)
         {
-            mContext.RegisterReceiver(mReceiver, mFilter); 
+            mContext.RegisterReceiver(mReceiver, mFilter);
         }
     }
 
@@ -60,7 +58,7 @@ public class HomeWatcher
         const string SYSTEM_DIALOG_REASON_GLOBAL_ACTIONS = "globalactions";
         const string SYSTEM_DIALOG_REASON_RECENT_APPS = "recentapps";
         const string SYSTEM_DIALOG_REASON_HOME_KEY = "homekey";
-        
+
         OnHomePressedListener listener;
 
         public InnerReceiver(OnHomePressedListener listener)

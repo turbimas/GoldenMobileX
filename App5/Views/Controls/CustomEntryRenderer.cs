@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Xamarin.Forms;
-//using Xamarin.Forms.Platform.Android;
-//using XamarinEntry;
-//using XamarinEntry.Droid;
-using GoldenMobileX.Views.Controls;
-/*
+﻿/*
 [assembly: ExportRenderer(typeof(NumericInput), typeof(NumericInputRenderer))]
 namespace GoldenMobileX.Droid.Renderer
 {
