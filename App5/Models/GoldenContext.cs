@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
-
+using System.Data.SqlClient;
 namespace GoldenMobileX.Models
 {
     class GoldenContext : DbContext
@@ -13,7 +13,7 @@ namespace GoldenMobileX.Models
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
 
-            System.Data.SqlClient.SqlConnection sqlConnection = new System.Data.SqlClient.SqlConnection(TurbimSQLHelper.connBuilder.ToString());
+            SqlConnection sqlConnection = new SqlConnection(TurbimSQLHelper.connBuilder.ToString());
             optionsBuilder.UseSqlServer(sqlConnection);
 
 
@@ -37,9 +37,10 @@ namespace GoldenMobileX.Models
         public virtual DbSet<CRD_Cari> CRD_Cari { get; set; }
         public virtual DbSet<V_CariHareketler> V_CariHareketler { get; set; }
         public virtual DbSet<V_AllItems> V_AllItems { get; set; }
-
+        public virtual DbSet<TRN_DailyExchange> TRN_DailyExchange { get; set; }
         public virtual DbSet<CRD_BankaHesaplari> CRD_BankaHesaplari { get; set; }
         public virtual DbSet<CRD_Bankalar> CRD_Bankalar { get; set; }
+        public virtual DbSet<TRN_BankaHareketleri> TRN_BankaHareketleri { get; set; }
         public virtual DbSet<TRN_StockTrans> TRN_StockTrans { get; set; }
         public virtual DbSet<TRN_StockTransLines> TRN_StockTransLines { get; set; }
         public virtual DbSet<TRN_Orders> TRN_Orders { get; set; }
@@ -47,7 +48,7 @@ namespace GoldenMobileX.Models
         public virtual DbSet<TRN_EtiketBasim> TRN_EtiketBasim { get; set; }
         public virtual DbSet<TRN_EtiketBasimEmirleri> TRN_EtiketBasimEmirleri { get; set; }
         public virtual DbSet<X_Users> X_Users { get; set; }
-
+        public virtual DbSet<AI_Patterns> AI_Patterns { get; set; }
         public virtual DbSet<Kalite_KalibrasyonCihazlar> Kalite_KalibrasyonCihazlar { get; set; }
         public virtual DbSet<Kalite_KalibrasyonCihazSarfListesi> Kalite_KalibrasyonCihazSarfListesi { get; set; }
         public virtual DbSet<Kalite_KalibrasyonGirisi> Kalite_KalibrasyonGirisi { get; set; }

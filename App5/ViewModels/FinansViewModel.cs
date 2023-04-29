@@ -33,7 +33,13 @@ namespace GoldenMobileX.ViewModels
                 return DataLayer.x_types_carihesap;
             }
         }
-
+        public List<X_Types> bankaIslemTypes
+        {
+            get
+            {
+                return DataLayer.x_types_BankaIslem;
+            }
+        }
         public CRD_Cari _item;
         public CRD_Cari item
         {
@@ -45,6 +51,7 @@ namespace GoldenMobileX.ViewModels
             get; set;
         }
         public List<CRD_BankaHesaplari> CRD_BankaHesaplari { get; set; }
+        public TRN_BankaHareketleri hareket { get; set; }
         public List<CRD_Bankalar> CRD_Bankalar { get; set; }
     }
 }

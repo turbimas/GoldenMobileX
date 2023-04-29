@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -25,6 +26,37 @@ public static class appSettings
     public static async Task UyariGoster(string txt, string baslik = "Uyarı", string cancel = "TAMAM")
     {
         await App.Current.MainPage.DisplayAlert(baslik, txt, cancel);
+    }
+    public static string replaceAll(string text)
+    {
+        return  replaceCharacters(replaceturkish(text + "").Replace("'", "").Replace(",", ""), "0,1,2,3,4,5,6,7,8,9,.,/,\\");
+    }
+    public static string replaceturkish(string str)
+    {
+        string from = "İ,ı,Ş,ş,Ç,ç,Ö,ö,Ü,ü,Ğ,ğ, ,),(";
+        string to = "I,i,S,s,C,c,O,o,U,u,G,g,_,,";
+
+        return replaceCharacters(str, from, to);
+    }
+    public static string replaceCharacters(string str, string fromCommaSeparatedCharacters, string toCommaSeparatedCharacters = "")
+    {
+        if (str == null) return str;
+        int i;
+        if (toCommaSeparatedCharacters == "")
+        {
+            for (i = 0; i <= (fromCommaSeparatedCharacters.Split(@",".ToCharArray()).Length - 1); i++)
+            {
+                str = str.Replace(fromCommaSeparatedCharacters.Split(@",".ToCharArray())[i], "");
+            }
+        }
+        else
+        {
+            for (i = 0; i <= (fromCommaSeparatedCharacters.Split(@",".ToCharArray()).Length - 1); i++)
+            {
+                str = str.Replace(fromCommaSeparatedCharacters.Split(@",".ToCharArray())[i], toCommaSeparatedCharacters.Split(@",".ToCharArray())[i]);
+            }
+        }
+        return str;
     }
     public static async Task UyariGoster(this Exception ex)
     {
@@ -152,7 +184,108 @@ public static class appSettings
 
         return Module.Substring(0, 1) + System.DateTime.Now.ToString("ddMMyyHHmmss");
     }
+    public static void GetExchanges(DateTime date, DateTime kurTarihi)
+    {
 
+        foreach (DataRow dr in TurbimSQLHelper.defaultconn.SQLSelectToDataTable("SELECT CurrencyNumber, CurrencyCode FROM X_Currency").Rows)
+        {
+            if (TurbimSQLHelper.defaultconn.SQLSelect("SELECT COUNT(ID) FROM TRN_DailyExchange WHERE CurrencyID=" + dr["CurrencyNumber"].convInt() + " AND [Date]='" + date.ToString("yyyy-MM-dd") + "'") == "0")
+            {
+                string[] curr = KurHesapla(1, dr["CurrencyCode"] + "", kurTarihi);
+                if (curr[0] != null)
+                {
+                    if (dr["CurrencyCode"] + "" != "TL")
+                        TurbimSQLHelper.defaultconn.SQLExecuteNonQuery("INSERT INTO TRN_DailyExchange(Date, CurrencyID, RATE1, RATE2, RATE3, RATE4) VALUES('" + date.ToString("yyyy-MM-dd") + "'," + dr["CurrencyNumber"] + ",'" + curr[0] + "','" + curr[1] + "','" + curr[2] + "','" + curr[3] + "')");
+                }
+                else
+                {
+                    if (date < DateTime.Now.AddDays(1))
+                        GetExchanges(date, kurTarihi.AddDays(-1));
+                }
+            }
+        }
+
+    }
+
+    public static double KurCevir(double tutar, int Kod, DateTime date, int KurTipNo)
+    {
+        if (date < System.DateTime.Now.AddYears(-100))
+            return 1;
+        if (KurTipNo == 0)
+            KurTipNo = 2;
+        if (Kod == 0)
+            return 1;
+        double kur = 1;
+        DataRow dr = TurbimSQLHelper.defaultconn.SQLSelectDataRow("SELECT RATE" + KurTipNo + " FROM TRN_DailyExchange WHERE CurrencyID=" + Kod + " AND  [Date]='" + date.ToString("yyyy-MM-dd") + "'");
+        if (dr == null)
+        {
+            GetExchanges(date, date);
+            kur = conv.ToDouble(TurbimSQLHelper.defaultconn.SQLSelect("SELECT RATE" + KurTipNo + " FROM TRN_DailyExchange WHERE CurrencyID=" + Kod + " AND   [Date]='" + date.ToString("yyyy-MM-dd") + "'"));
+        }
+        else
+            kur = conv.ToDouble(dr[0]);
+        if (kur == 0)
+        {
+            kur = 1;
+        }
+        return kur * tutar;
+    }
+    static string url = "";
+    static string xmlstring = "";
+    static string[] KurHesapla(double tutar, string kod, DateTime date)
+    {
+        if (kod == "0" || kod == "TL")
+            return new string[] { "1", "1", "1", "1" };
+
+
+        double[] _tl = new double[4];
+        string[] tlstring = new string[4];
+        try
+        {
+            if (conv.ToInt(date.DayOfWeek) == 0)
+            { date = date.AddDays(-2); }
+            else if (conv.ToInt(date.DayOfWeek) == 1)
+            { date = date.AddDays(-3); }
+            else
+            {
+                date = date.AddDays(-1);
+            }
+            if (url != "http://www.tcmb.gov.tr/kurlar/" + date.ToString("yyyyMM") + "/" + date.ToString("ddMMyyyy") + ".xml" || !xmlstring.Contains("<?xml"))
+            {
+                url = "http://www.tcmb.gov.tr/kurlar/" + date.ToString("yyyyMM") + "/" + date.ToString("ddMMyyyy") + ".xml";
+                xmlstring = TurbimTools.GetRemotePage(url);
+                if (!xmlstring.Contains("<?xml"))
+                {
+                    xmlstring = TurbimTools.GetRemotePage(url, TurbimTools.getinnertext(xmlstring, "document.cookie=\"", "\";", true).Replace("\"", ""));
+                }
+                if (!xmlstring.Contains("<?xml")) return new string[] { "1", "1", "1", "1" };
+            }
+            XmlDocument xmlDocument = new XmlDocument();
+            xmlDocument.LoadXml(xmlstring);
+
+            System.Xml.XmlNodeList xnList = xmlDocument.ChildNodes[2].SelectNodes("Currency[@Kod='" + kod + "']");
+            _tl[0] = tutar * (Convert.ToDouble(xnList[0].ChildNodes[3].InnerText.Replace(".", ",")) / Convert.ToDouble((xnList[0].ChildNodes[0].InnerText.Replace(".", ","))));
+            _tl[1] = tutar * (Convert.ToDouble(xnList[0].ChildNodes[4].InnerText.Replace(".", ",")) / Convert.ToDouble((xnList[0].ChildNodes[0].InnerText.Replace(".", ","))));
+            _tl[2] = tutar * (Convert.ToDouble(xnList[0].ChildNodes[5].InnerText.Replace(".", ",")) / Convert.ToDouble((xnList[0].ChildNodes[0].InnerText.Replace(".", ","))));
+            _tl[3] = tutar * (Convert.ToDouble(xnList[0].ChildNodes[6].InnerText.Replace(".", ",")) / Convert.ToDouble((xnList[0].ChildNodes[0].InnerText.Replace(".", ","))));
+            tlstring[0] = (_tl[0] + "").Replace(",", ".");
+            tlstring[1] = (_tl[1] + "").Replace(",", ".");
+            tlstring[2] = (_tl[2] + "").Replace(",", ".");
+            tlstring[3] = (_tl[3] + "").Replace(",", ".");
+
+        }
+        catch (Exception ex)
+        {
+            var st = new System.Diagnostics.StackTrace(ex, true);
+
+            var frame = st.GetFrame(0);
+            // Get the line number from the stack frame
+            var line = frame.GetFileLineNumber();
+            LogWriter.LogYaz("Kurlar belirtilmemiş. Lütfen manuel olarak günlük döviz kurlarını giriniz." + frame.GetFileName() + " " + line + " - " + frame.GetFileColumnNumber(), LogWriter.renk.kirmizi);
+        }
+        return tlstring;
+
+    }
     public static int UserDepartman
     {
         get;

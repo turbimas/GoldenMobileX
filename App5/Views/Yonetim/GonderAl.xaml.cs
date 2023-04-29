@@ -75,24 +75,11 @@ namespace GoldenMobileX.Views
 
         private void Temizle_Clicked(object sender, EventArgs e)
         {
-            DataLayer.Products = new OfflineData.offLine.Products();
+
             DataLayer.LocalDataBase.ExecuteAsync("DELETE FROM V_AllItems");
             DataLayer.v_DepodakiLotlar.Clear();
             DataLayer.LocalDataBase.ExecuteAsync("DELETE FROM V_DepodakiLotlar");
 
-
-            DataLayer.CRD = new OfflineData.offLine.CRD();
-            if (System.IO.File.Exists(DataLayer.CRD.JsonPath()))
-                System.IO.File.Delete(DataLayer.CRD.JsonPath());
-            if (System.IO.File.Exists(DataLayer.Products.JsonPath()))
-                System.IO.File.Delete(DataLayer.Products.JsonPath());
-
-            DataLayer.Cari = new OfflineData.offLine.Cari();
-            if (System.IO.File.Exists(DataLayer.Cari.JsonPath()))
-                System.IO.File.Delete(DataLayer.Cari.JsonPath());
-            DataLayer.Types = new OfflineData.offLine.Types();
-            if (System.IO.File.Exists(DataLayer.Types.JsonPath()))
-                System.IO.File.Delete(DataLayer.Types.JsonPath());
         }
 
         private void OtomatikSenkronize_CheckedChanged(object sender, EventArgs e)

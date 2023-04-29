@@ -125,6 +125,7 @@ namespace GoldenMobileX.Models
         public string MuhasebeKodu { get; set; }
         public string Code2 { get; set; }
         public string Code3 { get; set; }
+        [NotMapped]
         public System.Drawing.Color rowColor { get { return DataLayer.statusbackColor(Code.convInt()); } }
     }
     public class X_Users
@@ -252,7 +253,13 @@ namespace GoldenMobileX.Models
         public byte[] ReportFile { get; set; }
 
     }
-
+    public class AI_Patterns
+    {
+        public int ID { get; set; }
+        public string Pattern { get; set; }
+        public string LastString { get; set; }
+        public string XmlInfo { get; set; }
+    }
     public class HttpResponse
     {
         public string Message { get; set; }

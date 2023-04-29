@@ -1,9 +1,20 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="GoldenMobileX.Views.BankaHesaplari"
+             x:Class="GoldenMobileX.Views.BankaHareketleri"
+                    
                           xmlns:local="clr-namespace:GoldenMobileX.ViewModels"  
              xmlns:model="clr-namespace:GoldenMobileX.Models" >
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Gelen Havale"     Clicked="GelenHavale_Clicked"    Order="Secondary"   />
+        <ToolbarItem Text="Gönderilen Havale"    Clicked="GonderilenHavale_Clicked"    Order="Secondary"   />
+        <ToolbarItem Text="Başka Hesaba Para Gönder"    Clicked="BaskaHesabaParaGonder_Clicked"    Order="Secondary"   />
+        <ToolbarItem Text="Yenile" x:Name="Yenile" Clicked="Yenile_Clicked"    IconImageSource="Refresh.png" Order="Secondary" />
+
+       
+    </ContentPage.ToolbarItems>
+
     <ContentPage.Content>
         <StackLayout x:DataType="local:FinansViewModel">
             <StackLayout x:Name="StackFisler" VerticalOptions="FillAndExpand">
@@ -12,31 +23,33 @@
                         <DataTemplate>
                             <ViewCell>
                                 <ViewCell.ContextActions>
-                  
-              
+
+
                                 </ViewCell.ContextActions>
-                                <Frame BorderColor="#ccc"   Margin="0,2,0,0" VerticalOptions="Fill" x:DataType="model:CRD_BankaHesaplari"  BackgroundColor="{StaticResource Primary}">
-                                    <StackLayout Orientation="Horizontal" Padding="4">
+
+                                <StackLayout Orientation="Horizontal" x:DataType="model:TRN_BankaHareketleri"   BackgroundColor="{StaticResource Primary}" Margin="0,2,0,0" Padding="4">
                                         <StackLayout Orientation="Vertical" HorizontalOptions="StartAndExpand">
-                                            <Label Text="{Binding HesapNo}"  TextColor="{StaticResource TextColor}"></Label>
-                                            <Label Text="{Binding HesapAdi}"  TextColor="{StaticResource TextColor}"></Label>
+                                            <Label Text="{Binding CariID_.Name}"  TextColor="{StaticResource TextColor}"></Label>
+                                            <Label Text="{Binding Aciklama}"  TextColor="{StaticResource TextColor}"></Label>
                                         </StackLayout>
                                         <StackLayout Orientation="Vertical"  Padding="0" HorizontalOptions="End" WidthRequest="150" FlowDirection="LeftToRight">
+                                        <Label Text="{Binding  Tarih, StringFormat='{0:dd.MM.yyyy}'}" TextColor="{StaticResource TextColor2}"  HorizontalOptions="End"></Label>
+                                        <Label Text="{Binding  TurKodu_.Name}" TextColor="{StaticResource TextColor2}"  HorizontalOptions="End"></Label>
                                             <StackLayout Orientation="Horizontal" HorizontalOptions="End">
-                                                <Label Text="{Binding  HesapBakiye, StringFormat='{0:n2}'}}" TextColor="{StaticResource TextColor2}"></Label>
-                                                <Label Text="{Binding  CurrencyID_.CurrencyCode}" TextColor="{StaticResource TextColor2}"></Label>
+                                                <Label Text="{Binding  Tutar, StringFormat='{0:n2}'}" TextColor="{StaticResource TextColor2}"></Label>
+                                          
                                             </StackLayout>
                                         </StackLayout>
                                         <StackLayout.GestureRecognizers>
                                             <TapGestureRecognizer 
                                 NumberOfTapsRequired="1" 
                                 Command="{Binding Source={RelativeSource AncestorType={x:Type local:FinansViewModel}}}"		
-                                CommandParameter="{Binding .}" Tapped="Bankalar_Tapped">
+                                CommandParameter="{Binding .}" Tapped="Hareket_Tapped">
                                             </TapGestureRecognizer>
                                         </StackLayout.GestureRecognizers>
 
                                     </StackLayout>
-                                </Frame>
+                            
                             </ViewCell>
                         </DataTemplate>
                     </ListView.ItemTemplate>

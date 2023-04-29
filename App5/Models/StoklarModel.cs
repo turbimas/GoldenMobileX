@@ -552,7 +552,8 @@ namespace GoldenMobileX.Models
         public Nullable<int> ProductType { get; set; }
         public string LineExp { get; set; }
         public Nullable<decimal> Amount { get; set; }
-        public Nullable<decimal> RealAmount { get; set; }
+        [NotMapped]
+        public Nullable<decimal> RealAmount { get { return Amount * Direction; } }
         public Nullable<decimal> OrderAmount { get; set; }
         public Nullable<double> UnitPrice { get; set; }
         public Nullable<double> PerakendeFiyati { get; set; }

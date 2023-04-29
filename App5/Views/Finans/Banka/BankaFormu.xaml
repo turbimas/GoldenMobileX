@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="GoldenMobileX.Views.BankaFormu"
+                 xmlns:local="clr-namespace:GoldenMobileX.ViewModels"  
+             xmlns:model="clr-namespace:GoldenMobileX.Models"
+                              xmlns:controls="clr-namespace:GoldenMobileX.Views.Controls;assembly=GoldenMobileX"
+                 xmlns:dxe="clr-namespace:DevExpress.XamarinForms.Editors;assembly=DevExpress.XamarinForms.Editors"  >
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Kaydet"  IconImageSource="save.png" Clicked="BtnKaydet_Clicked" />
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content  >
+        <StackLayout x:Name="StokKartiStack"  BindableLayout.ItemsSource="{Binding hareket}" x:DataType="local:FinansViewModel">
+            <controls:GoldenEntryBankaPicker x:Name="eBanka"  PlaceholderText="Banka Hesabı"  SelectedItem="{Binding  hareket.BankaHesapID_, Mode=TwoWay}"></controls:GoldenEntryBankaPicker>
+            <dxe:ComboBoxEdit   PlaceholderText="Türü" LabelText="Türü"  x:Name="PickerType"   
+                          ValueMember="Code"      DisplayMember="Name"  ItemsSource="{Binding bankaIslemTypes}"  SelectedValue="{Binding hareket.TurKodu, Mode=TwoWay}"  WidthRequest="200" />
+            
+            <dxe:DateEdit LabelText="Fiş Tarihi" DisplayFormat="dd.MM.yyyy"     HorizontalOptions="FillAndExpand" x:Name="FisDatePickerTarih"  Date="{Binding hareket.Tarih, Mode=TwoWay}"   />
+
+            <controls:GoldenEntryCariPicker x:Name="ECari"  PlaceholderText="Cari"  SelectedItem="{Binding hareket.CariID_, Mode=TwoWay}"></controls:GoldenEntryCariPicker>
+            <controls:GoldenEntryBankaPicker x:Name="eKarsiBanka"  PlaceholderText="Banka Hesabı"  SelectedItem="{Binding  hareket.KarsiBankaHesapID_, Mode=TwoWay}"></controls:GoldenEntryBankaPicker>
+
+            <StackLayout Orientation="Horizontal">
+                <Entry FontSize="Medium" x:Name="EntryID" IsVisible="false" Placeholder="ID" Text="{Binding hareket.ID, Mode=TwoWay}" />
+
+                <dxe:NumericEdit  ClearIcon="Delete.png" ClearIconVisibility="Auto"
+                        x:Name="SatirEntrytutar"  AllowNullValue="True"   HorizontalOptions="FillAndExpand"   LabelText="Tutar" MaxDecimalDigitCount="2"  
+                        Value="{Binding hareket.Tutar, Mode=TwoWay }"   />
+            </StackLayout>
+            <Editor HeightRequest="160"  x:Name="EntryName"  Text="{Binding hareket.Aciklama, Mode=TwoWay}" Completed="EntryName_Completed" Placeholder="Açıklama" BackgroundColor="{StaticResource Primary}" TextColor="{StaticResource TextColor}" PlaceholderColor="{StaticResource TextColor2}"></Editor>
+     
+
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

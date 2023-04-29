@@ -73,7 +73,7 @@ namespace GoldenMobileX.Models
         public Nullable<decimal> EUROBakiye { get; set; }
 
 
-
+        [NotMapped]
         public virtual ICollection<CRD_CariAdres> CRD_CariAdres { get; set; }
     }
     public partial class CRD_CariAdres

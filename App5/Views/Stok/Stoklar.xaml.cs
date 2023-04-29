@@ -44,7 +44,10 @@ namespace GoldenMobileX.Views
                 var searchwords = search.ToLower(c).Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
                 newlist = DataLayer.V_AllItems.Where(x => searchwords.All(t => (x.Name + " " + x.Barcode).ToLower(c).Split(' ').Any(s => s.Contains(t)))).OrderBy(x => x.ID).ToList();
             }
-            ItemsListview.ItemsSource = newlist;
+            if (Stoktakiler.IsToggled)
+                ItemsListview.ItemsSource = newlist.Where(s => s.StokAdeti > 0);
+            else
+                ItemsListview.ItemsSource = newlist;
 
         }
 
@@ -138,6 +141,18 @@ namespace GoldenMobileX.Views
             StokHareketleri fm = new StokHareketleri();
             fm.ProductID = i.ID;
             Navigation.PushAsync(fm);
+        }
+
+ 
+
+        private void Stoktakiler_Clicked(object sender, EventArgs e)
+        {
+ 
+        }
+
+        private void Stoktakiler_Toggled(object sender, ToggledEventArgs e)
+        {
+            Rebind("");
         }
     }
 }

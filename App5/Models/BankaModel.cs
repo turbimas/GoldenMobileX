@@ -75,6 +75,8 @@ namespace GoldenMobileX.Models
         }
         [NotMapped]
         public X_Currency CurrencyID_ { get; set; }
+        [NotMapped]
+        public Nullable<decimal> HesapBakiye { get { return (CurrencyID == 0 ? Bakiye : DovizBakiye); } }
         public Nullable<decimal> Bakiye { get; set; }
         public Nullable<decimal> DovizBakiye { get; set; }
         public Nullable<System.DateTime> SonIslemTarihi { get; set; }
@@ -91,14 +93,8 @@ namespace GoldenMobileX.Models
 
     public class TRN_BankaHareketleri
     {
-        public TRN_BankaHareketleri()
-        {
-            CariID_ = new CRD_Cari();
-            TurKodu_ = new X_Types();
 
-        }
         public int ID { get; set; }
-        public Nullable<int> FirmaNo { get; set; }
         public Nullable<int> Branch { get; set; }
         public string DocNumber { get; set; }
         public Nullable<System.DateTime> Tarih { get; set; }
@@ -110,14 +106,26 @@ namespace GoldenMobileX.Models
             }
             set
             {
-                TurKodu_ = DataLayer.x_types_bankahesaplari.Where(x => x.Code == value).FirstOrDefault();
+                TurKodu_ = DataLayer.x_types_BankaIslem.Where(x => x.Code == value)?.FirstOrDefault();
             }
         }
         [NotMapped]
         public X_Types TurKodu_ { get; set; }
         public Nullable<int> FisID { get; set; }
         public Nullable<int> BankaID { get; set; }
-        public Nullable<int> BankaHesapID { get; set; }
+        public Nullable<int> BankaHesapID
+        {
+            get
+            {
+                return (BankaHesapID_?.ID).convInt();
+            }
+            set
+            {
+                BankaHesapID_ = DataLayer.CRD_BankaHesaplari.Where(x => x.ID == value)?.FirstOrDefault();
+            }
+        }
+        [NotMapped]
+        public CRD_BankaHesaplari BankaHesapID_ { get; set; }
         public Nullable<int> CariID
         {
             get
@@ -133,17 +141,23 @@ namespace GoldenMobileX.Models
         public CRD_Cari CariID_ { get; set; }
         public Nullable<int> ProjectID { get; set; }
         public Nullable<int> KarsiBankaID { get; set; }
-        public Nullable<int> KarsiBankaHesapID { get; set; }
+        [NotMapped]
+        public CRD_BankaHesaplari KarsiBankaHesapID_ { get; set; }
+        public Nullable<int> KarsiBankaHesapID {
+            get
+            {
+                return (KarsiBankaHesapID_?.ID).convInt();
+            }
+            set
+            {
+                KarsiBankaHesapID_ = DataLayer.CRD_BankaHesaplari.Where(x => x.ID == value)?.FirstOrDefault();
+            }
+        }
         public Nullable<int> KarsiKasaID { get; set; }
         public Nullable<int> MasrafID { get; set; }
         public string Aciklama { get; set; }
-        public Nullable<double> Tutar { get; set; }
-        public Nullable<int> TaksitNo { get; set; }
-        public Nullable<double> OdenenAnaPara { get; set; }
-        public Nullable<double> OdenenFaiz { get; set; }
-        public Nullable<double> BSMV { get; set; }
-        public Nullable<double> KKDF { get; set; }
-        public Nullable<double> KalanAnaPara { get; set; }
+        public Nullable<decimal> Tutar { get; set; }
+   
         public Nullable<int> DovizKodu { get; set; }
         public Nullable<double> DovizKuru { get; set; }
         public string OzelKod { get; set; }
@@ -151,17 +165,16 @@ namespace GoldenMobileX.Models
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public Nullable<int> ModifiedBy { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
-        public Nullable<bool> KontrolEdildi { get; set; }
-        public Nullable<System.DateTime> KontrolTarihi { get; set; }
-        public Nullable<bool> GoldenSync { get; set; }
-        public Nullable<bool> Silindi { get; set; }
-        public Nullable<int> AccountFicheID { get; set; }
-        public Nullable<int> AuthBy { get; set; }
-        public Nullable<int> ZNo { get; set; }
-        public Nullable<int> CaseNo { get; set; }
-        public Nullable<int> AcquirerID { get; set; }
-        public Nullable<int> BatchID { get; set; }
-        public Nullable<int> StanID { get; set; }
-        public Guid Guid { get; set; }
+
+    }
+    public partial class TRN_DailyExchange
+    {
+        public int ID { get; set; }
+        public Nullable<int> CurrencyID { get; set; }
+        public Nullable<System.DateTime> Date { get; set; }
+        public Nullable<double> Rate1 { get; set; }
+        public Nullable<double> Rate2 { get; set; }
+        public Nullable<double> Rate3 { get; set; }
+        public Nullable<double> Rate4 { get; set; }
     }
 }

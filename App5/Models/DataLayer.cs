@@ -15,28 +15,23 @@ class DataLayer
     {
 
     }
+
     public async static void LoadStaticData()
     {
         SqlLiteInitDataBase();
         await Device.InvokeOnMainThreadAsync(() => appSettings.activity.viewModel = new BaseViewModel() { activityText = "Sqlite database initialized.." });
 
         offLineMod = true;
-        CRD = new offLine.CRD();
-        Products = new offLine.Products();
-        Cari = new offLine.Cari();
+
         WaitingSent = new offLine.WaitingSent();
         Sent = new offLine.Sent();
-        Types = new offLine.Types();
+
         v_DepodakiLotlar = new List<V_DepodakiLotlar>();
         WaitingSent.tRN_StockTrans = new List<TRN_StockTrans>();
         WaitingSent.TRN_EtiketBasim = new List<TRN_EtiketBasim>();
         WaitingSent.tRN_Orders = new List<TRN_Orders>();
-        LoadDataFromJSON();
+        LoadDataFromSQL(true);
     }
-    public static offLine.Types Types { get; set; }
-    public static offLine.CRD CRD { get; set; }
-    public static offLine.Products Products { get; set; }
-    public static offLine.Cari Cari { get; set; }
     public static offLine.WaitingSent WaitingSent { get; set; }
     public static offLine.Sent Sent { get; set; }
     public static bool offLineMod
@@ -63,11 +58,7 @@ class DataLayer
     static int maxConnTimeOut = 100, minConnTimeOut = 1;
     public static List<CRD_StockWareHouse> Depolar
     {
-        get { return CRD.CRD_StockWareHouse; }
-        set
-        {
-            CRD.CRD_StockWareHouse = value;
-        }
+        get;set;
     }
     public static List<V_DepodakiLotlar> DepolakiLotlar
     {
@@ -75,27 +66,15 @@ class DataLayer
     }
     public static List<CRD_BankaHesaplari> CRD_BankaHesaplari
     {
-        get { return CRD.CRD_BankaHesaplari; }
-        set
-        {
-            CRD.CRD_BankaHesaplari = value;
-        }
+        get;set;
     }
     public static List<CRD_Bankalar> CRD_Bankalar
     {
-        get { return CRD.CRD_Bankalar; }
-        set
-        {
-            CRD.CRD_Bankalar = value;
-        }
+        get;set;
     }
     public static List<CRD_Kasalar> CRD_Kasalar
     {
-        get { return CRD.CRD_Kasalar; }
-        set
-        {
-            CRD.CRD_Kasalar = value;
-        }
+        get;set;
     }
     public static List<X_Reports> X_Reports
     {
@@ -104,39 +83,87 @@ class DataLayer
 
     public static List<x_Settings> X_Settings
     {
-        get
-        {
-            return Types.X_Settings;
-        }
-        set { Types.X_Settings = value; }
+        get;set;
     }
 
     public static List<X_Currency> X_Currency
     {
-        get { return Types.X_Currency; }
-        set { Types.X_Currency = value; }
+        get;set;
     }
-
+    static List<CRD_Cari> _Cariler;
     public static List<CRD_Cari> Cariler
     {
-        get { return Cari.cRD_Cari; }
-        set { Cari.cRD_Cari = value; }
-    }
+        get
+        {
+            try
+            {
 
+                if (_Cariler == null)
+                    using (GoldenContext c = new GoldenContext())
+                    {
+                        _Cariler = c.CRD_Cari.Where(s => s.Active == true).ToList().Select(s => s).ToList();
+                    }
+            }
+            catch (Exception ex)
+            {
+                appSettings.UyariGoster("CRD_Cari : " + ex.Message + ex.InnerException?.Message);
+            }
+            return _Cariler;
+        }
+        set { _Cariler = value; }
+    }
+    static List<V_AllItems> _V_AllItems;
     public static List<V_AllItems> V_AllItems
     {
-        get { return Products.v_AllItems; }
-        set
+        get
         {
-            Products.v_AllItems = value;
+            try
+            {
+
+                if (_V_AllItems == null)
+                {
+                    using (GoldenContext c = new GoldenContext())
+                    {
+                        _V_AllItems = c.V_AllItems.Where(s => s.Active == true).Select(s => s).ToList();
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                appSettings.UyariGoster("V_AllItems : " + ex.Message + ex.InnerException?.Message);
+            }
+            return _V_AllItems;
         }
+        set { _V_AllItems = value; }
     }
+    static List<V_DepodakiLotlar> _v_DepodakiLotlar;
     public static List<V_DepodakiLotlar> v_DepodakiLotlar
     {
-        get; set;
+        get {
+            try
+            {
+
+                if (_v_DepodakiLotlar == null)
+                {
+                    using (GoldenContext c = new GoldenContext())
+                    {
+
+                        v_DepodakiLotlar = c.V_DepodakiLotlar.Select(s => s).ToList();
+
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                appSettings.UyariGoster("V_DepodakiLotlar : " + ex.Message + ex.InnerException?.Message);
+            }
+            return _v_DepodakiLotlar;
+        } set { _v_DepodakiLotlar = value; }
     }
-    public static List<X_Types> X_Types { get { return Types.X_Types; } set { Types.X_Types = value; } }
-    public static List<L_Units> L_Units { get { return Types.L_Units; } set { Types.L_Units = value; } }
+    public static List<X_Types> X_Types { get; set; }
+    public static List<L_Units> L_Units { get; set; }
     public static Color statusbackColor(int Status)
     {
         switch (Status)
@@ -189,6 +216,7 @@ class DataLayer
     public static List<X_Types> x_types_stokkarti { get; set; }
     public static List<X_Types> x_types_stokfisi { get; set; }
     public static List<X_Types> x_types_Invoice { get; set; }
+    public static List<X_Types> x_types_BankaIslem { get; set; }
     public static List<X_Types> x_types_siparisTuru { get; set; }
     public static List<X_Types> x_types_SatisSiparisleriDurum { get; set; }
     public static List<X_Types> x_types_SatinAlmaSiparisleriDurum { get; set; }
@@ -203,48 +231,17 @@ class DataLayer
         x_types_siparisTuru = X_Types.Where(x => x.TableName == "Orders" && x.ColumnsName == "Type").ToList();
         x_types_SatisSiparisleriDurum = X_Types.Where(x => x.TableName == "OrderStatus" && x.ColumnsName == "5").ToList();
         x_types_SatinAlmaSiparisleriDurum = X_Types.Where(x => x.TableName == "OrderStatus" && x.ColumnsName == "3").ToList();
+        x_types_BankaIslem=X_Types.Where(x => x.TableName == "TRN_BankaHareketleri" && x.ColumnsName == "TurKodu").ToList();
     }
-    static async void LoadDataFromJSON()
-    {
-
-        LocalDataBase.CreateTableAsync<X_Currency>().Wait();
-        LocalDataBase.CreateTableAsync<L_Units>().Wait();
-        LocalDataBase.CreateTableAsync<X_Types>().Wait();
-        LocalDataBase.CreateTableAsync<x_Settings>().Wait();
-
-        LocalDataBase.CreateTableAsync<V_DepodakiLotlar>().Wait();
-        LocalDataBase.CreateTableAsync<CRD_ItemBarcodes>().Wait();
-        //LocalDataBase.CreateTableAsync<V_AllItems>().Wait();
-        //LocalDataBase.CreateTableAsync<CRD_Cari>().Wait();
-
-        //LocalDataBase.CreateTableAsync<TRN_StockTrans>().Wait();
-        //ProductDataBase.CreateTableAsync<TRN_StockTransLines>().Wait();
-
-        await Device.InvokeOnMainThreadAsync(() => appSettings.activity.viewModel = new BaseViewModel() { activityText = "JSON data yükleniyor.." });
-
-        DataLayer.Types = TurbimJSON.Read<offLine.Types>(new offLine.Types());  //0
-        await Device.InvokeOnMainThreadAsync(() => appSettings.activity.viewModel = new BaseViewModel() { activityText = "JSON types yükleniyor.." });
-        LoadTypes();
-        await Device.InvokeOnMainThreadAsync(() => appSettings.activity.viewModel = new BaseViewModel() { activityText = "JSON CRD yükleniyor.." });
-        DataLayer.CRD = TurbimJSON.Read<offLine.CRD>(new offLine.CRD());  //1
-        await Device.InvokeOnMainThreadAsync(() => appSettings.activity.viewModel = new BaseViewModel() { activityText = "JSON Products yükleniyor.." });
-        DataLayer.Products = TurbimJSON.Read<offLine.Products>(new offLine.Products());  //2
-        await Device.InvokeOnMainThreadAsync(() => appSettings.activity.viewModel = new BaseViewModel() { activityText = "JSON Cari yükleniyor.." });
-        DataLayer.Cari = TurbimJSON.Read<offLine.Cari>(new offLine.Cari());  //3 
-        await Device.InvokeOnMainThreadAsync(() => appSettings.activity.viewModel = new BaseViewModel() { activityText = "JSON waitingsent yükleniyor.." });
-        DataLayer.WaitingSent = TurbimJSON.Read<offLine.WaitingSent>(new offLine.WaitingSent());  //4
-  LoadDataFromSQL(true);
-    }
+ 
     public static void LoadDataFromSQL(bool FromServer = false)
     {
 
         if (IsOnline)
         {
             db.connTimeOut = maxConnTimeOut;
-
-
-
             GoldenContext c = new GoldenContext();
+
             try
             {
                 DataLayer.Depolar = c.CRD_StockWareHouse.Select(s => s).ToList().Where(r => r.AuthCode + "" == "" || appSettings.UserAuthCode.Split(',').Any(x => x == "*") || (r.AuthCode + "").Split(',').Any(x => (appSettings.UserAuthCode + "").Split(',').Contains(x))).Select(s => s).ToList();
@@ -257,8 +254,7 @@ class DataLayer
 
             try
             {
-                if (X_Types.Count == 0 || FromServer)
-                    DataLayer.X_Types = c.X_Types.Select(s => s).ToList();
+                DataLayer.X_Types = c.X_Types.Select(s => s).ToList();
             }
             catch (Exception ex)
             {
@@ -267,7 +263,7 @@ class DataLayer
             LoadTypes();
             try
             {
-                if (X_Settings.Count == 0 || FromServer)
+       
                     DataLayer.X_Settings = c.x_Settings.Select(s => s).ToList();
             }
             catch (Exception ex)
@@ -276,7 +272,7 @@ class DataLayer
             }
             try
             {
-                if (L_Units.Count == 0 || FromServer)
+     
                     DataLayer.L_Units = c.L_Units.Select(s => s).ToList();
             }
             catch (Exception ex)
@@ -285,79 +281,25 @@ class DataLayer
             }
             try
             {
-                if (X_Currency.Count == 0 || FromServer)
+      
                     DataLayer.X_Currency = c.X_Currency.Select(s => s).ToList();
             }
             catch (Exception ex)
             {
                 appSettings.UyariGoster("X_Currency : " + ex.Message + ex.InnerException?.Message);
             }
+
+ 
             try
             {
-                if (Cariler.Count == 0)
-                    DataLayer.Cariler = c.CRD_Cari.Where(s => s.Active == true).ToList().Select(s => s).ToList();
-                else if (FromServer)
-                {
-                    var maxModifiedDate = (DataLayer.Cariler.Max(s => s.ModifiedDate)).convDateTime();
-                    DataLayer.Cariler = c.CRD_Cari.Where(s => s.Active == true && s.ModifiedDate > maxModifiedDate).Select(s => s).ToList();
-                }
-            }
-            catch (Exception ex)
-            {
-                appSettings.UyariGoster("CRD_Cari : " + ex.Message + ex.InnerException?.Message);
-            }
-            try
-            {
-                if (V_AllItems.Count == 0)
-                {
-                    DataLayer.V_AllItems = c.V_AllItems.Where(s => s.Active == true).Select(s => s).ToList();
-                }
-                else if (FromServer)
-                {
-                    var maxModifiedDate = (DataLayer.V_AllItems.Max(s => s.ModifiedDate)).convDateTime();
-                    List<V_AllItems> items = c.V_AllItems.Where(s => s.Active == true && s.ModifiedDate > maxModifiedDate).Select(s => s).ToList();
-                    DataLayer.V_AllItems.AddRange(items.Where(s => DataLayer.V_AllItems.Where(t => t.ID == s.ID && t.Barcode == s.Barcode).Count() == 0));
-                }
-            }
-            catch (Exception ex)
-            {
-                appSettings.UyariGoster("V_AllItems : " + ex.Message + ex.InnerException?.Message);
-            }
-            try
-            {
-                if (DataLayer.v_DepodakiLotlar.Count == 0)
-                {
-                    LocalDataBase.ExecuteAsync("DELETE FROM V_DepodakiLotlar");
-                    List<V_DepodakiLotlar> items = c.V_DepodakiLotlar.Select(s => s).ToList();
-                    LocalDataBase.InsertAllAsync(DataLayer.v_DepodakiLotlar);
-                }
-                else if (FromServer)
-                {
-                    var maxModifiedDate = (DataLayer.v_DepodakiLotlar.Max(s => s.ModifiedDate)).convDateTime();
-                    List<V_DepodakiLotlar> items = c.V_DepodakiLotlar.Where(s => s.ModifiedDate > maxModifiedDate).Select(s => s).ToList();
-                    LocalDataBase.InsertAllAsync(items.Where(s => DataLayer.v_DepodakiLotlar.Where(t => t.HareketID == s.HareketID).Count() == 0));
-                    DataLayer.v_DepodakiLotlar.AddRange(items.Where(s => DataLayer.v_DepodakiLotlar.Where(t => t.HareketID == s.HareketID).Count() == 0));
-                }
-            }
-            catch (Exception ex)
-            {
-                appSettings.UyariGoster("V_DepodakiLotlar : " + ex.Message + ex.InnerException?.Message);
-            }
-            try
-            {
-                if (CRD_BankaHesaplari.Count == 0 || FromServer)
-                    DataLayer.CRD_BankaHesaplari = c.CRD_BankaHesaplari.Select(s => s).ToList();
-                if (CRD_Bankalar.Count == 0 || FromServer)
-                    DataLayer.CRD_Bankalar = c.CRD_Bankalar.Select(s => s).ToList();
+                CRD_BankaHesaplari = c.CRD_BankaHesaplari.Select(s => s).ToList();
+                CRD_Bankalar = c.CRD_Bankalar.Select(s => s).ToList();
             }
             catch (Exception ex)
             {
                 appSettings.UyariGoster("CRD_Bankalar_CRD_BankaHesaplari : " + ex.Message + ex.InnerException?.Message);
             }
-            DataLayer.CRD.SaveJSON();
-            DataLayer.Products.SaveJSON();
-            DataLayer.Cari.SaveJSON();
-            DataLayer.Types.SaveJSON();
+ 
 
             // Start a new task (this launches a new thread)
             Task.Factory.StartNew(() =>

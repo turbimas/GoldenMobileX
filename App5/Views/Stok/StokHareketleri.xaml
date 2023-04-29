@@ -7,7 +7,7 @@
     <ContentPage.Content>
         <StackLayout x:DataType="local:StokFisleriViewModel">
             <StackLayout x:Name="StackFisler" VerticalOptions="FillAndExpand">
-                <ListView x:Name="ListViewHareketler">
+                <ListView x:Name="ListViewHareketler" RowHeight="120">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
@@ -16,25 +16,25 @@
                                     </MenuItem>
               
                                 </ViewCell.ContextActions>
-                                <Frame BorderColor="#ccc" Padding="3" Margin="3" VerticalOptions="Fill" x:DataType="model:TRN_StockTransLines" BackgroundColor="{StaticResource Primary}">
+                                <Frame BorderColor="#ccc" Padding="3" Margin="3" VerticalOptions="Fill" x:DataType="model:TRN_StockTransLines" BackgroundColor="{StaticResource Primary}" >
                                     <StackLayout Orientation="Horizontal">
                                         <StackLayout Orientation="Vertical" HorizontalOptions="StartAndExpand">
-                                            <Label Text="{Binding Date, StringFormat='{0:dd.MM.yyyy}'}" ></Label>
-                                            <Label Text="{Binding ProductID_.Name, StringFormat='{0:dd.MM.yyyy}'}" ></Label>
-
+                                            <Label Text="{Binding Date, StringFormat='{0:dd.MM.yyyy}'}" TextColor="{StaticResource TextColor}"></Label>
+                                            <Label Text="{Binding ProductID_.Name, StringFormat='{0:dd.MM.yyyy}'}" TextColor="{StaticResource TextColor}"></Label>
+                                        
 
                                         </StackLayout>
 
                                         <StackLayout Orientation="Vertical"  Padding="0" HorizontalOptions="End" WidthRequest="150" FlowDirection="LeftToRight">
 
                                             <StackLayout Orientation="Horizontal">
-                                                <Label Text="{Binding Amount}" ></Label>
-                                                <Label Text="{Binding UnitID_.UnitCode}" ></Label>
+                                                <Label Text="{Binding RealAmount}" TextColor="{StaticResource TextColor}"></Label>
+                                                <Label Text="{Binding UnitID_.UnitCode}" TextColor="{StaticResource TextColor}"></Label>
                                             </StackLayout>
 
-                                            <Label Text="{Binding UnitPrice, StringFormat='Birim Fiyat: {0:n2}'}" ></Label>
-                                            <Label Text="{Binding LineTotal, StringFormat='Satır Toplamı: {0:n2}' }" ></Label>
-                                            <Label Text="{Binding Total, StringFormat='KDV Dahil Toplam: {0:n2}' }" ></Label>
+                                            <Label Text="{Binding UnitPrice, StringFormat='Birim Fiyat: {0:n2}'}" TextColor="{StaticResource TextColor}"></Label>
+                                            <Label Text="{Binding LineTotal, StringFormat='Satır Toplamı: {0:n2}' }" TextColor="{StaticResource TextColor}"></Label>
+                                            <Label Text="{Binding Total, StringFormat='KDV Dahil Toplam: {0:n2}' }" TextColor="{StaticResource TextColor}"></Label>
 
                                         </StackLayout>
                                     </StackLayout>
