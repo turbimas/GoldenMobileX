@@ -48,6 +48,10 @@ namespace GoldenMobileX.ViewModels
         {
             get; set;
         }
+        public List<TRN_Invoice> InvoiceList
+        {
+            get; set;
+        }
         public TRN_Invoice Invoice
         {
             get; set;

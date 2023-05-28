@@ -116,7 +116,6 @@
     <FlyoutItem Title="Satış Pazarlama" Icon="Up.png" x:Name="FlyoutItemSatisPazarlama">
         <ShellContent Title="Siparişler" Route="Siparisler"  ContentTemplate="{DataTemplate local:Siparisler}"  Icon="kirmizi.png" />
         <ShellContent Title="Teklifler" Route="SatisTeklifleri"  ContentTemplate="{DataTemplate local:SatisTeklifleri}"  Icon="kirmizi.png" />
-
     </FlyoutItem>
     <FlyoutItem Title="Satınalma" Icon="Down.png" x:Name="FlyoutItemSatinAlma">
         <ShellContent Title="Satın Alma Talepleri" Route="SatinAlmaTalepleri"  ContentTemplate="{DataTemplate local:SatinAlmaTalepleri}"  Icon="kirmizi.png" />
@@ -124,6 +123,13 @@
         <ShellContent Title="Satın Alma Siparişleri" Route="SatinAlmaSiparisleri"  ContentTemplate="{DataTemplate local:SatinAlmaSiparisleri}"  Icon="kirmizi.png" />
 
     </FlyoutItem>
+
+    <FlyoutItem Title="Faturalama" Icon="icon_feed.png" x:Name="FlyoutItemFaturalar">
+        <ShellContent Route="SatisFaturalari" ContentTemplate="{DataTemplate local:SatisFaturalari}"  Title="Satış Faturaları" Icon="kirmizi.png" />
+        <ShellContent Route="SatinAlmaFaturalari" ContentTemplate="{DataTemplate local:SatinAlmaFaturalari}"  Title="Satınalma Faturaları" Icon="kirmizi.png" />
+     
+    </FlyoutItem>
+
 
     <FlyoutItem Title="Bakım Onarım" Icon="Wrench.png" x:Name="FlyoutItemBakim">
         <ShellContent Title="Bakım Onarım" Route="BakimOnarim"  ContentTemplate="{DataTemplate local:BakimOnarim}"  Icon="Wrench.png" />

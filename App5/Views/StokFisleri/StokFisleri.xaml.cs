@@ -12,7 +12,7 @@ namespace GoldenMobileX.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class StokFisleri : ContentPage
     {
-
+        GoldenContext c = new GoldenContext();
         StokFisleriViewModel viewModel
         {
             get { return (StokFisleriViewModel)BindingContext; }
@@ -33,9 +33,13 @@ namespace GoldenMobileX.Views
         DataTable items = new DataTable();
         void Rebind()
         {
+            if(DataLayer.IsOfflineAlert) { return; }
             try
             {
                 IsBusy = true;
+                int warehouse = appSettings.User.WareHouseID.convInt();
+                var t = c.TRN_StockTrans.Where(s => s.CreatedBy == appSettings.User.ID || s.DestStockWareHouseID == warehouse || s.StockWareHouseID == warehouse).Select(s=>s).OrderByDescending(s => s.ID);
+
 
                 viewModel.TransList = DataLayer.WaitingSent.tRN_StockTrans.OrderByDescending(s => s.TransDate).ToList();
                 viewModel.TransList.ForEach(s => s.Duzenlenebilir = true);
@@ -134,23 +138,14 @@ namespace GoldenMobileX.Views
             if (!await appSettings.Onay("Fiş Silinecektir..")) return;
             var mi = sender as SwipeItem;
             TRN_StockTrans t = (TRN_StockTrans)mi.CommandParameter;
-
-            DataLayer.WaitingSent.tRN_StockTrans.Remove(t);
-            DataLayer.WaitingSent.SaveJSON();
+ 
             Rebind();
 
-        }
-
-        private async void SunucuyaGonder_Invoked(object sender, EventArgs e)
-        {
-            var mi = sender as SwipeItem;
-            TRN_StockTrans t = (TRN_StockTrans)mi.CommandParameter;
-            DataLayer.TRN_StockTransInsert(t);
-            Rebind();
         }
 
         private void Onayla_Clicked(object sender, EventArgs e)
         {
+            if (DataLayer.IsOfflineAlert) return;
             var mi = sender as SwipeItem;
             TRN_StockTrans t = (TRN_StockTrans)mi.CommandParameter;
             if (t.Type_.Direction != 0)
@@ -161,7 +156,8 @@ namespace GoldenMobileX.Views
             if ((t.DestStockWareHouseID_?.ID).convInt() == appSettings.User.WareHouseID)
             {
                 t.Status = 1;
-                DataLayer.WaitingSent.SaveJSON();
+                c.TRN_StockTrans.Update(t);
+                c.SaveContextWithException();
                 Rebind();
             }
             else
@@ -170,14 +166,15 @@ namespace GoldenMobileX.Views
 
         private void Goruntule_Clicked(object sender, EventArgs e)
         {
-            var mi = sender as SwipeItem;
+            if (DataLayer.IsOfflineAlert) { return; }
+                var mi = sender as SwipeItem;
             TRN_StockTrans t = (TRN_StockTrans)mi.CommandParameter;
             StokFisi fm = new StokFisi();
             viewModel.Trans = t;
             if (t.ID > 0)
                 if (t.Lines == null || t.Lines?.Count() == 0)
                 {
-                    if (DataLayer.IsOnline)
+                 
                         try
                         {
                             using (GoldenContext c = new GoldenContext())
@@ -195,38 +192,8 @@ namespace GoldenMobileX.Views
             Navigation.PushAsync(fm);
         }
 
-        private void SunucuFisleri_Clicked(object sender, EventArgs e)
-        {
-            if (DataLayer.IsOfflineAlert) return;
-            using (GoldenContext c = new GoldenContext())
-            {
-                try
-                {
-                    int user = appSettings.User.ID;
-                    int warehouse = appSettings.User.WareHouseID.convInt();
-                    var t = c.TRN_StockTrans.Where(s => s.CreatedBy == user || s.DestStockWareHouseID == warehouse || s.StockWareHouseID == warehouse).OrderByDescending(s => s.ID);
-
-
-
-                    if (t.Count() > 0)
-                    {
-                        t.ToList().ForEach(s => s.Duzenlenebilir = true);
-
-
-                        listview1.ItemsSource = t;
-                    }
-                    else
-                        appSettings.UyariGoster("Sunucuda sizin eklediğiniz bir kayıt bulunmuyor.");
-                }
-                catch (Exception ex) { ex.UyariGoster(); }
-            }
-        }
-
-        private void CihazFisleri_Clicked(object sender, EventArgs e)
-        {
-            listview1.ItemsSource = viewModel.TransList;
-            Rebind();
-        }
+ 
+ 
     }
 }
 

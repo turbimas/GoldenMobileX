@@ -49,9 +49,11 @@ namespace GoldenMobileX.Models
         public virtual DbSet<TRN_EtiketBasimEmirleri> TRN_EtiketBasimEmirleri { get; set; }
         public virtual DbSet<X_Users> X_Users { get; set; }
         public virtual DbSet<AI_Patterns> AI_Patterns { get; set; }
+        public virtual DbSet<AI_Dictionary> AI_Dictionary { get; set; }
         public virtual DbSet<Kalite_KalibrasyonCihazlar> Kalite_KalibrasyonCihazlar { get; set; }
         public virtual DbSet<Kalite_KalibrasyonCihazSarfListesi> Kalite_KalibrasyonCihazSarfListesi { get; set; }
         public virtual DbSet<Kalite_KalibrasyonGirisi> Kalite_KalibrasyonGirisi { get; set; }
+        public virtual DbSet<TRN_Invoice> TRN_Invoice { get; set; }
 
     }
     public static class contextExtensions

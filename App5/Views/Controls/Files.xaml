@@ -1,19 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="GoldenMobileX.Views.StokResimleri"
+             x:Class="GoldenMobileX.Views.Files"
                           xmlns:local="clr-namespace:GoldenMobileX.ViewModels"  
              xmlns:model="clr-namespace:GoldenMobileX.Models">
 
     <ContentPage.ToolbarItems>
 
-        <ToolbarItem Text="Ekle" x:Name="BtnAdd" Clicked="BtnResimCek_Clicked" IconImageSource="Add.png"  />
- 
+        <ToolbarItem Text="Resim Çek"   Clicked="BtnResimCek_Clicked" IconImageSource="camera.png"  />
+        <ToolbarItem Text="Cihazdan Ekle" Clicked="ResimEkle_Clicked" IconImageSource="Add.png"  />
 
     </ContentPage.ToolbarItems>
 
     <ContentPage.Content>
-        <StackLayout x:Name="StokResimleriStack"  x:DataType="local:StoklarViewModel">
+        <StackLayout x:Name="FilesStack"  x:DataType="local:StoklarViewModel">
 
             <ListView  ItemsSource="{Binding files}" x:Name="filesListview"  RowHeight="300">
 

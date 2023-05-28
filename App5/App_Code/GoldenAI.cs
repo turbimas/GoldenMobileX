@@ -215,9 +215,9 @@ using System.Threading.Tasks;
             }
             return times;
         }
-        public static List<(string, double, int)> FindMoneys(string text)
+        public static List<(string, decimal, int)> FindMoneys(string text)
         {
-            var numbers = new List<(string, double, int)>();
+            var numbers = new List<(string, decimal, int)>();
             // Metni boşluklara göre ayırarak kelime dizisine dönüştür
             string[] words = text.Split(' ');
             int i = -1;
@@ -299,7 +299,7 @@ using System.Threading.Tasks;
             return (double.NaN, -1);
         }
 
-        public static (double value, bool ok) IsMoney(string word)
+        public static (decimal value, bool ok) IsMoney(string word)
         {
             Regex regex = new Regex(@"[^0-9.,]");
 
@@ -325,7 +325,7 @@ using System.Threading.Tasks;
                 }
 
 
-                if (double.TryParse(numberString, out double parsedNumber))
+                if (decimal.TryParse(numberString, out decimal parsedNumber))
                     return (parsedNumber, true);
                 else
                     return (0, false);

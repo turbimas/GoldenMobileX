@@ -16,7 +16,7 @@ namespace GoldenMobileX.Views.Controls
         private void GoldenPicker_Focused(object sender, FocusEventArgs e)
         {
             Stoklar fm = new Stoklar();
-
+            fm.SelectItem = true;
 
             fm.ItemSelected += (s2, e2) =>
             {

@@ -43,7 +43,7 @@ BindableProperty.Create(nameof(SelectedValue), typeof(int), typeof(GoldenEntryPr
         private async void GoldenEntryProductPicker_Focused(object sender, FocusEventArgs e)
         {
             Stoklar fm = new Stoklar();
-
+            fm.SelectItem = true;
 
             fm.ItemSelected += (s2, e2) =>
             {

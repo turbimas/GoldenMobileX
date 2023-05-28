@@ -3,6 +3,7 @@ using GoldenMobileX.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Transactions;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -13,6 +14,7 @@ namespace GoldenMobileX.Views
     {
         public bool ReadOnly = false;
         public bool newAdd = false;
+        GoldenContext c = new GoldenContext();
         public OrdersViewModel viewModel
         {
             get { return (OrdersViewModel)BindingContext; }
@@ -46,21 +48,42 @@ namespace GoldenMobileX.Views
         private void FisKaydet_Clicked(object sender, EventArgs e)
         {
             viewModel.Order.Status_ = DataLayer.x_types_SatisSiparisleriDurum.Where(t => t.Code == 0).First();
-            if (viewModel.Order.ID > 0)
+            using (var transaction = new TransactionScope())
             {
-                viewModel.Order.ModifiedBy = appSettings.User.ID;
-                viewModel.Order.ModifiedDate = DateTime.Now;
-            }
-            else
-            {
-                viewModel.Order.CreatedBy = appSettings.User.ID;
-                viewModel.Order.CreatedDate = DateTime.Now;
-            }
+                try
+                {
+                    if (viewModel.Order.ID > 0)
+                    {
+                        viewModel.Order.ModifiedBy = appSettings.User.ID;
+                        viewModel.Order.ModifiedDate = DateTime.Now;
+                        c.TRN_Orders.Update(viewModel.Order);
+                    }
+                    else
+                    {
+                        viewModel.Order.CreatedBy = appSettings.User.ID;
+                        viewModel.Order.CreatedDate = DateTime.Now;
+                        c.TRN_Orders.Add(viewModel.Order);
+                    }
+                    foreach(var l in viewModel.Order.Lines)
+                    {
+                        l.OrderID = viewModel.Order.ID;
+                        if (l.ID > 0)
+                            c.TRN_OrderLines.Update(l);
+                        else
+                            c.TRN_OrderLines.Add(l);
+                    }
+                    viewModel.Order.Total = viewModel.Order.Lines.Sum(x => x.Total).convDouble();
+                    c.SaveChanges();
 
-            viewModel.Order.Total = viewModel.Order.Lines.Sum(x => x.Total).convDouble();
-            if (newAdd)
-                DataLayer.WaitingSent.tRN_Orders.Add(viewModel.Order);
-            DataLayer.WaitingSent.SaveJSON();
+                    // İşlem başarılıysa onayla
+                    transaction.Complete();
+                }
+                catch (Exception ex)
+                {
+                    // Hata durumunda geri al
+                    Console.WriteLine("Hata: " + ex.Message);
+                }
+            }
             Navigation.PopAsync();
         }
         void FisKaydetEnabled()

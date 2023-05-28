@@ -9,8 +9,7 @@
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Yenile" x:Name="Filtrele" Clicked="Refresh_Clicked" IconImageSource="Refresh.png"  />
         <ToolbarItem Text="Yeni Ekle"  IconImageSource="Add.png" x:Name="YeniFis" Clicked="YeniFis_Clicked"  />
-        <ToolbarItem Text="Sunucudaki Fişleri Göster"    x:Name="SunucuFisleri" Clicked="SunucuFisleri_Clicked" Order="Secondary" />
-        <ToolbarItem Text="Cihazdaki Fişleri Göster"    x:Name="CihazFisleri" Clicked="CihazFisleri_Clicked" Order="Secondary" />
+
     </ContentPage.ToolbarItems>
 
     <ListView ItemsSource="{Binding TransList}"  x:DataType="local:StokFisleriViewModel"  x:Name="listview1" HasUnevenRows="True">
@@ -28,7 +27,6 @@
                             <SwipeView.RightItems>
                             <SwipeItems>
                                     <SwipeItem  IconImageSource="edit.png" Text="Düzenle" BackgroundColor="LightBlue" CommandParameter="{Binding .}"  Invoked="Duzenle_Clicked"  IsVisible="{Binding Duzenlenebilir}"></SwipeItem>
-                                    <SwipeItem  IconImageSource="server.png" Text="Sunucuya Gönder" BackgroundColor="LightYellow" CommandParameter="{Binding .}"  Invoked="SunucuyaGonder_Invoked"  IsVisible="{Binding Duzenlenebilir}"></SwipeItem>
                                     <SwipeItem  IconImageSource="onay.png" Text="Onayla" BackgroundColor="LightGreen" CommandParameter="{Binding .}"  Invoked="Onayla_Clicked"  IsVisible="{Binding Duzenlenebilir}"></SwipeItem>
                                 </SwipeItems>
                         </SwipeView.RightItems>

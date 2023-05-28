@@ -286,29 +286,7 @@ public class TurbimTools
     }
     public static string RemoveHTML(string str)
     {
-        char[] array = new char[str.Length];
-        int arrayIndex = 0;
-        bool inside = false;
-        for (int i = 0; i < str.Length; i++)
-        {
-            char let = str[i];
-            if (let == '<')
-            {
-                inside = true;
-                continue;
-            }
-            if (let == '>')
-            {
-                inside = false;
-                continue;
-            }
-            if (!inside)
-            {
-                array[arrayIndex] = let;
-                arrayIndex++;
-            }
-        }
-        return new string(array, 0, arrayIndex);
+        return Regex.Replace(str, "<.*?>", string.Empty).Trim();
     }
 
     public static string GetRFC822Date(string dtmDate)

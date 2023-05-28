@@ -6,12 +6,15 @@ using Android.Runtime;
 using Android.OS;
 using Android.Content;
 using Android.Preferences;
+using Android.Provider;
+using System.Collections.Generic;
 
 namespace GoldenMobileX.Droid
 {
     [Activity(Label = "GoldenMobileX", Icon = "@mipmap/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize )]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
+  
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -22,16 +25,20 @@ namespace GoldenMobileX.Droid
 
             this.RequestedOrientation = ScreenOrientation.Portrait;
 
-/*
-            MyHomeImpleWatcher myHomeImpleWatcher = new MyHomeImpleWatcher();
+            /*
+                        MyHomeImpleWatcher myHomeImpleWatcher = new MyHomeImpleWatcher();
 
-            HomeWatcher mHomeWatcher = new HomeWatcher(this);
-            mHomeWatcher.setOnHomePressedListener(myHomeImpleWatcher);
-            mHomeWatcher.startWatch();
+                        HomeWatcher mHomeWatcher = new HomeWatcher(this);
+                        mHomeWatcher.setOnHomePressedListener(myHomeImpleWatcher);
+                        mHomeWatcher.startWatch();
 
-            */
+                        */
+ 
 
         }
+
+
+ 
 
         private int currentState = 0;
         protected override void OnPause()

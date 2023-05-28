@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="GoldenMobileX.Views.BankaSMSleri"
+                          xmlns:local="clr-namespace:GoldenMobileX.ViewModels"  
+             xmlns:model="clr-namespace:GoldenMobileX.Models" Title="Banka SMS" >
+    <ContentPage.Content  x:DataType="local:FinansViewModel">
+        <StackLayout>
+ 
+                <ListView  x:Name="ListViewHareketler" RowHeight="60">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="model:AI_Dictionary">
+                            <ViewCell>
+
+
+                                    <StackLayout Orientation="Horizontal" VerticalOptions="FillAndExpand"  BackgroundColor="{StaticResource Primary}" Padding="4" Margin="0,2,0,0">
+                                        <StackLayout Orientation="Horizontal" HorizontalOptions="StartAndExpand">
+                                            <Label Text="{Binding Txt}" TextColor="{StaticResource TextColor}" ></Label>
+                                            <Label Text="{Binding Means}" TextColor="{StaticResource TextColor}" HorizontalOptions="End"></Label>
+                                        </StackLayout>
+                                   
+                                        <StackLayout.GestureRecognizers>
+                                            <TapGestureRecognizer 
+                                NumberOfTapsRequired="1" 
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type local:FinansViewModel}}}"		
+                                CommandParameter="{Binding .}" Tapped="Bankalar_Tapped">
+                                            </TapGestureRecognizer>
+                                        </StackLayout.GestureRecognizers>
+                                   
+                                </StackLayout>
+                                       
+                             
+                
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+
+ </StackLayout>
+
+
+
+
+    </ContentPage.Content>
+</ContentPage>

@@ -1,4 +1,5 @@
 ﻿
+using GoldenMobileX.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -16,7 +17,8 @@ namespace GoldenMobileX.ViewModels
             get { return isBusy; }
             set { SetProperty(ref isBusy, value); }
         }
-
+        public List<TRN_Files> files { get; set; }
+        public TRN_Files SelectedFile { get; set; }
         public string activityText { get; set; }
 
         string title = string.Empty;

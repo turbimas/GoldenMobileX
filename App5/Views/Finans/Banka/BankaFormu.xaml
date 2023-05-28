@@ -12,7 +12,7 @@
     <ContentPage.Content  >
         <StackLayout x:Name="StokKartiStack"  BindableLayout.ItemsSource="{Binding hareket}" x:DataType="local:FinansViewModel">
             <controls:GoldenEntryBankaPicker x:Name="eBanka"  PlaceholderText="Banka Hesabı"  SelectedItem="{Binding  hareket.BankaHesapID_, Mode=TwoWay}"></controls:GoldenEntryBankaPicker>
-            <dxe:ComboBoxEdit   PlaceholderText="Türü" LabelText="Türü"  x:Name="PickerType"   
+            <dxe:ComboBoxEdit   PlaceholderText="Türü" LabelText="Türü"  x:Name="PickerType"  SelectionChanged="PickerType_SelectionChanged"  
                           ValueMember="Code"      DisplayMember="Name"  ItemsSource="{Binding bankaIslemTypes}"  SelectedValue="{Binding hareket.TurKodu, Mode=TwoWay}"  WidthRequest="200" />
             
             <dxe:DateEdit LabelText="Fiş Tarihi" DisplayFormat="dd.MM.yyyy"     HorizontalOptions="FillAndExpand" x:Name="FisDatePickerTarih"  Date="{Binding hareket.Tarih, Mode=TwoWay}"   />

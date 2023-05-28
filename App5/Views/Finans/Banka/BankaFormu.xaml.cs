@@ -30,15 +30,7 @@ namespace GoldenMobileX.Views
 
         private void BankaFormu_Appearing(object sender, EventArgs e)
         {
-            ECari.IsVisible = true;
-            eKarsiBanka.IsVisible = true;
-            if (viewModel.hareket.TurKodu == 3)
-            {
-                ECari.IsVisible = false;
-                eKarsiBanka.PlaceholderText = "Paranın yatıralacağı banka";
-                eBanka.PlaceholderText = "Paranın çekileceği banka";
-            }
-            else eKarsiBanka.IsVisible = false;
+            PickerType_SelectionChanged(null, null);
         }
 
         private void BtnKaydet_Clicked(object sender, EventArgs e)
@@ -57,7 +49,7 @@ namespace GoldenMobileX.Views
             {
                 if (viewModel.hareket.Aciklama.Length > 10)
                 {
-                    if (c.TRN_BankaHareketleri.Where(s => s.Tutar == viewModel.hareket.Tutar && s.Aciklama == viewModel.hareket.Aciklama && s.Tarih == viewModel.hareket.Tarih).Count() > 0)
+                    if (c.TRN_BankaHareketleri.Where(s => s.Tutar == viewModel.hareket.Tutar && s.Tarih == viewModel.hareket.Tarih && s.Aciklama.StartsWith(viewModel.hareket.Aciklama)).Count() > 0)
                     {
                         appSettings.UyariGoster("Bu işlem daha önce girilmiş.");
                         return;
@@ -96,13 +88,13 @@ namespace GoldenMobileX.Views
         {
             if (viewModel.hareket.Tutar.convDouble() == 0)
             {
-                List<(string, double, int)> moneys = GoldenAI.Tools.FindMoneys(str);
+                List<(string, decimal, int)> moneys = GoldenAI.Tools.FindMoneys(str);
                 if (moneys.Count > 0)
                 {
                     SatirEntrytutar.Value = moneys[0].Item2.convDecimal();
                     GoldenContext c = new GoldenContext();
                     string pattern = GoldenAI.getPattern(str);
-                    AI_Patterns p = c.AI_Patterns.Where(s => s.Pattern == pattern)?.FirstOrDefault();
+                    AI_Patterns p = c.AI_Patterns.Where(s => s.Pattern.StartsWith(pattern))?.FirstOrDefault();
                     if (p != null)
                     {
                         try
@@ -133,6 +125,17 @@ namespace GoldenMobileX.Views
             Isle((sender as Editor).Text);
         }
 
- 
+        private void PickerType_SelectionChanged(object sender, EventArgs e)
+        {
+            ECari.IsVisible = true;
+            eKarsiBanka.IsVisible = true;
+            if (viewModel.hareket.TurKodu == 3)
+            {
+                ECari.IsVisible = false;
+                eKarsiBanka.PlaceholderText = "Paranın yatıralacağı banka";
+                eBanka.PlaceholderText = "Paranın çekileceği banka";
+            }
+            else eKarsiBanka.IsVisible = false;
+        }
     }
 }

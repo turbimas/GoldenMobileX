@@ -5,9 +5,13 @@
                                        xmlns:local="clr-namespace:GoldenMobileX.ViewModels"  
              xmlns:model="clr-namespace:GoldenMobileX.Models"
              Title="{Binding Title}">
-    
 
-    
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="SMS kontrol"     Clicked="ToolbarItem_Clicked"    Order="Secondary"   />
+        <ToolbarItem Text="Hızlı işlem girişi"  x:Name="HizliIslem"    Clicked="HizliIslem_Clicked"   Order="Secondary"   />
+
+    </ContentPage.ToolbarItems>
+
     <ContentPage.Resources>
         <ResourceDictionary>
             <Color x:Key="Accent">#96d1ff</Color>
@@ -33,10 +37,8 @@
         </StackLayout>
         <ScrollView Grid.Row="1">
             <StackLayout Orientation="Vertical" Padding="30,24,30,24" Spacing="10">
-                <Label Text="Sizi Geleceğe Taşır..." FontSize="Title"/>
-                <Label Text="Golden ERP mobil uygulama ile ofisinizde yapabildiğiniz bir çok işlemi ofis dışında da kolaylıkla yapabilirsiniz." FontSize="16" Padding="0,0,0,0"/>
 
-
+                <StackLayout x:Name="HizliIslemStack">
                 <Editor HeightRequest="160"  x:Name="EntryIslemText"   Placeholder="Ne yapmak istersiniz..." BackgroundColor="{StaticResource Primary}" TextColor="{StaticResource TextColor}" PlaceholderColor="{StaticResource TextColor2}"></Editor>
                 <StackLayout Orientation="Horizontal">
                 <Button Text="İşle" x:Name="BtnIsle" Margin="4"
@@ -50,21 +52,12 @@
                         ></Button>
                 </StackLayout>
 
-                <Button Text="Toplam" x:Name="BtnToplam" 
-                        WidthRequest="240"  
-                          HeightRequest="240" 
-                        BorderRadius="120" HorizontalOptions="Center"
-                        BackgroundColor="{StaticResource Primary}"  
-                     AbsoluteLayout.LayoutFlags="PositionProportional"
-                        AbsoluteLayout.LayoutBounds="1,0" IsVisible="false"
-                        ></Button>
-
-
-
-                <ListView  x:Name="ListViewBankalar" RowHeight="30"  >
+                </StackLayout>
+                <StackLayout x:Name="SMSStack" IsVisible="false">
+                    <ListView  x:Name="SMSler" RowHeight="200"  >
                     <ListView.ItemTemplate>
-                        <DataTemplate x:DataType="model:Bilanco">
-                            <ViewCell >
+                        <DataTemplate x:DataType="model:SMSMessage">
+                            <ViewCell>
 
                                 <StackLayout Padding="0,2,0,0">
 
@@ -72,25 +65,30 @@
 
                                     <StackLayout Orientation="Horizontal" VerticalOptions="FillAndExpand"  BackgroundColor="{StaticResource Primary}" Padding="4">
                                         <StackLayout Orientation="Vertical" HorizontalOptions="StartAndExpand">
-                                            <Label Text="{Binding HESAP}" TextColor="{StaticResource TextColor}" ></Label>
-                                   
+                                            <Label Text="{Binding Address}" TextColor="{StaticResource TextColor}" ></Label>
+                                            <Label Text="{Binding Date}" TextColor="{StaticResource TextColor}" ></Label>
+
+                                            <Label Text="{Binding Body}"  TextColor="{StaticResource TextColor2}" ></Label>
+
+
                                         </StackLayout>
-                                        <StackLayout Orientation="Vertical"  Padding="0" HorizontalOptions="End" WidthRequest="150" FlowDirection="LeftToRight">
-                                            <StackLayout Orientation="Horizontal"  HorizontalOptions="End">
-                                                <Label Text="{Binding  TUTAR, StringFormat='{0:n2} TL'}"  TextColor="{StaticResource TextColor2}" ></Label>
-                                            </StackLayout>
-                                        </StackLayout>
-   
+
+                                        <StackLayout.GestureRecognizers>
+                                            <TapGestureRecognizer 
+                                NumberOfTapsRequired="1" 
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type local:FinansViewModel}}}"		
+                                CommandParameter="{Binding .}" Tapped="SMS_Tapped">
+                                            </TapGestureRecognizer>
+                                        </StackLayout.GestureRecognizers>
 
                                     </StackLayout>
-
-
-
                                 </StackLayout>
                             </ViewCell>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
+                </StackLayout>
+
 
 
             </StackLayout>

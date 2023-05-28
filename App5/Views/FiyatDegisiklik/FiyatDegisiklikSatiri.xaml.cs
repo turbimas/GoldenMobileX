@@ -211,6 +211,7 @@ namespace GoldenMobileX.Views
         private async void Ara_Clicked(object sender, EventArgs e)
         {
             Stoklar fm = new Stoklar();
+            fm.SelectItem = true;
             fm.ItemSelected += (s2, e2) =>
             {
                 Device.BeginInvokeOnMainThread(() =>

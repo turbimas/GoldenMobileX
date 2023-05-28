@@ -31,7 +31,7 @@
                                     <SwipeView.RightItems>
                                         <SwipeItems>
                                             <SwipeItem  IconImageSource="edit.png" Text="Düzenle" BackgroundColor="LightBlue" CommandParameter="{Binding .}"  Invoked="Duzenle_Clicked"></SwipeItem>
-                                            <SwipeItem  IconImageSource="server.png" Text="Sunucuya Gönder" BackgroundColor="LightYellow" CommandParameter="{Binding .}"  Invoked="SunucuyaGonder_Invoked"></SwipeItem>
+         
                                             <SwipeItem  IconImageSource="onay.png" Text="Onayla" BackgroundColor="LightGreen" CommandParameter="{Binding .}"  Invoked="Onayla_Clicked"></SwipeItem>
                                         </SwipeItems>
                                     </SwipeView.RightItems>
@@ -53,7 +53,17 @@
                                                 <Label Text="{Binding  CurrencyID_.CurrencyCode}"  TextColor="{StaticResource Primary}"></Label>
                                             </StackLayout>
                                         </StackLayout>
-                                    </StackLayout>
+
+                                            <StackLayout.GestureRecognizers>
+                                                <TapGestureRecognizer 
+                                NumberOfTapsRequired="1" 
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type local:OrdersViewModel}}}"		
+                                CommandParameter="{Binding .}" Tapped="Orders_Tapped">
+                                                </TapGestureRecognizer>
+                                            </StackLayout.GestureRecognizers>
+
+
+                                        </StackLayout>
                                   
                                 </SwipeView>  
                                 </StackLayout>

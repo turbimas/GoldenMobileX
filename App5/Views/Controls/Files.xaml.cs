@@ -2,31 +2,40 @@
 using GoldenMobileX.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using Plugin.Media;
+using Plugin.Media.Abstractions;
 using System;
 using System.Collections.Generic;
-
+using System.Linq;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace GoldenMobileX.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class StokResimleri : ContentPage
+    public partial class Files : ContentPage
     {
-        public StoklarViewModel viewModel
+        public string TableName = "";
+        public string fileTypes = "Tümü|*.*|PDF|*.pdf|Resimler|*.jpg;*.jpeg;*.tiff;*.png|Dosyalar|*.xsl;*.xlsx;*.doc;*.docx;*.pps";
+        public bool ReadOnly = false;
+        public bool AciklamaGoster = true, AutoSave = false, SilmeAcik = true;
+
+        public int RecordID = 0;
+        /// <summary>
+        public BaseViewModel viewModel
         {
-            get { return (StoklarViewModel)BindingContext; }
+            get { return (BaseViewModel)BindingContext; }
             set { BindingContext = value; }
         }
-        public StokResimleri()
+        public Files()
         {
             InitializeComponent();
-            Appearing += StokResimleri_Appearing;
+            Appearing += Files_Appearing;
         }
 
-        private void StokResimleri_Appearing(object sender, EventArgs e)
+        private void Files_Appearing(object sender, EventArgs e)
         {
-            filesListview.ItemsSource = new List<TRN_Files>(DataLayer.TRN_Files(viewModel.item.ID));
+            Rebind();
         }
 
         private void ResimSil_Clicked(object sender, EventArgs e)
@@ -40,14 +49,44 @@ namespace GoldenMobileX.Views
                 c.Entry(file).State = EntityState.Deleted;
                 if (!c.SaveContextWithException()) return;
             }
-
             Rebind();
-
         }
+
+        private async void ResimEkle_Clicked(object sender, EventArgs e)
+        {
+            var result = await MediaPicker.PickPhotoAsync();
+            if (result != null)
+            {
+                var stream = await result.OpenReadAsync();
+                if (stream != null)
+                {
+                    DateTime currDate = DateTime.Now;
+                    viewModel.files.Add(new TRN_Files()
+                    {
+                        File = stream.convStreamToByteArray(),
+                        FileName = currDate.ToString("yyyyMMddHHmm") + ".jpg",
+                        Name = currDate.ToString("yyyyMMddHHmm"),
+                        TableName=TableName,
+                        RecordID = viewModel.SelectedFile.ID,
+                        ID = 0
+                    });
+                    Rebind();
+                }
+            }
+        }
+
         public void Rebind()
         {
-
-            filesListview.ItemsSource = new List<TRN_Files>(viewModel.files);
+            if (viewModel.files != null)
+                filesListview.ItemsSource = new List<TRN_Files>(viewModel.files);
+            else
+            {
+                if (DataLayer.IsOfflineAlert) return;
+                using (GoldenContext c = new GoldenContext())
+                {
+                    filesListview.ItemsSource = c.TRN_Files.Where(s => s.TableName == TableName && s.RecordID == RecordID).OrderByDescending(s => s.ID).ToList();
+                }
+            }
         }
         private async void BtnResimCek_Clicked(object sender, EventArgs e)
         {
@@ -64,8 +103,6 @@ namespace GoldenMobileX.Views
                 appSettings.UyariGoster("Kamera etkinleştirilemedi. " + ex.Message);
             }
 
-
-
             DateTime currDate = DateTime.Now;
             var PhotoFile = await CrossMedia.Current.TakePhotoAsync(new Plugin.Media.Abstractions.StoreCameraMediaOptions
             {
@@ -77,21 +114,17 @@ namespace GoldenMobileX.Views
             });
             if (PhotoFile != null)
             {
-
                 viewModel.files.Add(new TRN_Files()
                 {
                     File = PhotoFile.GetStream().convStreamToByteArray(),
                     FileName = currDate.ToString("yyyyMMddHHmm") + ".jpg",
-                    Name = currDate.ToString("yyyyMMddHHmm")
-                ,
-                    RecordID = viewModel.item.ID,
+                    Name = currDate.ToString("yyyyMMddHHmm"),
+                    RecordID = viewModel.SelectedFile.ID,
                     ID = 0
                 });
 
                 Rebind();
             }
-
         }
-
     }
 }

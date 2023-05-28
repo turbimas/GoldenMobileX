@@ -13,7 +13,7 @@ namespace GoldenMobileX.Views
 
         public V_AllItems item;
         public EventHandler ItemSelected;
-
+        public bool SelectItem = false;
         StoklarViewModel viewModel
         {
             get { return (StoklarViewModel)BindingContext; }
@@ -42,7 +42,9 @@ namespace GoldenMobileX.Views
             else
             {
                 var searchwords = search.ToLower(c).Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
-                newlist = DataLayer.V_AllItems.Where(x => searchwords.All(t => (x.Name + " " + x.Barcode).ToLower(c).Split(' ').Any(s => s.Contains(t)))).OrderBy(x => x.ID).ToList();
+                newlist = DataLayer.V_AllItems.Where(x => x.Code == search).OrderBy(x => x.ID).ToList();
+                if (newlist.Count == 0)
+                    newlist = DataLayer.V_AllItems.Where(x => searchwords.All(t => (x.Name + " " + x.Barcode).ToLower(c).Split(' ').Any(s => s.Contains(t)))).OrderBy(x => x.ID).ToList();
             }
             if (Stoktakiler.IsToggled)
                 ItemsListview.ItemsSource = newlist.Where(s => s.StokAdeti > 0);
@@ -50,13 +52,7 @@ namespace GoldenMobileX.Views
                 ItemsListview.ItemsSource = newlist;
 
         }
-
-
-
-
-
-
-
+ 
         private void YeniEkle_Clicked(object sender, EventArgs e)
         {
             StokKarti fm = new StokKarti();
@@ -68,11 +64,6 @@ namespace GoldenMobileX.Views
         {
             Rebind("");
         }
-
-
-
-
-
         private void Yenile_Clicked(object sender, EventArgs e)
         {
             EntryAra.Text = "";
@@ -93,7 +84,6 @@ namespace GoldenMobileX.Views
             fm.viewModel = new StoklarViewModel() { item = (V_AllItems)mi.CommandParameter, items = viewModel.items };
             fm.Disappearing += Fm_Disappearing;
             Navigation.PushAsync(fm);
-
         }
 
 
@@ -101,9 +91,7 @@ namespace GoldenMobileX.Views
         private void Sil_Clicked(object sender, EventArgs e)
         {
             var mi = sender as MenuItem;
-
             viewModel.items.Remove((V_AllItems)mi.CommandParameter);
-
         }
 
 
@@ -116,6 +104,12 @@ namespace GoldenMobileX.Views
             if (ItemSelected != null)
                 ItemSelected(sender, e);
 
+            if(!SelectItem)
+            {
+                StokKarti fm= new StokKarti();
+                fm.viewModel = new StoklarViewModel() { item = i };
+                Navigation.PushAsync(fm);
+            }
         }
 
 
@@ -130,7 +124,6 @@ namespace GoldenMobileX.Views
 
         private void ButtonAra_Clicked(object sender, TextChangedEventArgs e)
         {
-
             Rebind(EntryAra.Text);
         }
 

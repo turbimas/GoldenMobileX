@@ -23,7 +23,7 @@
                                         </StackLayout>
                                         <StackLayout Orientation="Vertical"  Padding="0" HorizontalOptions="End" WidthRequest="150" FlowDirection="LeftToRight">
                                             <StackLayout Orientation="Horizontal" HorizontalOptions="End">
-                                                <Label Text="{Binding  HesapBakiye, StringFormat='{0:n2}'}}" TextColor="{StaticResource TextColor2}"></Label>
+                                                <Label Text="{Binding  HesapBakiye, StringFormat='{0:n2}'}" TextColor="{StaticResource TextColor2}"></Label>
                                                 <Label Text="{Binding  CurrencyID_.CurrencyCode}" TextColor="{StaticResource TextColor2}"></Label>
                                             </StackLayout>
                                         </StackLayout>

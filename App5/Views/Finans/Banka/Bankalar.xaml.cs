@@ -65,5 +65,12 @@ namespace GoldenMobileX.Views
             Navigation.PushAsync(fm);
         }
 
+        private void SMS_Clicked(object sender, EventArgs e)
+        {
+            BankaSMSleri fm = new BankaSMSleri();
+            Navigation.PushAsync(fm);
+        }
+
+
     }
 }

@@ -595,14 +595,7 @@ class DataLayer
             return new List<V_CariHareketler>();
         }
     }
-    public static List<TRN_Files> TRN_Files(int RecordID)
-    {
-        if (IsOfflineAlert) return new List<TRN_Files>();
-        using (GoldenContext c = new GoldenContext())
-        {
-            return c.TRN_Files.Where(s => s.TableName == "Items" && s.RecordID == RecordID).OrderByDescending(s => s.ID).ToList();
-        }
-    }
+ 
     public static IEnumerable<T> ExecuteObject<T>(string sql)
     {
         List<T> items = new List<T>();

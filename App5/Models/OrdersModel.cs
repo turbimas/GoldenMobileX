@@ -9,7 +9,7 @@ namespace GoldenMobileX.Models
     public class TRN_Orders
     {
         public int ID { get; set; }
-        public Guid UniqueID { get; set; }
+        public Nullable<Guid> UniqueID { get; set; }
         public Nullable<int> TalepID { get; set; }
         public Nullable<int> TeklifID { get; set; }
         public Nullable<int> Branch { get; set; }
@@ -18,7 +18,7 @@ namespace GoldenMobileX.Models
         {
             get
             {
-                return Status_.Code;
+                return Status_?.Code;
             }
             set
             {
@@ -31,7 +31,7 @@ namespace GoldenMobileX.Models
         {
             get
             {
-                return OrderType_.Code;
+                return OrderType_?.Code;
             }
             set
             {
@@ -73,7 +73,7 @@ namespace GoldenMobileX.Models
         {
             get
             {
-                return CurrencyID_.CurrencyNumber;
+                return (CurrencyID_?.CurrencyNumber).convInt16();
             }
             set
             {
@@ -90,20 +90,11 @@ namespace GoldenMobileX.Models
         public Nullable<bool> Onaylandi { get; set; }
         public Nullable<int> OnaylayanID { get; set; }
         public Nullable<bool> Iptal { get; set; }
-        public Nullable<bool> SevkeGonder { get; set; }
-        public Nullable<bool> Faturalanacak { get; set; }
-        public Nullable<int> Vade { get; set; }
-        public string DeliveryAdress { get; set; }
-        public Nullable<System.DateTime> OnayTarihi { get; set; }
         public Nullable<bool> SevkEdildi { get; set; }
         public Nullable<int> StockTransID { get; set; }
         public Nullable<System.DateTime> FiiliSevkTarihi { get; set; }
         public Nullable<int> TeslimSuresi { get; set; }
-        public Nullable<bool> KDVHaric { get; set; }
         public Nullable<int> SatisSorumlusu { get; set; }
-        public Nullable<System.DateTime> IlkOkunmaTarihi { get; set; }
-        public Nullable<System.DateTime> GecerlilikTarihi { get; set; }
-        public Nullable<bool> NakliyeDahil { get; set; }
         public Nullable<int> CreatedBy { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public Nullable<int> ModifiedBy { get; set; }

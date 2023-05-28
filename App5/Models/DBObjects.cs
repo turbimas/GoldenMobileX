@@ -260,6 +260,21 @@ namespace GoldenMobileX.Models
         public string LastString { get; set; }
         public string XmlInfo { get; set; }
     }
+    public class AI_Dictionary
+    {
+        public int ID { get; set; }
+        public string Txt { get; set; }
+        public string Means { get; set; }
+        public int TxtType { get; set; }
+        public string XmlInfo { get; set; }
+    }
+    public class SMSMessage
+    {
+        public string Address { get; set; }
+        public string Body { get; set; }
+        public DateTime Date { get; set; }
+
+    }
     public class HttpResponse
     {
         public string Message { get; set; }

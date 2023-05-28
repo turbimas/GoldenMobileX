@@ -4,6 +4,10 @@
              x:Class="GoldenMobileX.Views.Bankalar"
                           xmlns:local="clr-namespace:GoldenMobileX.ViewModels"  
              xmlns:model="clr-namespace:GoldenMobileX.Models" Title="BANKALAR" >
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Banka SMS Kontrol" Order="Secondary" Clicked="SMS_Clicked"/>
+    </ContentPage.ToolbarItems>
     <ContentPage.Content  x:DataType="local:FinansViewModel">
  
  

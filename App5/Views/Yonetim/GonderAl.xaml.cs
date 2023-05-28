@@ -25,7 +25,7 @@ namespace GoldenMobileX.Views
             };
             bt2.Clicked += BtStokKayit_Clicked;
             StackContent.Children.Add(bt2);
-            OtomatikSenkronize.IsChecked = appSettings.LocalSettings.OnlineOluncaOtomatikAktarim;
+
         }
 
         private async void BtStokKayit_Clicked(object sender, EventArgs e)
@@ -84,7 +84,6 @@ namespace GoldenMobileX.Views
 
         private void OtomatikSenkronize_CheckedChanged(object sender, EventArgs e)
         {
-            appSettings.LocalSettings.OnlineOluncaOtomatikAktarim = (OtomatikSenkronize.IsChecked).convBool();
             appSettings.LocalSettings.SaveXML();
         }
     }

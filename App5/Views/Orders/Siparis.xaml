@@ -35,9 +35,10 @@
                             <ViewCell>
        
                           
-                                    <StackLayout Orientation="Vertical"  Padding="3,0,0,0" BackgroundColor="#336699">
+                                    <StackLayout Orientation="Vertical"  Padding="3,0,0,0" BackgroundColor="#336699" Margin="0,2,0,0">
                                         <Label Text="{Binding ProductID_.Name}" TextColor="{StaticResource TextColor2}" FontSize="16"></Label>
-                                        <StackLayout Orientation="Horizontal"  Padding="0">   
+                                <Label Text="{Binding Notes}" TextColor="{StaticResource TextColor2}" FontSize="16"></Label>
+                                <StackLayout Orientation="Horizontal"  Padding="0">   
                                             <Label Text="{Binding Amount}" TextColor="{StaticResource TextColor2}"></Label>
                                             <Label Text="{Binding UnitID_.UnitCode}" TextColor="{StaticResource TextColor2}"></Label>  
                                         </StackLayout>

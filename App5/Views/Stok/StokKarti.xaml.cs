@@ -110,16 +110,15 @@ namespace GoldenMobileX.Views
 
         private void BtnResimler_Clicked(object sender, EventArgs e)
         {
-            StokResimleri fm = new StokResimleri();
-            fm.viewModel = viewModel;
-            fm.Appearing += Fm_Appearing;
+            Files fm = new Files();
+            fm.TableName = "items";
+            fm.viewModel = new BaseViewModel() { files = viewModel.files };
+            fm.RecordID = viewModel.item.ID;
+            fm.Disappearing += (s2, e2) => { viewModel.files = fm.viewModel.files; };
             Navigation.PushAsync(fm);
         }
 
-        private void Fm_Appearing(object sender, EventArgs e)
-        {
-            (sender as StokResimleri).Rebind();
-        }
+ 
 
         private void BtnVaryantlar_Clicked(object sender, EventArgs e)
         {

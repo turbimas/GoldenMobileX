@@ -1,9 +1,11 @@
-﻿using GoldenMobileX.Models;
+﻿using Android.Content;
+using GoldenMobileX.Models;
 using GoldenMobileX.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Transactions;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -15,6 +17,7 @@ namespace GoldenMobileX.Views
     {
         public bool ReadOnly = false;
         public bool newAdd = false;
+        GoldenContext c = new GoldenContext();
         public StokFisleriViewModel viewModel
         {
             get { return (StokFisleriViewModel)BindingContext; }
@@ -53,6 +56,8 @@ namespace GoldenMobileX.Views
         }
         void Kaydet()
         {
+            if (DataLayer.IsOfflineAlert) return;
+
             if (viewModel.Trans?.Lines != null)
             {
                 viewModel.Trans.Lines.RemoveAll(s => s.Amount == 0);
@@ -61,35 +66,51 @@ namespace GoldenMobileX.Views
                 viewModel.Trans.Status = appParams.Genel.YeniMalzemeFislerindeDurum;
             else if (viewModel.Trans.Status_?.Code == 0)
                 viewModel.Trans.Status = appParams.Genel.YeniMalzemeFislerindeDurum;
-            if (viewModel.Trans.ID > 0)
+            using (var transaction = new TransactionScope())
             {
-                viewModel.Trans.ModifiedBy = appSettings.User.ID;
-                viewModel.Trans.ModifiedDate = DateTime.Now;
+                try
+                {
+                    foreach (var s in viewModel.Trans.Lines)
+                    {
+                        s.UnitPrice = s.ProductID_.UnitPrice;
+                        s.Direction = viewModel.Trans.Type_.Direction;
+                        s.Total = s.UnitPrice.convDecimal() * s.Amount;
+                    }
+                    viewModel.Trans.Total = viewModel.Trans.Lines.Sum(x => x.Total).convDouble(2);
+                    if (viewModel.Trans.ID > 0)
+                    {
+                        viewModel.Trans.ModifiedBy = appSettings.User.ID;
+                        viewModel.Trans.ModifiedDate = DateTime.Now;
+                        c.TRN_StockTrans.Update(viewModel.Trans);
+                    }
+                    else
+                    {
+                        viewModel.Trans.CreatedBy = appSettings.User.ID;
+                        viewModel.Trans.CreatedDate = DateTime.Now;
+                        c.TRN_StockTrans.Add(viewModel.Trans);
+                    }
+                    c.SaveChanges();
+                    foreach (var l in viewModel.Trans.Lines)
+                    {
+                        l.StockTransID = viewModel.Trans.ID;
+                        if (l.ID > 0)
+                            c.TRN_StockTransLines.Update(l);
+                        else
+                            c.TRN_StockTransLines.Add(l);
+
+                    }
+                    c.SaveChanges();
+
+                    // İşlem başarılıysa onayla
+                    transaction.Complete();
+                }
+                catch (Exception ex)
+                {
+                    // Hata durumunda geri al
+                    Console.WriteLine("Hata: " + ex.Message);
+                }
             }
-            else
-            {
-                viewModel.Trans.CreatedBy = appSettings.User.ID;
-                viewModel.Trans.CreatedDate = DateTime.Now;
-            }
-
-            foreach (var s in viewModel.Trans.Lines)
-            {
-                s.UnitPrice = s.ProductID_.UnitPrice;
-                s.Direction = viewModel.Trans.Type_.Direction;
-                s.Total = s.UnitPrice.convDecimal() * s.Amount;
-            }
-            viewModel.Trans.Total = viewModel.Trans.Lines.Sum(x => x.Total).convDouble(2);
-
-
-            if (newAdd)
-                DataLayer.WaitingSent.tRN_StockTrans.Add(viewModel.Trans);
-            DataLayer.WaitingSent.SaveJSON();
-
-            appSettings.OfflineData.TRN_StockTransLines = new List<TRN_StockTransLines>();
-            appSettings.OfflineData.SaveXML();
-
             Navigation.PopAsync();
-
 
         }
         async Task<bool> CheckList()  //Depo transferinde eksik ya da fazla gelen ürünlere fiş oluşturur.
