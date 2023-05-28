@@ -101,7 +101,11 @@ namespace GoldenMobileX.Views
                         {
                             TRN_BankaHareketleri h = JsonConvert.DeserializeObject<TRN_BankaHareketleri>(p.XmlInfo);
                             if (h.BankaHesapID_ != null) eBanka.SelectedItem = h.BankaHesapID_;
-                            if (h.KarsiBankaHesapID_ != null) eKarsiBanka.SelectedItem = h.KarsiBankaHesapID_;
+                            if (h.KarsiBankaHesapID_ != null)
+                            {
+                                eKarsiBanka.SelectedItem = h.KarsiBankaHesapID_;
+                                eKarsiBanka.IsVisible = true;
+                            }
                             if (h.CariID_ != null) ECari.SelectedItem = h.CariID_;
                             if (h.TurKodu != null) PickerType.SelectedValue = h.TurKodu;
                         }
